@@ -7,7 +7,7 @@ using namespace std;
 ifstream fin ("input.txt");
 ofstream fout ("output.txt");
 
-enum tok { ID, BEGIN, END, INTEGER, FLOAT, EOF};
+enum tok_value { INTEGER, HEX, REAL, CHAR, HEXCHAR, DECCHAR, STRING};
 
 /*
 Глобальные переменные,
