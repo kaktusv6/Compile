@@ -87,5 +87,8 @@ void done () {
 }
 
 string tok_to_string (tok t) {
-	
+	switch (t) {
+		case tok.ID: return t.toString() + ' ' + lex_text;
+		case tok.INTEGER: return t.toString() + ' ' + lex_value;
+	}
 }
