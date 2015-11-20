@@ -1,2 +1,5 @@
-/Example/
-*.exe
+/.gitattributes
+/.gitignore
+/Compile.cpp
+/input.txt
+/output.txt
