@@ -1,103 +1,63 @@
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <map>
-#include <cctype>
+#include <string>
 
 using namespace std;
 
-ifstream fin("input.txt");
 ofstream fout("output.txt");
 
-enum tokValue { ID, INTEGER, HEX, REAL, CHAR, HEXCHAR, DECCHAR, STRING, BEGIN, END };
+enum tok { BEGIN, END, INDENTIFICATOR};
 
-/*
-Глобальные переменные,
-необходимые для работы лексического анализатора
-*/
+class Lexer
+{
+private:
+	int line;
+	int col;
+	map<string, tok> keywordsMap;
 
-string fname;
-int lexRow, lexCol;
-tokValue lexKind;
-string lexText;
-int lexValue;
+public:
+	Lexer(string name)
+	{
+		ifstream fin(name);
+		
+	}
 
-/*
-Вспомогательные глобальные переменные,
-описанные в секции реализации модуля
-*/
+	int addition()
+	{
+		return line + col;
+	}
 
-char ch; // Текущий символ
-int row, col; // 
+	void initialization() //инициализация словаря String -> Token
+	{
 
-/*
-Словарь,
-сопоставляющий ключевым словам константы типа TLex.
-Инициализируется процедурой InitKeywords.
-*/
-map<string, tokValue> keywordsMap;
+	}
 
-void nextCh() {
-	lexText += ch;
-	if (!fin.eof()) {
-		fin >> ch;
-		if (ch != '\n') {
-			col++;
-		}
-		else {
-			row++;
+	void 
+};
+
+int main()
+{
+	char ch; // переменная которая считывает код
+	int line = 1;
+	int col = 1;
+	string lexem;
+
+	Lexer m(20, 56);
+	cout << m.addition() << endl;
+	map<string, tok> keywordsMap;
+
+	while (!fin.eof())
+	{
+		fin.get(ch);
+		if (ch == '\n')
+		{
+			line++;
 			col = 1;
 		}
+		col++;
+		fout << ch;
 	}
-	else {
-		done();
-	}
-}
-
-void nextLexem()
-{
-	lexText = "";
-	lexRow = row;
-	lexCol = col;
-	switch (ch) {
-	case tolower(ch) == ch:
-
-		break;
-	case '0':'9';
-
-		break;
-	case fin.eof():
-		lexKind = EOF;
-		break;
-
-	}
-}
-
-void initKeywords()
-{
-	keywordsMap["begin"] = BEGIN;
-	keywordsMap["end"] = END;
-}
-
-void init(string fn)
-{
-	initKeywords();
-	fname = fn;
-	row = 1;
-	col = 1;
-	nextCh();
-	nextLexem();
-}
-
-void done()
-{
-	fin.close();
-}
-
-string tokValueToString(tokValue t)
-{
-	switch (t) {
-	case ID: return t.toString() + ' ' + lexText; // Написать функцию преобразование токена в string
-	case INTEGER: return  + ' ' + lexValue;
-	}
+	system("pause");
+	return 0;
 }
