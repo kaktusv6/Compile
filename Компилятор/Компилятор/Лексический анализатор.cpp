@@ -10,21 +10,18 @@ using namespace std;
 ofstream fout;
 ifstream fin;
 
-enum tok { ID, BEGIN, END, FEOF, SEMICOLON};
-
 class Lexer
 {
 private:
 	int line = 1;
 	int col = 1;
-	
-	map<string, tok> keywordsMap;
+	char ch;
 	
 	string lexText;
 	int lexCol;
 	int lexLine;
-	char ch;
-	tok token;
+	
+	Token tok;
 
 	bool fromAToB(char c)
 	{
@@ -35,12 +32,10 @@ private:
 	{
 		return (c >= '0' && c <= '9');
 	}
+
 public:
-	Lexer()
+	Lexer()//конструктор класса
 	{
-		keywordsMap["begin"] = BEGIN;
-		keywordsMap["end"] = END;
-		
 		fin.open("input.txt");
 		fout.open("output.txt");
 
@@ -85,15 +80,13 @@ public:
 		if (fromAToB(ch))
 		{
 			while (fromAToB(ch) || from0to9(ch)) nextChar();
-			map<string, tok>::iterator i = keywordsMap.find(lexText);
-			if (i != keywordsMap.end()) token = i->second;
-			else token = ID;
+			tok.lexemToToken(lexText);
 		}
 
-		if (from0to9(ch))
+		/*if (from0to9(ch))
 		{
 			while (from0to9) nextChar();
-		}
+		}*/
 		writeToken();
 	}
 
@@ -103,7 +96,7 @@ public:
 		для регулярных выражений запись токена и лексемы неного иначе 
 		для регулярных выражений после LexText выводим ???
 		*/
-		fout << lexLine << '\t' << lexCol << '\t' << token << '\t' << lexText << '\n';
+		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenToString() << '\t' << lexText << '\n';
 	}
 
 	string tokenToString()
