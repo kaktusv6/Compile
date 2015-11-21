@@ -6,58 +6,55 @@
 using namespace std;
 
 ofstream fout("output.txt");
+ifstream fin("input.txt");
 
 enum tok { BEGIN, END, INDENTIFICATOR};
 
 class Lexer
 {
 private:
-	int line;
-	int col;
+	int line = 1;
+	int col = 1;
+	
 	map<string, tok> keywordsMap;
+	
+	string LexText;
+	char ch;
 
 public:
-	Lexer(string name)
+	void nextChar()
 	{
-		ifstream fin(name);
-		
+		LexText += ch;
+		if (!fin.eof())
+		{
+			fin.get(ch);
+			if (ch == '\n')
+			{
+				line++;
+				col++;
+			}
+		}
+		else done();
 	}
 
-	int addition()
+	void done()
 	{
-		return line + col;
+		fin.close();
 	}
 
-	void initialization() //инициализация словаря String -> Token
+	void PassSpaces()
 	{
-
+		while (ch == ' ')
+		{
+			fin.get(ch);
+			col++;
+		}
 	}
-
-	void 
 };
 
 int main()
 {
-	char ch; // переменная которая считывает код
-	int line = 1;
-	int col = 1;
-	string lexem;
 
-	Lexer m(20, 56);
-	cout << m.addition() << endl;
-	map<string, tok> keywordsMap;
-
-	while (!fin.eof())
-	{
-		fin.get(ch);
-		if (ch == '\n')
-		{
-			line++;
-			col = 1;
-		}
-		col++;
-		fout << ch;
-	}
 	system("pause");
 	return 0;
 }
