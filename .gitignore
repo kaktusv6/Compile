@@ -1,5 +1,11 @@
-/.gitattributes
-/.gitignore
-/Compile.cpp
 /input.txt
 /output.txt
+/Компилятор.vcxproj
+/Компилятор.vcxproj.filters
+/Компилятор.vcxproj.user
+/Пример на Pascal.pas
+/Пример на Python.py
+*.pas
+/resource.h
+/Компилятор.APS
+/Компилятор.rc
