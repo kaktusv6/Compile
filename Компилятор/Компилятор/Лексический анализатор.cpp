@@ -4,7 +4,6 @@
 #include <string>
 
 // a - z 97 - 122
-// A - Z 
 using namespace std;
 
 ofstream fout;
@@ -51,7 +50,7 @@ public:
 			}
 			else col++;
 		}
-		else done();
+		else ch = '№';
 	}
 
 	void done()
@@ -59,30 +58,27 @@ public:
 		fin.close();
 	}
 
-	void PassSpaces()
+	void PassWhiteSpaces()
 	{
-		while (ch == ' ')
-		{
-			nextChar();
-		}
+		while (ch == ' ' || ch == '\n' || ch == '\t' ) nextChar();
+		
 	}
+
 	void nextLexem()
 	{
-		PassSpaces();
+		PassWhiteSpaces();
 
 		lexText = "";
 		lexCol = col;
 		lexLine = line;
 
-		if ('a' <= ch <= 'z')
+		if (fromAToB(ch))
 		{
-			while ('a' <= ch <= 'z' && !fin.eof())
-			{
-				nextChar();
-			}
+			while (fromAToB(ch) || from0to9(ch)) nextChar();
+
 		}
 
-
+		writeToken();
 	}
 
 	void writeToken()
@@ -91,7 +87,7 @@ public:
 		для регулярных выражений запись токена и лексемы неного иначе 
 		для регулярных выражений после LexText выводим ???
 		*/
-		fout << line << '\t' << col << '\t' << token << '\t' << lexText;
+		fout /*<< lexLine << '\t' << lineCol << '\t' << '\t'*/ << lexText;
 	}
 
 	string tokenToString()
@@ -99,12 +95,23 @@ public:
 
 		return "";
 	}
+
+	bool fromAToB(char c)
+	{
+		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+	}
+
+	bool from0to9(char c)
+	{
+		return (c >= '0' && c <= '9');
+	}
 };
 
 int main()
 {
 	Lexer l;
 	l.nextLexem();
+
 	system("pause");
 	return 0;
 }
