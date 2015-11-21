@@ -29,11 +29,10 @@ Token::Token()
 	keywordsMap["exit"] = EXIT;
 	keywordsMap["repeat"] = REPEAT;
 	keywordsMap["until"] = UNTIL;
-
 }
 
 
-Token::~Token()
+void Token::lexemToToken(string s)
 {
 	map<string, token>::iterator i = keywordsMap.find(s);
 	if (i == keywordsMap.end())
