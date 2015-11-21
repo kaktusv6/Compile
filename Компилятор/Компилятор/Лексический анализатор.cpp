@@ -9,7 +9,7 @@ using namespace std;
 ofstream fout;
 ifstream fin;
 
-enum tok { ID, BEGIN, END, IDENT, FEOF, SEMICOLON};
+enum tok { ID, BEGIN, END, FEOF, SEMICOLON};
 
 class Lexer
 {
@@ -25,6 +25,15 @@ private:
 	char ch;
 	tok token;
 
+	bool fromAToB(char c)
+	{
+		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+	}
+
+	bool from0to9(char c)
+	{
+		return (c >= '0' && c <= '9');
+	}
 public:
 	Lexer()
 	{
@@ -75,9 +84,15 @@ public:
 		if (fromAToB(ch))
 		{
 			while (fromAToB(ch) || from0to9(ch)) nextChar();
-
+			map<string, tok>::iterator i = keywordsMap.find(lexText);
+			if (i != keywordsMap.end()) token = i->second;
+			else token = ID;
 		}
 
+		if (from0to9(ch))
+		{
+			while (from0to9) nextChar();
+		}
 		writeToken();
 	}
 
@@ -87,23 +102,13 @@ public:
 		для регулярных выражений запись токена и лексемы неного иначе 
 		для регулярных выражений после LexText выводим ???
 		*/
-		fout /*<< lexLine << '\t' << lineCol << '\t' << '\t'*/ << lexText;
+		fout << lexLine << '\t' << lexCol << '\t' << token << '\t' << lexText << '\n';
 	}
 
 	string tokenToString()
 	{
 
 		return "";
-	}
-
-	bool fromAToB(char c)
-	{
-		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
-	}
-
-	bool from0to9(char c)
-	{
-		return (c >= '0' && c <= '9');
 	}
 };
 
