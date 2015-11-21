@@ -3,12 +3,14 @@
 #include <map>
 #include <string>
 
+// a - z 97 - 122
+// A - Z 
 using namespace std;
 
 ofstream fout("output.txt");
 ifstream fin("input.txt");
 
-enum tok { BEGIN, END, INDENTIFICATOR};
+enum tok { BEGIN, END, INDENTIFICATOR, FEOF, SEMICOLON};
 
 class Lexer
 {
@@ -18,21 +20,26 @@ private:
 	
 	map<string, tok> keywordsMap;
 	
-	string LexText;
+	string lexText;
+	int lexCol;
+	int lexLine;
+	//if ('a' <= vur <= ')
 	char ch;
+	tok token;
 
 public:
 	void nextChar()
 	{
-		LexText += ch;
+		lexText += ch;
 		if (!fin.eof())
 		{
 			fin.get(ch);
 			if (ch == '\n')
 			{
 				line++;
-				col++;
+				col = 1;
 			}
+			else col++;
 		}
 		else done();
 	}
@@ -46,15 +53,45 @@ public:
 	{
 		while (ch == ' ')
 		{
-			fin.get(ch);
-			col++;
+			nextChar();
 		}
+	}
+	void nextLexem()
+	{
+		nextChar();
+		PassSpaces();
+
+		lexText = "";
+		lexCol = col;
+		lexLine = line;
+
+		if ('a' <= ch <= 'z')
+		{
+			nextChar();
+		}
+
+	}
+
+	void writeToken()
+	{
+		/*
+		для регулярных выражений запись токена и лексемы неного иначе 
+		для регулярных выражений после LexText выводим ???
+		*/
+		fout << line << '\t' << col << '\t' << token << '\t' << lexText;
+	}
+
+	string tokenToString()
+	{
+
+		return "";
 	}
 };
 
 int main()
 {
-
+	Lexer l;
+	l.nextLexem();
 	system("pause");
 	return 0;
 }
