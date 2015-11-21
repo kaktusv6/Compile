@@ -2,6 +2,7 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include "Token.h"
 
 // a - z 97 - 122
 using namespace std;
