@@ -7,10 +7,10 @@
 // A - Z 
 using namespace std;
 
-ofstream fout("output.txt");
-ifstream fin("input.txt");
+ofstream fout;
+ifstream fin;
 
-enum tok { BEGIN, END, INDENTIFICATOR, FEOF, SEMICOLON};
+enum tok { ID, BEGIN, END, IDENT, FEOF, SEMICOLON};
 
 class Lexer
 {
@@ -23,11 +23,21 @@ private:
 	string lexText;
 	int lexCol;
 	int lexLine;
-	//if ('a' <= vur <= ')
 	char ch;
 	tok token;
 
 public:
+	Lexer()
+	{
+		keywordsMap["begin"] = BEGIN;
+		keywordsMap["end"] = END;
+		
+		fin.open("input.txt");
+		fout.open("output.txt");
+
+		nextChar();
+	}
+
 	void nextChar()
 	{
 		lexText += ch;
@@ -58,7 +68,6 @@ public:
 	}
 	void nextLexem()
 	{
-		nextChar();
 		PassSpaces();
 
 		lexText = "";
@@ -67,8 +76,12 @@ public:
 
 		if ('a' <= ch <= 'z')
 		{
-			nextChar();
+			while ('a' <= ch <= 'z' && !fin.eof())
+			{
+				nextChar();
+			}
 		}
+
 
 	}
 
