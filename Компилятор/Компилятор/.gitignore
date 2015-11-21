@@ -6,3 +6,6 @@
 /Пример на Pascal.pas
 /Пример на Python.py
 *.pas
+/resource.h
+/Компилятор.APS
+/Компилятор.rc
