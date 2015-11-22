@@ -80,7 +80,7 @@ public:
 		if (fromAToB(ch))
 		{
 			while (fromAToB(ch) || from0to9(ch)) nextChar();
-			tok.lexemToToken(lexText);
+			
 		}
 
 		/*if (from0to9(ch))

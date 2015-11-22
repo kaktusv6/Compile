@@ -6,14 +6,21 @@ using namespace std;
 
 Token::Token()
 {
-	token = "id";
+	//token = "id";
 }
 
-string Token::checkKeyword(string lexText)
+void Token::checkKeyword(string lexText)
 {
 	map<string, string>::iterator i = keywordsToken.find(lexText);
-	if (i != keywordsToken.end()) token i->second;
-	else "";
+	if (i != keywordsToken.end()) token = i->second;
+	else token = "id";
+}
+
+void Token::checkOperation(string lexText)
+{
+	map<string, string>::iterator i = operationToken.find(lexText);
+	if (i != keywordsToken.end()) token = i->second;
+	else token = "BadChar";
 }
 //Token::Token()
 //{
