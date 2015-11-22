@@ -6,26 +6,84 @@
 using namespace std;
 
 const int amountKeywords = 24;
+const int amountOperation = 25;
+const int amountSeparators = 8;
 
 class Token
 {
 private:
-	//enum token {ID, OP, BEGIN, FORWARD, DO, ELSE, END, FOR, FUNCTION, IF, ARRAY, OF, PROCEDURE, PROGRAM, RECORD, THEN, TO, TYPE, VAR, WHILE, BREAK, CONTINUE, DOWNTO, EXIT, REPEAT, UNTIL };
-	//token tok;
 	string token;
 
-	//map <string, token> keywordsMap;
-
-	string keywords[amountKeywords] = {
-		 "begin", "forward", "do", "else", "end", "for", "function", "if", "array", "of", "procedure", "program", "record", "then", "to", "type", "var", "while", "break", "continue", "downto", "exit", "repeat", "until
+	map <string, string> keywordsToken{
+		{"begin" , "keyword"},
+		{"forward" , "keyword"},
+		{"do" , "keyword"},
+		{"else" , "keyword"},
+		{"end" , "keyword"},
+		{"for" , "keyword"},
+		{"function" , "keyword"},
+		{"if" , "keyword"},
+		{"array" , "keyword"},
+		{"of" , "keyword"},
+		{"procedure" , "keyword"},
+		{"program" , "keyword"},
+		{"record" , "keyword"},
+		{"then" , "keyword"},
+		{"to" , "keyword"},
+		{"type" , "keyword"},
+		{"var" , "keyword"},
+		{"while" , "keyword"},
+		{"break" , "keyword"},
+		{"continue" , "keyword"},
+		{"downto" , "keyword"},
+		{"exit" , "keyword"},
+		{"repeat" , "keyword"},
+		{ "until" , "keyword" }
 	};
-	//string stringToken;
-	//string tokenOperation[25] = { "and", "div", "mod", "not", "or", "xor", "+", "-", "*", "/", "^", "+=", "-=", "*=", "/=", "<", ">", "<=", ">=", "=", "<", ">", ":=", "@", "."};
+
+	map<string, string> operationToken = {
+		{"and" , "op" },		
+		{"div" , "op" },		
+		{"mod" , "op" },		
+		{"not" , "op" },		
+		{"or" , "op" },		
+		{"xor" , "op" },		
+		{"+" , "op" },		
+		{"-" , "op" },		
+		{"*" , "op" },
+		{"/" , "op" },		
+		{"^" , "op" },		
+		{"+=" , "op" },		
+		{"-=" , "op" },		
+		{"*=" , "op" },		
+		{"/=" , "op" },		
+		{"<" , "op" },		
+		{">" , "op" },		
+		{"<=" , "op" },		
+		{">=" , "op" },
+		{"=" , "op" },		
+		{"<" , "op" },		
+		{">" , "op" },		
+		{":=" , "op" },		
+		{"@" , "op" },		
+		{ ".", "op" }
+	};
+
+	string separatorsToken[amountSeparators] = {
+		"(",
+		")",
+		"[",
+		"]",
+		";",
+		",",
+		":",
+		"..",
+	};
 
 public:
 	Token(); // конструктор класса
 
-	void lexemToToken(string s);
-	string tokenToString();
+	string checkKeyword(string lexText);
+	//void lexemToToken(string s);
 };
 

@@ -2,7 +2,19 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
 
+Token::Token()
+{
+	token = "id";
+}
+
+string Token::checkKeyword(string lexText)
+{
+	map<string, string>::iterator i = keywordsToken.find(lexText);
+	if (i != keywordsToken.end()) token i->second;
+	else "";
+}
 //Token::Token()
 //{
 //	keywordsMap["begin"] = BEGIN;
