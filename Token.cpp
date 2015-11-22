@@ -1,6 +1,8 @@
 #include "Token.h"
 #include <iostream>
 #include <string>
+#include <algorithm>
+
 
 using namespace std;
 
@@ -11,15 +13,15 @@ Token::Token()
 
 void Token::checkKeyword(string lexText)
 {
-	map<string, string>::iterator i = keywordsToken.find(lexText);
-	if (i != keywordsToken.end()) token = i->second;
+	string *i = find(keywordsToken, keywordsToken+amountKeywords, lexText);
+	if (i != keywordsToken + amountKeywords) token = *i;
 	else token = "id";
 }
 
 void Token::checkOperation(string lexText)
 {
-	map<string, string>::iterator i = operationToken.find(lexText);
-	if (i != keywordsToken.end()) token = i->second;
+	string *i = find(operationToken, operationToken + amountOperation, lexText);
+	if (i != operationToken + amountKeywords) token = *i;
 	else token = "BadChar";
 }
 //Token::Token()

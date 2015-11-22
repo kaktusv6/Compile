@@ -96,7 +96,7 @@ public:
 		для регулярных выражений запись токена и лексемы неного иначе 
 		для регулярных выражений после LexText выводим ???
 		*/
-		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenToString() << '\t' << lexText << '\n';
+		fout << lexLine << '\t' << lexCol << '\t' << '\t' << lexText << '\n';
 	}
 
 	string tokenToString()
