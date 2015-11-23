@@ -1,20 +1,25 @@
+/*Проблемы:
+	Считывает последний символ 2 раза из за eof
+	Если в конце файла стоит пробел то лексер выведит его как keyword
+*/
+
 #include <iostream>
 #include <fstream>
 #include <map>
 #include <string>
 #include "Token.h"
 
-// a - z 97 - 122
 using namespace std;
 
 ofstream fout;
 ifstream fin;
 
+const int amountCharOp = 25;
 class Lexer
 {
 private:
 	int line = 1;
-	int col = 1;
+	int col = 0;
 	char ch;
 	
 	string lexText;
@@ -22,6 +27,8 @@ private:
 	int lexLine;
 	
 	Token tok;
+
+	char *opCharacter = new char[amountCharOp];
 
 	bool fromAToB(char c)
 	{
@@ -33,15 +40,13 @@ private:
 		return (c >= '0' && c <= '9');
 	}
 
-public:
-	Lexer()//конструктор класса
+	bool toOperation(char c)
 	{
-		fin.open("input.txt");
-		fout.open("output.txt");
-
-		nextChar();
+		int i = 0;
+		while (c != opCharacter[i]) i++;
+		if (i < strlen(opCharacter)) return true;
+		else return false;
 	}
-
 	void nextChar()
 	{
 		lexText += ch;
@@ -55,7 +60,7 @@ public:
 			}
 			else col++;
 		}
-		else ch = '№';
+		else ch = '\0';
 	}
 
 	void done()
@@ -65,8 +70,17 @@ public:
 
 	void PassWhiteSpaces()
 	{
-		while (ch == ' ' || ch == '\n' || ch == '\t' ) nextChar();
-		
+		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
+
+	}
+public:
+	Lexer()
+	{
+		fin.open("input.txt");
+		fout.open("output.txt");
+
+		opCharacter = "admnox+-*/^+-*/<><>=<:@.";
+		nextChar();
 	}
 
 	void nextLexem()
@@ -80,37 +94,25 @@ public:
 		if (fromAToB(ch))
 		{
 			while (fromAToB(ch) || from0to9(ch)) nextChar();
-			
+			tok.checkKeyword(lexText);
 		}
-
-		/*if (from0to9(ch))
+		else
 		{
-			while (from0to9) nextChar();
-		}*/
+			while (ch != ' ') nextChar();
+			tok.checkOperation(lexText);
+		}
 		writeToken();
 	}
 
 	void writeToken()
 	{
-		/*
-		для регулярных выражений запись токена и лексемы неного иначе 
-		для регулярных выражений после LexText выводим ???
-		*/
-		fout << lexLine << '\t' << lexCol << '\t' << '\t' << lexText << '\n';
-	}
-
-	string tokenToString()
-	{
-
-		return "";
+		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenString << '\t' << lexText << '\n';
 	}
 };
 
 int main()
 {
 	Lexer l;
-	l.nextLexem();
-
-	system("pause");
+	while (!fin.eof()) l.nextLexem();
 	return 0;
 }
