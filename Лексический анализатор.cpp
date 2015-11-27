@@ -50,9 +50,9 @@ private:
 	void nextChar()
 	{
 		lexText += ch;
-		if (!fin.eof())
+		if ((ch = fin.get()) != EOF)
 		{
-			fin.get(ch);
+			//fin.get(ch);
 			if (ch == '\n')
 			{
 				line++;
@@ -113,6 +113,8 @@ public:
 int main()
 {
 	Lexer l;
-	while (!fin.eof()) l.nextLexem();
+	while (!fin.eof()){
+		l.nextLexem();
+	}
 	return 0;
 }
