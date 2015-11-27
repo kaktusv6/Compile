@@ -1,5 +1,4 @@
 /*Проблемы:
-	Считывает последний символ 2 раза из за eof
 	Если в конце файла стоит пробел то лексер выведит его как keyword
 */
 
@@ -15,6 +14,7 @@ ofstream fout;
 ifstream fin;
 
 const int amountCharOp = 25;
+
 class Lexer
 {
 private:
@@ -47,6 +47,7 @@ private:
 		if (i < strlen(opCharacter)) return true;
 		else return false;
 	}
+	
 	void nextChar()
 	{
 		lexText += ch;
@@ -79,7 +80,7 @@ public:
 		fin.open("input.txt");
 		fout.open("output.txt");
 
-		opCharacter = "admnox+-*/^+-*/<><>=<:@.";
+		opCharacter = "+-*/^+-*/<><>=<:@.";
 		nextChar();
 	}
 
@@ -90,16 +91,27 @@ public:
 		lexText = "";
 		lexCol = col;
 		lexLine = line;
-
+		
 		if (fromAToB(ch))
 		{
 			while (fromAToB(ch) || from0to9(ch)) nextChar();
 			tok.checkKeyword(lexText);
 		}
-		else
+		else if (toOperation(ch))
 		{
-			while (ch != ' ') nextChar();
+			while (toOperation(ch)) nextChar();
 			tok.checkOperation(lexText);
+		}
+		else if (from0to9(ch))
+		{
+			while (from0to9(ch)) nextChar();
+			if (ch == '.')
+			{
+				nextChar();
+				while (from0to9(ch)) nextChar();
+				tok.tokenString = "real";
+			}
+			else tok.tokenString = "integer";
 		}
 		writeToken();
 	}
