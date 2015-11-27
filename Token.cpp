@@ -58,6 +58,15 @@ Token::Token()
 	operationToken.insert(pair<string, string>("@", "op"));
 	operationToken.insert(pair<string, string>(".", "op"));
 
+	
+	separatorsToken.insert(pair<string, string>("(", "sep"));
+	separatorsToken.insert(pair<string, string>(")", "sep"));
+	separatorsToken.insert(pair<string, string>("[", "sep"));
+	separatorsToken.insert(pair<string, string>("]", "sep"));
+	separatorsToken.insert(pair<string, string>(";", "sep"));
+	separatorsToken.insert(pair<string, string>(",", "sep"));
+	separatorsToken.insert(pair<string, string>(":", "sep"));
+	separatorsToken.insert(pair<string, string>("..", "sep"));
 
 }
 
@@ -73,4 +82,18 @@ void Token::checkOperation(string lexText)
 	map<string, string>::iterator i = operationToken.find(lexText);
 	if (i != operationToken.end()) tokenString = i->second;
 	else tokenString = "BadChar";
+}
+
+void Token::checkString(string lexText) {
+	if (lexText.length() == 1)
+	{
+		tokenString = "char";
+	}
+	else
+	{
+		size_t found = lexText.find("\n");
+		if (found == string::npos)
+			tokenString = "string";
+		else tokenString = "BadNL";
+	}
 }

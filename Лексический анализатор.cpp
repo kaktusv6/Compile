@@ -1,5 +1,5 @@
 /*Проблемы:
-	Если в конце файла стоит пробел то лексер выведит его как keyword
+	Если в конце файла стоит пробел то лексер будет выводить пробел с токеном который был записан до этого момента
 */
 
 #include <iostream>
@@ -43,7 +43,7 @@ private:
 	bool toOperation(char c)
 	{
 		int i = 0;
-		while (c != opCharacter[i]) i++;
+		while (c != opCharacter[i] && i < strlen(opCharacter)) i++;
 		if (i < strlen(opCharacter)) return true;
 		else return false;
 	}
@@ -113,12 +113,20 @@ public:
 			}
 			else tok.tokenString = "integer";
 		}
+		else if (ch == '\'')
+		{
+			nextChar();
+			while (ch != '\'') nextChar();
+			tok.checkString(lexText);
+			nextChar();
+
+		}
 		writeToken();
 	}
 
 	void writeToken()
 	{
-		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenString << '\t' << lexText << '\n';
+		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenString + '\t' << lexText << '\n';
 	}
 };
 

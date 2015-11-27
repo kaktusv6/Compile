@@ -14,23 +14,16 @@ class Token
 {
 private:
 	map <string, string> keywordsToken;
+	
 	map <string, string> operationToken;
 
-	/*string separatorsToken[amountSeparators] = {
-		"(",
-		")",
-		"[",
-		"]",
-		";",
-		",",
-		":",
-		".."
-	};*/
+	map <string, string> separatorsToken;
 public:
 	string tokenString;
 
 	Token();
 	void checkKeyword(string lexText);
 	void checkOperation(string lexText);
+	void checkString(string lexText);
 };
 
