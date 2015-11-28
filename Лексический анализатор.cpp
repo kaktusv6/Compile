@@ -6,6 +6,7 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <vector>
 #include "Token.h"
 
 using namespace std;
@@ -28,7 +29,7 @@ private:
 	
 	Token tok;
 
-	char *opCharacter = new char[amountCharOp];
+	vector<char>opCharacter;
 
 	bool fromAToB(char c)
 	{
@@ -38,14 +39,6 @@ private:
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
-	}
-
-	bool toOperation(char c)
-	{
-		int i = 0;
-		while (c != opCharacter[i] && i < strlen(opCharacter)) i++;
-		if (i < strlen(opCharacter)) return true;
-		else return false;
 	}
 	
 	void nextChar()
@@ -80,7 +73,6 @@ public:
 		fin.open("input.txt");
 		fout.open("output.txt");
 
-		opCharacter = "+-*/^+-*/<><>=<:@.";
 		nextChar();
 	}
 
