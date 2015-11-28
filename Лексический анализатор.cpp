@@ -132,6 +132,7 @@ public:
 
 int main()
 {
+	initMaps();
 	Lexer l;
 	while (!fin.eof()){
 		l.nextLexem();
