@@ -12,10 +12,11 @@ using namespace std;
 
 ofstream fout;
 ifstream fin;
+ifstream fin2;
 
 const int amountCharOp = 25;
 
-vector<char> opCharacter = { '+', '-', '*', '^', '/', '<', '>', '<', '>', '=', '<', ':', '@', '.' };
+vector<char> opCharacter;
 
 map <string, string> separatorsToken;
 map <string, string> keywordsToken;
@@ -48,7 +49,7 @@ void initMaps()
 
 	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"), addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
 
-	addSeparators("+"), addSeparators("-"), addSeparators("*"), addSeparators("/"), addSeparators("^"), addSeparators("+="), addSeparators("-="), addSeparators("*="), addSeparators("/="), addSeparators("<"), addSeparators(">"), addSeparators("<="), addSeparators(">="), addSeparators("="), addSeparators("<>"), addSeparators(":="), addSeparators("@"), addSeparators(".");
+	addOperation("+"), addOperation("-"), addOperation("*"), addOperation("/"), addOperation("^"), addOperation("+="), addOperation("-="), addOperation("*="), addOperation("/="), addOperation("<"), addOperation(">"), addOperation("<="), addOperation(">="), addOperation("="), addOperation("<>"), addOperation(":="), addOperation("@"), addOperation(".");
 	initOpCharacter();
 }
 
@@ -101,6 +102,7 @@ private:
 	int line;
 	int col;
 	char ch;
+	char ch2;
 	
 	string lexText;
 	int lexCol;
@@ -159,15 +161,26 @@ public:
 		lexCol = col;
 		lexLine = line;
 		
-		if (fromAToB(ch))
+		if (fromAToB(ch) || ch == '_')
 		{
-			while (fromAToB(ch) || from0to9(ch)) nextChar();
+			while (fromAToB(ch) || from0to9(ch) || ch == '_') nextChar();
 			tok.checkKeyword(lexText);
 		}
 		else if (toOperation(ch))
 		{
-			while (toOperation(ch)) nextChar();
+			nextChar();
+			lexText += ch;
 			tok.checkOperation(lexText);
+			if (tok.tokenString == "BadChar")
+			{
+				lexText.pop_back();
+				tok.tokenString = "op";
+			}
+			else if (tok.tokenString == "op")
+			{
+				lexText.pop_back();
+				nextChar();
+			}
 		}
 		else if (from0to9(ch))
 		{
