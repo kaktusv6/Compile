@@ -7,7 +7,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "Token.h"
 
 using namespace std;
 
@@ -16,6 +15,80 @@ ifstream fin;
 
 const int amountCharOp = 25;
 
+vector<char> opCharacter = { '+', '-', '*', '^', '/', '<', '>', '<', '>', '=', '<', ':', '@', '.' };
+
+map <string, string> separatorsToken;
+map <string, string> keywordsToken;
+map <string, string> operationToken;
+
+void addKeyword(string s)
+{
+	keywordsToken[s] = "keyword";
+}
+void addOperation(string s)
+{
+	operationToken[s] = "op";
+}
+void addSeparators(string s)
+{
+	separatorsToken[s] = "sep";
+}
+void addOperationInKeywordMap(string s)
+{
+	keywordsToken[s] = "op";
+}
+
+void initMaps()
+{
+	addKeyword("begin"), addKeyword("forward"), addKeyword("do"), addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"), addKeyword("if"), addKeyword("array"), addKeyword("of"), addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"), addKeyword("to"), addKeyword("type"), addKeyword("var"), addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"), addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
+
+	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"), addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
+
+	addSeparators("+"), addSeparators("-"), addSeparators("*"), addSeparators("/"), addSeparators("^"), addSeparators("+="), addSeparators("-="), addSeparators("*="), addSeparators("/="), addSeparators("<"), addSeparators(">"), addSeparators("<="), addSeparators(">="), addSeparators("="), addSeparators("<>"), addSeparators(":="), addSeparators("@"), addSeparators(".");
+}
+
+bool toOperation(char c)
+{
+	unsigned i = 0;
+	while (i < opCharacter.size() && c != opCharacter[i]) i++;
+	if (i < opCharacter.size()) return true;
+	else return false;
+}
+
+class Token
+{
+private:
+
+public:
+	string tokenString = "";
+
+	void checkKeyword(string lexText)
+	{
+		map<string, string>::iterator i = keywordsToken.find(lexText);
+		if (i != keywordsToken.end()) tokenString = i->second;
+		else tokenString = "ident";
+	}
+	void checkOperation(string lexText)
+	{
+		map<string, string>::iterator i = operationToken.find(lexText);
+		if (i != operationToken.end()) tokenString = i->second;
+		else tokenString = "BadChar";
+	}
+	void checkString(string lexText)
+	{
+		if (lexText.length() == 1)
+		{
+			tokenString = "char";
+		}
+		else
+		{
+			size_t found = lexText.find("\n");
+			if (found == string::npos)
+				tokenString = "string";
+			else tokenString = "BadNL";
+		}
+	}
+};
 class Lexer
 {
 private:
