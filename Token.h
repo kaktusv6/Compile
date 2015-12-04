@@ -13,32 +13,6 @@ using namespace std;
 
 static vector<char> opCharacter = {'+','-','*','^','/','<','>','<','>','=','<',':','@','.'};
 
-static void addKeyword(string s)
-{
-	keywordsToken[s] = "keyword";
-}
-static void addOperation(string s)
-{
-	operationToken[s] = "op";
-}
-static void addSeparators(string s)
-{
-	separatorsToken[s] = "sep";
-}
-static void addOperationInKeywordMap(string s)
-{
-	keywordsToken[s] = "op";
-}
-
-static void initMaps()
-{
-	addKeyword("begin"), addKeyword("forward"), addKeyword("do"), addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"), addKeyword("if"), addKeyword("array"), addKeyword("of"), addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"), addKeyword("to"), addKeyword("type"), addKeyword("var"), addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"), addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
-
-	addOperationInKeywordMap("and"),addOperationInKeywordMap("div"),addOperationInKeywordMap("mod"),addOperationInKeywordMap("not"),addOperationInKeywordMap("or"),addOperationInKeywordMap("xor");
-
-	addSeparators("+"),addSeparators("-"),addSeparators("*"),addSeparators("/"),addSeparators("^"),addSeparators("+="),addSeparators("-="),addSeparators("*="),addSeparators("/="),addSeparators("<"),addSeparators(">"),addSeparators("<="),addSeparators(">="),addSeparators("="),addSeparators("<>"),addSeparators(":="),addSeparators("@"),addSeparators(".");
-}
-
 static bool toOperation(char c)
 {
 	unsigned i = 0;
@@ -50,15 +24,43 @@ static bool toOperation(char c)
 class Token
 {
 private:
+
+public:
 	static map <string, string> separatorsToken;
 	static map <string, string> keywordsToken;
 	static map <string, string> operationToken;
-
-public:
 	string tokenString;
-
+	int f = 0;
+	
 	Token();
 	void checkKeyword(string lexText);
 	void checkOperation(string lexText);
 	void checkString(string lexText);
 };
+
+static void addKeyword(string s)
+{
+	Token::keywordsToken[s] = "keyword";
+}
+static void addOperation(string s)
+{
+	Token::operationToken[s] = "op";
+}
+static void addSeparators(string s)
+{
+	Token::separatorsToken[s] = "sep";
+}
+static void addOperationInKeywordMap(string s)
+{
+	Token::keywordsToken[s] = "op";
+}
+
+static void initMaps()
+{
+	addKeyword("begin"), addKeyword("forward"), addKeyword("do"), addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"), addKeyword("if"), addKeyword("array"), addKeyword("of"), addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"), addKeyword("to"), addKeyword("type"), addKeyword("var"), addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"), addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
+
+	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"), addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
+
+	addSeparators("+"), addSeparators("-"), addSeparators("*"), addSeparators("/"), addSeparators("^"), addSeparators("+="), addSeparators("-="), addSeparators("*="), addSeparators("/="), addSeparators("<"), addSeparators(">"), addSeparators("<="), addSeparators(">="), addSeparators("="), addSeparators("<>"), addSeparators(":="), addSeparators("@"), addSeparators(".");
+}
+
