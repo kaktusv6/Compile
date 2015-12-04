@@ -38,6 +38,10 @@ void addOperationInKeywordMap(string s)
 	keywordsToken[s] = "op";
 }
 
+void initOpCharacter()
+{
+	opCharacter.push_back('+'), opCharacter.push_back('-'), opCharacter.push_back('*'), opCharacter.push_back('^'), opCharacter.push_back('/'), opCharacter.push_back('<'), opCharacter.push_back('>'), opCharacter.push_back('<'), opCharacter.push_back('>'), opCharacter.push_back('='), opCharacter.push_back('<'), opCharacter.push_back(':'), opCharacter.push_back('@'), opCharacter.push_back('.');
+}
 void initMaps()
 {
 	addKeyword("begin"), addKeyword("forward"), addKeyword("do"), addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"), addKeyword("if"), addKeyword("array"), addKeyword("of"), addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"), addKeyword("to"), addKeyword("type"), addKeyword("var"), addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"), addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
@@ -45,6 +49,7 @@ void initMaps()
 	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"), addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
 
 	addSeparators("+"), addSeparators("-"), addSeparators("*"), addSeparators("/"), addSeparators("^"), addSeparators("+="), addSeparators("-="), addSeparators("*="), addSeparators("/="), addSeparators("<"), addSeparators(">"), addSeparators("<="), addSeparators(">="), addSeparators("="), addSeparators("<>"), addSeparators(":="), addSeparators("@"), addSeparators(".");
+	initOpCharacter();
 }
 
 bool toOperation(char c)
@@ -60,7 +65,7 @@ class Token
 private:
 
 public:
-	string tokenString = "";
+	string tokenString;
 
 	void checkKeyword(string lexText)
 	{
@@ -93,8 +98,8 @@ public:
 class Lexer
 {
 private:
-	int line = 1;
-	int col = 0;
+	int line;
+	int col;
 	char ch;
 	
 	string lexText;
@@ -140,6 +145,8 @@ public:
 	{
 		fin.open("input.txt");
 		fout.open("output.txt");
+		line = 1;
+		col = 0;
 
 		nextChar();
 	}
