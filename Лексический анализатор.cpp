@@ -89,6 +89,7 @@ public:
 		}
 	}
 };
+
 class Lexer
 {
 private:
@@ -102,18 +103,14 @@ private:
 	
 	Token tok;
 
-	vector<char>opCharacter;
-
 	bool fromAToB(char c)
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
-
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
 	}
-	
 	void nextChar()
 	{
 		lexText += ch;
@@ -129,12 +126,10 @@ private:
 		}
 		else ch = '\0';
 	}
-
 	void done()
 	{
 		fin.close();
 	}
-
 	void PassWhiteSpaces()
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();

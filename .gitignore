@@ -1,4 +1,4 @@
-/input.txt
+﻿/input.txt
 /output.txt
 /Компилятор.vcxproj
 /Компилятор.vcxproj.filters
@@ -9,3 +9,5 @@
 /resource.h
 /Компилятор.APS
 /Компилятор.rc
+/Token.h
+/Token.cpp
