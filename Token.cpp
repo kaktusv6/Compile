@@ -5,6 +5,10 @@
 
 using namespace std;
 
+map <string, string> separatorsToken;
+map <string, string> keywordsToken;
+map <string, string> operationToken;
+
 Token::Token()
 {
 

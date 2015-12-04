@@ -26,9 +26,9 @@ class Token
 private:
 
 public:
-	static map <string, string> separatorsToken;
-	static map <string, string> keywordsToken;
-	static map <string, string> operationToken;
+	//static map <string, string> separatorsToken;
+	//static map <string, string> keywordsToken;
+	//static map <string, string> operationToken;
 	string tokenString;
 	int f = 0;
 	
