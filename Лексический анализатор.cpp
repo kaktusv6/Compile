@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#define DIG "0123456789ABCDEFGHIGKLMNOPQRSTUVWXYZ"
+#define DIG "0123456789ABCDEF"
 
 using namespace std;
 
@@ -95,6 +95,7 @@ bool toSep(char c)
 }
 
 int Atoi(string s){
+	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
 	int i, p = 16, a = 0, digit[256] = { 0 };
 	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
 	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
@@ -136,16 +137,17 @@ public:
 	}
 	void parsInteger(string s)
 	{
-		if (s.length() == 1) valueStr = s;
+		int n = s.length();
+		if (n == 1) valueStr = s;
 		else
 		{
 			int i = 0;
-			while (s[i] == '0' && i < s.length()) i++;
-			while (i < s.length())
-			{
-				valueStr += s[i];
-				i++;
-			}
+			while (s[i] == '0' && i < n-1) i++;
+				while (i < n)
+				{
+					valueStr += s[i];
+					i++;
+				}
 		}
 	}
 	void parsHex(string s)
@@ -155,6 +157,8 @@ public:
 		ss << val;
 		valueStr = ss.str();
 	}
+
+	
 };
 
 class Lexer
@@ -173,12 +177,13 @@ private:
 	
 	Token tok;
 
-	bool fromAtoB(char c)
+	bool fromAtoZ(char c)
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
 	bool fromAtoF(char c)
 	{
+		c = toupper(c);
 		return (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
 	}
 	bool from0to9(char c)
@@ -233,9 +238,9 @@ public:
 		lexCol = col;
 		lexLine = line;
 		
-		if (fromAtoB(ch) || ch == '_')
+		if (fromAtoZ(ch) || ch == '_')
 		{
-			while (fromAtoB(ch) || from0to9(ch) || ch == '_') nextChar();
+			while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
 			tok.checkKeyword(lexText);
 			s = LEX;
 		}
@@ -276,9 +281,18 @@ public:
 		{
 			nextChar();
 			while (fromAtoF(ch) || from0to9(ch)) nextChar();
-			tok.parsHex(lexText);
-			tok.tokStr = "hex";
-			s = VAL;
+			if (lexText.length() > 1)
+			{
+				tok.parsHex(lexText);
+				tok.tokStr = "hex";
+				s = VAL;
+			}
+			else
+			{
+				tok.tokStr = "NoHex";
+				s = ERR;
+			}
+			
 		}
 		else if (ch == '\'')
 		{
@@ -306,7 +320,10 @@ public:
 		switch (s)
 		{
 			case LEX: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\n'; break;
-			case ERR: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\n'; break;
+			case ERR:
+				fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr;
+				done();
+				break;
 			case VAL:
 				fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\t' + tok.valueStr + '\n';
 				tok.valueStr = "";
