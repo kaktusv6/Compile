@@ -45,11 +45,23 @@ void initOpCharacter()
 }
 void initMaps()
 {
-	addKeyword("begin"), addKeyword("forward"), addKeyword("do"), addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"), addKeyword("if"), addKeyword("array"), addKeyword("of"), addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"), addKeyword("to"), addKeyword("type"), addKeyword("var"), addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"), addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
+	addKeyword("begin"), addKeyword("forward"), addKeyword("do"),
+		addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"),
+		addKeyword("if"), addKeyword("array"), addKeyword("of"),
+		addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"),
+		addKeyword("to"), addKeyword("type"), addKeyword("var"),
+		addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"),
+		addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
 
-	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"), addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
+	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"),
+		addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
 
-	addOperation("+"), addOperation("-"), addOperation("*"), addOperation("/"), addOperation("^"), addOperation("+="), addOperation("-="), addOperation("*="), addOperation("/="), addOperation("<"), addOperation(">"), addOperation("<="), addOperation(">="), addOperation("="), addOperation("<>"), addOperation(":="), addOperation("@"), addOperation(".");
+	addOperation("+"), addOperation("-"), addOperation("*"), addOperation("/"),
+		addOperation("^"), addOperation("+="), addOperation("-="), addOperation("*="),
+		addOperation("/="), addOperation("<"), addOperation(">"), addOperation("<="),
+		addOperation(">="), addOperation("="), addOperation("<>"), addOperation(":="),
+		addOperation("@"), addOperation(".");
+
 	initOpCharacter();
 }
 
@@ -60,7 +72,8 @@ bool toOperation(char c)
 	if (i < opCharacter.size()) return true;
 	else return false;
 }
-
+//enum Type { OP, INT, SEP };
+//string typestr[3] = { "op", "int", "sep" };
 class Token
 {
 private:
