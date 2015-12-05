@@ -44,7 +44,7 @@ void initOpChar()
 {
 	opChar.push_back('+'), opChar.push_back('-'), opChar.push_back('*'), opChar.push_back('^'), opChar.push_back('/'),
 		opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('='),
-		opChar.push_back('<'), opChar.push_back(':'), opChar.push_back('@');
+		opChar.push_back('<'), opChar.push_back(':'), opChar.push_back('@'), opChar.push_back('.');
 }
 void initSepChar()
 {
@@ -216,9 +216,9 @@ public:
 			if (tok.tokenString == "BadChar")
 			{
 				lexText.pop_back();
-				tok.checkOperation(lexText);
+				tok.tokenString = "op";
 			}
-			else if (tok.tokenString == "op")
+			else if (tok.tokenString == "op" || tok.tokenString == "sep")
 			{
 				lexText.pop_back();
 				nextChar();
