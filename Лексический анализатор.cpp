@@ -15,8 +15,8 @@ ifstream fin;
 
 const int amountCharOp = 25;
 
-vector<char> opCharacter;
-
+vector<char> opChar;
+vector<char> sepChar;
 enum st {LEX, ERR, VAL};
 map <string, string> strToken;
 
@@ -40,9 +40,18 @@ void addSeparator(string s)
 {
 	strToken[s] = "sep";
 }
-void initOpCharacter()
+void initOpChar()
 {
-	opCharacter.push_back('+'), opCharacter.push_back('-'), opCharacter.push_back('*'), opCharacter.push_back('^'), opCharacter.push_back('/'), opCharacter.push_back('<'), opCharacter.push_back('>'), opCharacter.push_back('<'), opCharacter.push_back('>'), opCharacter.push_back('='), opCharacter.push_back('<'), opCharacter.push_back(':'), opCharacter.push_back('@'), opCharacter.push_back('.');
+	opChar.push_back('+'), opChar.push_back('-'), opChar.push_back('*'), opChar.push_back('^'), opChar.push_back('/'),
+		opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('='),
+		opChar.push_back('<'), opChar.push_back(':'), opChar.push_back('@');
+}
+void initSepChar()
+{
+	sepChar.push_back('('), sepChar.push_back(')'),
+		sepChar.push_back('['), sepChar.push_back(']'),
+		sepChar.push_back(';'), sepChar.push_back(':'),
+		sepChar.push_back(',');
 }
 void initMaps()
 {
@@ -64,14 +73,23 @@ void initMaps()
 		addOperation("@"), addOperation(".");
 
 	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"), addSeparator(":"), addSeparator(".."), addSeparator(",");
-	initOpCharacter();
+	initOpChar();
+	initSepChar();
 }
 
 bool toOperation(char c)
 {
 	unsigned i = 0;
-	while (i < opCharacter.size() && c != opCharacter[i]) i++;
-	if (i < opCharacter.size()) return true;
+	while (i < opChar.size() && c != opChar[i]) i++;
+	if (i < opChar.size()) return true;
+	else return false;
+}
+
+bool toSep(char c)
+{
+	unsigned i = 0;
+	while (i < sepChar.size() && c != sepChar[i]) i++;
+	if (i < sepChar.size()) return true;
 	else return false;
 }
 //enum Type { OP, INT, SEP };
@@ -224,6 +242,12 @@ public:
 			while (ch != '\'') nextChar();
 			tok.checkString(lexText);
 			nextChar();
+		}
+		else if (toSep(ch))
+		{
+			nextChar();
+			tok.tokenString = "sep";
+			s = LEX;
 		}
 		else
 		{
