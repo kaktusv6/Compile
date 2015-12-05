@@ -83,14 +83,14 @@ public:
 
 	void checkKeyword(string lexText)
 	{
-		map<string, string>::iterator i = keywordsToken.find(lexText);
-		if (i != keywordsToken.end()) tokenString = i->second;
+		map<string, string>::iterator i = strToken.find(lexText);
+		if (i != strToken.end()) tokenString = i->second;
 		else tokenString = "ident";
 	}
 	void checkOperation(string lexText)
 	{
-		map<string, string>::iterator i = operationToken.find(lexText);
-		if (i != operationToken.end()) tokenString = i->second;
+		map<string, string>::iterator i = strToken.find(lexText);
+		if (i != strToken.end()) tokenString = i->second;
 		else tokenString = "BadChar";
 	}
 	void checkString(string lexText)
