@@ -18,9 +18,8 @@ const int amountCharOp = 25;
 
 vector<char> opCharacter;
 
+enum st {LEX, ERR, VAL};
 map <string, string> strToken;
-//map <string, string> keywordsToken;
-//map <string, string> operationToken;
 
 void addKeyword(string s)
 {
@@ -116,7 +115,8 @@ private:
 	int col;
 	char ch;
 	char ch2;
-	
+	st s;
+
 	string lexText;
 	int lexCol;
 	int lexLine;
@@ -165,7 +165,6 @@ public:
 
 		nextChar();
 	}
-
 	void nextLexem()
 	{
 		PassWhiteSpaces();
@@ -178,6 +177,7 @@ public:
 		{
 			while (fromAToB(ch) || from0to9(ch) || ch == '_') nextChar();
 			tok.checkKeyword(lexText);
+			s = LEX;
 		}
 		else if (toOperation(ch))
 		{
@@ -194,6 +194,7 @@ public:
 				lexText.pop_back();
 				nextChar();
 			}
+			s = LEX;
 		}
 		else if (from0to9(ch))
 		{
@@ -214,9 +215,8 @@ public:
 			nextChar();
 
 		}
-		writeToken();
+		if (s == LEX) writeToken();
 	}
-
 	void writeToken()
 	{
 		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenString + '\t' << lexText << '\n';
