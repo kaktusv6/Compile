@@ -18,25 +18,25 @@ const int amountCharOp = 25;
 
 vector<char> opCharacter;
 
-map <string, string> separatorsToken;
-map <string, string> keywordsToken;
-map <string, string> operationToken;
+map <string, string> strToken;
+//map <string, string> keywordsToken;
+//map <string, string> operationToken;
 
 void addKeyword(string s)
 {
-	keywordsToken[s] = "keyword";
+	strToken[s] = "keyword";
 }
 void addOperation(string s)
 {
-	operationToken[s] = "op";
+	strToken[s] = "op";
 }
 void addSeparators(string s)
 {
-	separatorsToken[s] = "sep";
+	strToken[s] = "sep";
 }
 void addOperationInKeywordMap(string s)
 {
-	keywordsToken[s] = "op";
+	strToken[s] = "op";
 }
 
 void initOpCharacter()
