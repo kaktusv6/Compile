@@ -7,13 +7,14 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <sstream>
+#define DIG "0123456789ABCDEFGHIGKLMNOPQRSTUVWXYZ"
 
 using namespace std;
 
 ofstream fout;
 ifstream fin;
-
-const int amountCharOp = 25;
+stringstream ss;
 
 vector<char> opChar;
 vector<char> sepChar;
@@ -93,6 +94,13 @@ bool toSep(char c)
 	else return false;
 }
 
+int Atoi(string s){
+	int i, p = 16, a = 0, digit[256] = { 0 };
+	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
+	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
+	return a;
+}
+
 class Token
 {
 private:
@@ -133,12 +141,19 @@ public:
 		{
 			int i = 0;
 			while (s[i] == '0' && i < s.length()) i++;
-			while (i < s.length()) valueStr += s[i];
+			while (i < s.length())
+			{
+				valueStr += s[i];
+				i++;
+			}
 		}
 	}
 	void parsHex(string s)
 	{
-		//доделать
+		int val = 0;
+		val = Atoi(s);
+		ss << val;
+		valueStr = ss.str();
 	}
 };
 
@@ -259,8 +274,10 @@ public:
 		}
 		else if (ch == '$')
 		{
+			nextChar();
 			while (fromAtoF(ch) || from0to9(ch)) nextChar();
-
+			tok.parsHex(lexText);
+			tok.tokStr = "hex";
 			s = VAL;
 		}
 		else if (ch == '\'')
@@ -278,9 +295,9 @@ public:
 		}
 		else
 		{
-				done();
-				tok.tokStr = "BadChar";
-				s = ERR;
+			done();
+			tok.tokStr = "BadChar";
+			s = ERR;
 		}
 		writeToken();
 	}
@@ -290,7 +307,10 @@ public:
 		{
 			case LEX: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\n'; break;
 			case ERR: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\n'; break;
-			case VAL: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\t' + tok.valueStr + '\n'; break;
+			case VAL:
+				fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\t' + tok.valueStr + '\n';
+				tok.valueStr = "";
+				break;
 		}
 	}
 
