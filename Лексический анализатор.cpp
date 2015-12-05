@@ -92,39 +92,48 @@ bool toSep(char c)
 	if (i < sepChar.size()) return true;
 	else return false;
 }
-//enum Type { OP, INT, SEP };
-//string typestr[3] = { "op", "int", "sep" };
+
 class Token
 {
 private:
 
 public:
-	string tokenString;
-
+	string tokStr;
+	string valueStr;
 	void checkKeyword(string lexText)
 	{
 		map<string, string>::iterator i = strToken.find(lexText);
-		if (i != strToken.end()) tokenString = i->second;
-		else tokenString = "ident";
+		if (i != strToken.end()) tokStr = i->second;
+		else tokStr = "ident";
 	}
 	void checkOperation(string lexText)
 	{
 		map<string, string>::iterator i = strToken.find(lexText);
-		if (i != strToken.end()) tokenString = i->second;
-		else tokenString = "BadChar";
+		if (i != strToken.end()) tokStr = i->second;
+		else tokStr = "BadChar";
 	}
 	void checkString(string lexText)
 	{
 		if (lexText.length() == 1)
 		{
-			tokenString = "char";
+			tokStr = "char";
 		}
 		else
 		{
 			size_t found = lexText.find("\n");
 			if (found == string::npos)
-				tokenString = "string";
-			else tokenString = "BadNL";
+				tokStr = "string";
+			else tokStr = "BadNL";
+		}
+	}
+	void parsInteger(string s)
+	{
+		if (s.length() == 1) valueStr = s;
+		else
+		{
+			int i = 0;
+			while (s[i] == '0' && i < s.length()) i++;
+			while (i < s.length()) valueStr += s[i];
 		}
 	}
 };
@@ -168,7 +177,6 @@ private:
 		}
 		else
 		{
-			ch = '\0';
 			endFile = false;
 		}
 	}
@@ -213,12 +221,12 @@ public:
 			nextChar();
 			lexText += ch;
 			tok.checkOperation(lexText);
-			if (tok.tokenString == "BadChar")
+			if (tok.tokStr == "BadChar")
 			{
 				lexText.pop_back();
-				tok.tokenString = "op";
+				tok.checkOperation(lexText);
 			}
-			else if (tok.tokenString == "op" || tok.tokenString == "sep")
+			else if (tok.tokStr == "op" || tok.tokStr == "sep")
 			{
 				lexText.pop_back();
 				nextChar();
@@ -232,9 +240,14 @@ public:
 			{
 				nextChar();
 				while (from0to9(ch)) nextChar();
-				tok.tokenString = "real";
+				tok.tokStr = "real";
 			}
-			else tok.tokenString = "integer";
+			else
+			{
+				tok.tokStr = "integer";
+				tok.parsInteger(lexText); //переделать
+			}
+			s = VAL;
 		}
 		else if (ch == '\'')
 		{
@@ -246,21 +259,25 @@ public:
 		else if (toSep(ch))
 		{
 			nextChar();
-			tok.tokenString = "sep";
+			tok.tokStr = "sep";
 			s = LEX;
 		}
 		else
 		{
-			done();
-			tok.tokenString = "BadChar";
-			s = ERR;
+				done();
+				tok.tokStr = "BadChar";
+				s = ERR;
 		}
 		writeToken();
 	}
 	void writeToken()
 	{
-		if (s == LEX) fout << lexLine << '\t' << lexCol << '\t' + tok.tokenString + '\t' + lexText + '\n';
-		else if (s == ERR) fout << lexLine << '\t' << lexCol << '\t' + tok.tokenString + '\n';
+		switch (s)
+		{
+			case LEX: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\n'; break;
+			case ERR: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\n'; break;
+			case VAL: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\t' + tok.valueStr + '\n'; break;
+		}
 	}
 
 };
@@ -269,7 +286,7 @@ int main()
 {
 	initMaps();
 	Lexer l;
-	while (l.endFile)
+	while (l.endFile && !fin.eof())
 	{
 		l.nextLexem();
 	}
