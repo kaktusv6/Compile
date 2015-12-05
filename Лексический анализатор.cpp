@@ -12,7 +12,6 @@ using namespace std;
 
 ofstream fout;
 ifstream fin;
-ifstream fin2;
 
 const int amountCharOp = 25;
 
@@ -116,6 +115,7 @@ private:
 	char ch;
 	char ch2;
 	st s;
+	
 
 	string lexText;
 	int lexCol;
@@ -144,10 +144,15 @@ private:
 			}
 			else col++;
 		}
-		else ch = '\0';
+		else
+		{
+			ch = '\0';
+			endFile = false;
+		}
 	}
 	void done()
 	{
+		endFile = false;
 		fin.close();
 	}
 	void PassWhiteSpaces()
@@ -156,13 +161,15 @@ private:
 
 	}
 public:
+	bool endFile;
+
 	Lexer()
 	{
 		fin.open("input.txt");
 		fout.open("output.txt");
 		line = 1;
 		col = 0;
-
+		endFile = true;
 		nextChar();
 	}
 	void nextLexem()
@@ -215,19 +222,28 @@ public:
 			nextChar();
 
 		}
-		if (s == LEX) writeToken();
+		else
+		{
+			done();
+			tok.tokenString = "BadChar";
+			s = ERR;
+		}
+		writeToken();
 	}
 	void writeToken()
 	{
-		fout << lexLine << '\t' << lexCol << '\t' << tok.tokenString + '\t' << lexText << '\n';
+		if (s == LEX) fout << lexLine << '\t' << lexCol << '\t' + tok.tokenString + '\t' + lexText + '\n';
+		else if (s == ERR) fout << lexLine << '\t' << lexCol << '\t' + tok.tokenString + '\n';
 	}
+
 };
 
 int main()
 {
 	initMaps();
 	Lexer l;
-	while (!fin.eof()){
+	while (l.endFile)
+	{
 		l.nextLexem();
 	}
 	return 0;
