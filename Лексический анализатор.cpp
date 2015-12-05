@@ -198,7 +198,7 @@ public:
 			if (tok.tokenString == "BadChar")
 			{
 				lexText.pop_back();
-				tok.tokenString = "op";
+				tok.checkOperation(lexText);
 			}
 			else if (tok.tokenString == "op")
 			{
