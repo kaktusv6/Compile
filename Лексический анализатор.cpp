@@ -36,7 +36,10 @@ void addOperationInKeywordMap(string s)
 {
 	strToken[s] = "op";
 }
-
+void addSeparator(string s)
+{
+	strToken[s] = "sep";
+}
 void initOpCharacter()
 {
 	opCharacter.push_back('+'), opCharacter.push_back('-'), opCharacter.push_back('*'), opCharacter.push_back('^'), opCharacter.push_back('/'), opCharacter.push_back('<'), opCharacter.push_back('>'), opCharacter.push_back('<'), opCharacter.push_back('>'), opCharacter.push_back('='), opCharacter.push_back('<'), opCharacter.push_back(':'), opCharacter.push_back('@'), opCharacter.push_back('.');
@@ -60,6 +63,7 @@ void initMaps()
 		addOperation(">="), addOperation("="), addOperation("<>"), addOperation(":="),
 		addOperation("@"), addOperation(".");
 
+	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"), addSeparator(":"), addSeparator(".."), addSeparator(",");
 	initOpCharacter();
 }
 
@@ -220,7 +224,6 @@ public:
 			while (ch != '\'') nextChar();
 			tok.checkString(lexText);
 			nextChar();
-
 		}
 		else
 		{
