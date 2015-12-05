@@ -136,6 +136,10 @@ public:
 			while (i < s.length()) valueStr += s[i];
 		}
 	}
+	void parsHex(string s)
+	{
+		//доделать
+	}
 };
 
 class Lexer
@@ -154,9 +158,13 @@ private:
 	
 	Token tok;
 
-	bool fromAToB(char c)
+	bool fromAtoB(char c)
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+	}
+	bool fromAtoF(char c)
+	{
+		return (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
 	}
 	bool from0to9(char c)
 	{
@@ -210,9 +218,9 @@ public:
 		lexCol = col;
 		lexLine = line;
 		
-		if (fromAToB(ch) || ch == '_')
+		if (fromAtoB(ch) || ch == '_')
 		{
-			while (fromAToB(ch) || from0to9(ch) || ch == '_') nextChar();
+			while (fromAtoB(ch) || from0to9(ch) || ch == '_') nextChar();
 			tok.checkKeyword(lexText);
 			s = LEX;
 		}
@@ -245,8 +253,14 @@ public:
 			else
 			{
 				tok.tokStr = "integer";
-				tok.parsInteger(lexText); //переделать
+				tok.parsInteger(lexText);
 			}
+			s = VAL;
+		}
+		else if (ch == '$')
+		{
+			while (fromAtoF(ch) || from0to9(ch)) nextChar();
+
 			s = VAL;
 		}
 		else if (ch == '\'')
