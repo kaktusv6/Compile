@@ -109,6 +109,7 @@ private:
 public:
 	string tokStr;
 	string valueStr;
+
 	void checkKeyword(string lexText)
 	{
 		map<string, string>::iterator i = strToken.find(lexText);
@@ -169,9 +170,9 @@ private:
 	char ch;
 	char ch2;
 	st s;
-	
 
 	string lexText;
+	string buffer;
 	int lexCol;
 	int lexLine;
 	
@@ -228,6 +229,7 @@ public:
 		line = 1;
 		col = 0;
 		endFile = true;
+		buffer = "";
 		nextChar();
 	}
 	void nextLexem()
@@ -237,7 +239,8 @@ public:
 		lexText = "";
 		lexCol = col;
 		lexLine = line;
-		
+		lexText += buffer;
+
 		if (fromAtoZ(ch) || ch == '_')
 		{
 			while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
@@ -266,9 +269,23 @@ public:
 			while (from0to9(ch)) nextChar();
 			if (ch == '.')
 			{
+				buffer += ch;
 				nextChar();
-				while (from0to9(ch)) nextChar();
-				tok.tokStr = "real";
+				if (from0to9(ch))
+				{
+					buffer.clear();
+					while (from0to9(ch)) nextChar();
+					tok.tokStr = "real";
+					tok.valueStr = lexText;
+					s = VAL;
+				}
+				else
+				{
+					lexText[lexText.length() - 1] = '\0';
+					tok.tokStr = "integer";
+					tok.parsInteger(lexText);
+					s = VAL;
+				}
 			}
 			else
 			{
