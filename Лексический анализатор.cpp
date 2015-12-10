@@ -203,7 +203,7 @@ private:
 			if (ch == '\n')
 			{
 				line++;
-				col = 1;
+				col = 0;
 			}
 			else col++;
 		}
@@ -220,7 +220,6 @@ private:
 	void PassWhiteSpaces()
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
-
 	}
 public:
 	bool endFile;
