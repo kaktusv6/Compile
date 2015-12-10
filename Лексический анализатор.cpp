@@ -18,7 +18,7 @@ stringstream ss;
 
 vector<char> opChar;
 vector<char> sepChar;
-enum st {LEX, ERR, VAL};
+enum st {LEX, ERR, VAL, NO_WRITE};
 map <string, string> strToken;
 
 void addKeyword(string s)
@@ -73,7 +73,10 @@ void initMaps()
 		addOperation(">="), addOperation("="), addOperation("<>"), addOperation(":="),
 		addOperation("@"), addOperation(".");
 
-	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"), addSeparator(":"), addSeparator(".."), addSeparator(",");
+	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"),
+		addSeparator(":"), addSeparator(".."), addSeparator(",");
+
+	strToken["//"] = "comment";
 	initOpChar();
 	initSepChar();
 }
@@ -256,13 +259,19 @@ public:
 			{
 				lexText.pop_back();
 				tok.checkOperation(lexText);
+				s = LEX;
 			}
 			else if (tok.tokStr == "op" || tok.tokStr == "sep")
 			{
 				lexText.pop_back();
 				nextChar();
+				s = LEX;
 			}
-			s = LEX;
+			else if (tok.tokStr == "comment")
+			{
+				while (ch != '\n') nextChar();
+				s = NO_WRITE;
+			}
 		}
 		else if (from0to9(ch))
 		{
@@ -281,7 +290,7 @@ public:
 				}
 				else
 				{
-					lexText[lexText.length() - 1] = '\0';
+					lexText.pop_back();
 					tok.tokStr = "integer";
 					tok.parsInteger(lexText);
 					s = VAL;
@@ -345,6 +354,7 @@ public:
 				fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\t' + tok.valueStr + '\n';
 				tok.valueStr = "";
 				break;
+			case NO_WRITE:break;
 		}
 	}
 
