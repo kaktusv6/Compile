@@ -335,8 +335,12 @@ public:
 		else
 		{
 			done();
-			tok.tokStr = "BadChar";
-			s = ERR;
+			if (ch == -1) s = NO_WRITE;
+			else
+			{
+				tok.tokStr = "BadChar";
+				s = ERR;
+			}
 		}
 		writeToken();
 	}
