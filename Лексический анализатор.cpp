@@ -205,6 +205,10 @@ private:
 				line++;
 				col = 0;
 			}
+			//else if (ch == '\t')
+			//{
+			//	col += (8 - col % 9);
+			//}
 			else col++;
 		}
 		else
@@ -268,7 +272,7 @@ public:
 			}
 			else if (tok.tokStr == "comment")
 			{
-				while (ch != '\n') nextChar();
+				while (ch != '\n' && fin.good()) nextChar();
 				s = NO_WRITE;
 			}
 		}
