@@ -329,6 +329,7 @@ public:
 			}
 			else
 			{
+				lexCol++;
 				tok.tokStr = "NoHex";
 				s = ERR;
 			}
