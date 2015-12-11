@@ -1,7 +1,3 @@
-/*ѕроблемы:
-	≈сли в конце файла стоит пробел то лексер будет выводить пробел с токеном который был записан до этого момента
-*/
-
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -125,18 +121,26 @@ public:
 		if (i != strToken.end()) tokStr = i->second;
 		else tokStr = "BadChar";
 	}
-	void checkString(string lexText)
+	void parsString(string lexText, int &col)
 	{
 		if (lexText.length() == 1)
 		{
 			tokStr = "char";
+			valueStr = lexText[0];
 		}
 		else
 		{
 			size_t found = lexText.find("\n");
 			if (found == string::npos)
+			{
+				for (int i = 1; i < lexText.length() - 1; i++) valueStr += lexText[i];
 				tokStr = "string";
-			else tokStr = "BadNL";
+			}
+			else
+			{
+				col = found+1;
+				tokStr = "BadNL";
+			}
 		}
 	}
 	void parsInteger(string s)
@@ -234,8 +238,9 @@ public:
 		fout.open("output.txt");
 		line = 1;
 		col = 0;
+		s = NO_WRITE;
 		endFile = true;
-		buffer = "";
+		buffer.clear();
 		nextChar();
 	}
 	void nextLexem()
@@ -339,8 +344,10 @@ public:
 		{
 			nextChar();
 			while (ch != '\'') nextChar();
-			tok.checkString(lexText);
 			nextChar();
+			tok.parsString(lexText, lexCol);
+			if (tok.tokStr == "BadNL") s = ERR;
+			else s = VAL;
 		}
 		else if (toSep(ch))
 		{
@@ -364,13 +371,23 @@ public:
 	{
 		switch (s)
 		{
-			case LEX: fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\n'; break;
+			case LEX: fout << lexLine << '\t'
+				<< lexCol << '\t' 
+				<< tok.tokStr << '\t'
+				<< lexText + '\n';
+				break;
 			case ERR:
-				fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr;
+				fout << lexLine << '\t' 
+					<< lexCol << '\t'
+					<< tok.tokStr;
 				done();
 				break;
 			case VAL:
-				fout << lexLine << '\t' << lexCol << '\t' + tok.tokStr + '\t' + lexText + '\t' + tok.valueStr + '\n';
+				fout << lexLine << '\t'
+					<< lexCol << '\t'
+					<< tok.tokStr << '\t'
+					<< lexText << '\t'
+					<< tok.valueStr << '\n';
 				tok.valueStr = "";
 				break;
 			case NO_WRITE:break;
