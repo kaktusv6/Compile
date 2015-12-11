@@ -76,7 +76,7 @@ void initMaps()
 	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"),
 		addSeparator(":"), addSeparator(".."), addSeparator(",");
 
-	strToken["//"] = "comment";
+	strToken["//"] = "singlelineComment";
 	initOpChar();
 	initSepChar();
 }
@@ -245,7 +245,12 @@ public:
 		lexText = "";
 		lexCol = col;
 		lexLine = line;
-		lexText += buffer;
+
+		if (buffer.length() != 0)
+		{
+			lexText += buffer;
+			buffer.clear();
+		}
 
 		if (fromAtoZ(ch) || ch == '_')
 		{
@@ -270,11 +275,17 @@ public:
 				nextChar();
 				s = LEX;
 			}
-			else if (tok.tokStr == "comment")
+			else if (tok.tokStr == "singlelineComment")
 			{
 				while (ch != '\n' && fin.good()) nextChar();
 				s = NO_WRITE;
 			}
+		}
+		else if (ch == '{')
+		{
+			while (ch != '}') nextChar();
+			nextChar();
+			s = NO_WRITE;
 		}
 		else if (from0to9(ch))
 		{
