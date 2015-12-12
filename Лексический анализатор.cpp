@@ -169,6 +169,12 @@ public:
 	
 };
 
+//template<class C>
+//void print(C data){
+//	cout << data;
+//}
+//ValueTok<int>
+
 class Lexer
 {
 private:
@@ -207,6 +213,10 @@ private:
 			{
 				line++;
 				col = 0;
+			}
+			else if (ch == '\t')
+			{
+				col = ((col - 1) / 4 + 1) * 4 + 1;
 			}
 			//else if (ch == '\t')
 			//{
@@ -265,17 +275,17 @@ public:
 		else if (toOperation(ch))
 		{
 			nextChar();
-			lexText += ch;
-			tok.checkOperation(lexText);
+			/*lexText += ch;*/
+			tok.checkOperation(lexText + ch);
 			if (tok.tokStr == "BadChar")
 			{
-				lexText.pop_back();
+				//lexText.pop_back();
 				tok.checkOperation(lexText);
 				s = LEX;
 			}
 			else if (tok.tokStr == "op" || tok.tokStr == "sep")
 			{
-				lexText.pop_back();
+				//lexText.pop_back();
 				nextChar();
 				s = LEX;
 			}
@@ -351,7 +361,12 @@ public:
 		else if (ch == '\'')
 		{
 			nextChar();
-			while (ch != '\'') nextChar();
+			while (ch != '\'' && notEndFile) nextChar();
+			if (!notEndFile)
+			{
+
+				tok.tokStr = "BadEOF";
+			}
 			nextChar();
 			tok.parsString(lexText, lexCol);
 			if (tok.tokStr == "BadNL") s = ERR;
@@ -406,6 +421,8 @@ public:
 
 int main()
 {
+	/*print<int>(1);
+	print<float>(1);*/
 	initMaps();
 	Lexer l;
 	while (l.notEndFile)
