@@ -203,7 +203,6 @@ private:
 		lexText += ch;
 		if ((ch = fin.get()) != EOF)
 		{
-			//fin.get(ch);
 			if (ch == '\n')
 			{
 				line++;
@@ -217,12 +216,12 @@ private:
 		}
 		else
 		{
-			endFile = false;
+			notEndFile = false;
 		}
 	}
 	void done()
 	{
-		endFile = false;
+		notEndFile = false;
 		fin.close();
 	}
 	void PassWhiteSpaces()
@@ -230,7 +229,7 @@ private:
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 public:
-	bool endFile;
+	bool notEndFile;
 
 	Lexer()
 	{
@@ -239,7 +238,7 @@ public:
 		line = 1;
 		col = 0;
 		s = NO_WRITE;
-		endFile = true;
+		notEndFile = true;
 		buffer.clear();
 		nextChar();
 	}
@@ -288,9 +287,18 @@ public:
 		}
 		else if (ch == '{')
 		{
-			while (ch != '}') nextChar();
-			nextChar();
-			s = NO_WRITE;
+			while (ch != '}' && notEndFile) nextChar();
+			if (!notEndFile)
+			{
+				lexCol = col;
+				tok.tokStr = "BadEOF";
+				s = ERR;
+			}
+			else
+			{
+				nextChar();
+				s = NO_WRITE;
+			}
 		}
 		else if (from0to9(ch))
 		{
@@ -400,7 +408,7 @@ int main()
 {
 	initMaps();
 	Lexer l;
-	while (l.endFile && !fin.eof())
+	while (l.notEndFile)
 	{
 		l.nextLexem();
 	}
