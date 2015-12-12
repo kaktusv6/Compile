@@ -1,47 +1,50 @@
-#include<iostream>
+#ifndef LEXEM_H_INCLUDED
+#define LEXEM_H_INCLUDED
+
 #include<map>
+#include<vector>
 
 using namespace std;
 
-map <string, string> strToken;
-vector<char> opChar;
-vector<char> sepChar;
+static map <string, string> strToken;
+static vector<char> opChar;
+static vector<char> sepChar;
 
-void addKeyword(string s)
+static void addKeyword(string s)
 {
 	strToken[s] = "keyword";
 }
-void addOperation(string s)
+static void addOperation(string s)
 {
 	strToken[s] = "op";
 }
-void addSeparators(string s)
+static void addSeparators(string s)
 {
 	strToken[s] = "sep";
 }
-void addOperationInKeywordMap(string s)
+static void addOperationInKeywordMap(string s)
 {
 	strToken[s] = "op";
 }
-void addSeparator(string s)
+static void addSeparator(string s)
 {
 	strToken[s] = "sep";
 }
 
-void initOpChar()
+static void initOpChar()
 {
 	opChar.push_back('+'), opChar.push_back('-'), opChar.push_back('*'), opChar.push_back('^'), opChar.push_back('/'),
 		opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('='),
 		opChar.push_back('<'), opChar.push_back(':'), opChar.push_back('@'), opChar.push_back('.');
 }
-void initSepChar()
+static void initSepChar()
 {
 	sepChar.push_back('('), sepChar.push_back(')'),
 		sepChar.push_back('['), sepChar.push_back(']'),
 		sepChar.push_back(';'), sepChar.push_back(':'),
 		sepChar.push_back(',');
 }
-void initMaps()
+static void initMaps()
 {
 	addKeyword("begin"), addKeyword("forward"), addKeyword("do"),
 		addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"),
@@ -68,18 +71,4 @@ void initMaps()
 	initSepChar();
 }
 
-bool toOperation(char c)
-{
-	unsigned i = 0;
-	while (i < opChar.size() && c != opChar[i]) i++;
-	if (i < opChar.size()) return true;
-	else return false;
-}
-
-bool toSep(char c)
-{
-	unsigned i = 0;
-	while (i < sepChar.size() && c != sepChar[i]) i++;
-	if (i < sepChar.size()) return true;
-	else return false;
-}
+#endif // LEXEM_H_INCLUDED
