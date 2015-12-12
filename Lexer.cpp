@@ -32,40 +32,40 @@ void Lexer::nextLexem()
 {
 	PassWhiteSpaces();
 
-	lexText = "";
-	lexCol = col;
-	lexLine = line;
+	tok->lexText = "";
+	tok->lexCol = col;
+	tok->lexLine = line;
 
 	if (buffer.length() != 0)
 	{
-		lexText += buffer;
+		tok->lexText += buffer;
 		buffer.clear();
 	}
 
 	if (fromAtoZ(ch) || ch == '_')
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-		tok.checkKeyword(lexText);
+		checkKeyword(tok->lexText);
 		s = LEX;
 	}
-	else if (toOperation(ch))
+	/*else if (toOperation(ch))
 	{
 		nextChar();
-		lexText += ch;
-		tok.checkOperation(lexText);
-		if (tok.tokStr == "BadChar")
+		tok->lexText += ch;
+		checkOperation(tok->lexText);
+		if ( == "BadChar")
 		{
-			lexText.pop_back();
-			tok.checkOperation(lexText);
+			tok->lexText.pop_back();
+			checkOperation(tok->lexText);
 			s = LEX;
 		}
-		else if (tok.tokStr == "op" || tok.tokStr == "sep")
+		else if (tr == "op" || tr == "sep")
 		{
-			lexText.pop_back();
+			tok->lexText.pop_back();
 			nextChar();
 			s = LEX;
 		}
-		else if (tok.tokStr == "singlelineComment")
+		else if (tr == "singlelineComment")
 		{
 			while (ch != '\n' && fin.good()) nextChar();
 			s = NO_WRITE;
@@ -88,22 +88,22 @@ void Lexer::nextLexem()
 			{
 				buffer.clear();
 				while (from0to9(ch)) nextChar();
-				tok.tokStr = "real";
-				tok.valueStr = lexText;
+				tr = "real";
+				valueStr = tok->lexText;
 				s = VAL;
 			}
 			else
 			{
-				lexText.pop_back();
-				tok.tokStr = "integer";
-				tok.parsInteger(lexText);
+				tok->lexText.pop_back();
+				tr = "integer";
+				parsInteger(tok->lexText);
 				s = VAL;
 			}
 		}
 		else
 		{
-			tok.tokStr = "integer";
-			tok.parsInteger(lexText);
+			tr = "integer";
+			parsInteger(tok->lexText);
 		}
 		s = VAL;
 	}
@@ -111,16 +111,16 @@ void Lexer::nextLexem()
 	{
 		nextChar();
 		while (fromAtoF(ch) || from0to9(ch)) nextChar();
-		if (lexText.length() > 1)
+		if (tok->lexText.length() > 1)
 		{
-			tok.parsHex(lexText);
-			tok.tokStr = "hex";
+			parsHex(tok->lexText);
+			tr = "hex";
 			s = VAL;
 		}
 		else
 		{
 			lexCol++;
-			tok.tokStr = "NoHex";
+			tr = "NoHex";
 			s = ERR;
 		}
 
@@ -130,14 +130,14 @@ void Lexer::nextLexem()
 		nextChar();
 		while (ch != '\'') nextChar();
 		nextChar();
-		tok.parsString(lexText, lexCol);
-		if (tok.tokStr == "BadNL") s = ERR;
+		parsString(tok->lexText, lexCol);
+		if (tr == "BadNL") s = ERR;
 		else s = VAL;
 	}
 	else if (toSep(ch))
 	{
 		nextChar();
-		tok.tokStr = "sep";
+		tr = "sep";
 		s = LEX;
 	}
 	else
@@ -146,8 +146,8 @@ void Lexer::nextLexem()
 		if (ch == -1) s = NO_WRITE;
 		else
 		{
-			tok.tokStr = "BadChar";
+			tr = "BadChar";
 			s = ERR;
 		}
-	}
+	}*/
 }
