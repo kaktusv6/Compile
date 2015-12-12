@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include "Lexem.h"
+#include "Token.h"
 #define DIG "0123456789ABCDEF"
 
 using namespace std;
@@ -21,13 +22,17 @@ int Atoi(string s){
 	return a;
 }
 
-class Token
+class Lexer
 {
 private:
+	int line;
+	int col;
+	char ch;
+	st s;
 
-public:
-	string tokStr;
-	string valueStr;
+	string buffer;
+	
+	Token tok;
 
 	void checkKeyword(string lexText)
 	{
@@ -58,7 +63,7 @@ public:
 			}
 			else
 			{
-				col = found+1;
+				col = found + 1;
 				tokStr = "BadNL";
 			}
 		}
@@ -70,12 +75,12 @@ public:
 		else
 		{
 			int i = 0;
-			while (s[i] == '0' && i < n-1) i++;
-				while (i < n)
-				{
-					valueStr += s[i];
-					i++;
-				}
+			while (s[i] == '0' && i < n - 1) i++;
+			while (i < n)
+			{
+				valueStr += s[i];
+				i++;
+			}
 		}
 	}
 	void parsHex(string s)
@@ -85,25 +90,6 @@ public:
 		ss << val;
 		valueStr = ss.str();
 	}
-
-	
-};
-
-class Lexer
-{
-private:
-	int line;
-	int col;
-	char ch;
-	char ch2;
-	st s;
-
-	string lexText;
-	string buffer;
-	int lexCol;
-	int lexLine;
-	
-	Token tok;
 
 	bool fromAtoZ(char c)
 	{
@@ -148,6 +134,7 @@ private:
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
+
 public:
 	bool endFile;
 
