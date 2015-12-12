@@ -45,7 +45,6 @@ void Lexer::nextLexem()
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
 		checkKeyword(tok);
-		s = LEX;
 	}
 	/*else if (toOperation(ch))
 	{

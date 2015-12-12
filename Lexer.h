@@ -6,7 +6,6 @@
 #include "Lexem.h"
 
 using namespace std;
-enum st { LEX, ERR, VAL, NO_WRITE };
 
 class Lexer
 {
@@ -15,8 +14,6 @@ private:
 	int col;
 
 	char ch;
-
-	st s;
 
 	string buffer;
 
