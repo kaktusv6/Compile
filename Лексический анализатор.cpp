@@ -1,9 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <map>
-#include <string>
-#include <vector>
-#include <sstream>
 #include "Lexem.h"
 #include "Token.h"
 #include "Lexer.h"
