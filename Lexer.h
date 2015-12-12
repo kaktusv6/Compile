@@ -1,5 +1,9 @@
 #pragma once
+#ifndef LEXER_H_INCLUDED
+#define LEXER_H_INCLUDED
+#include <sstream>
 #include "Token.h"
+#include "Lexem.h"
 
 using namespace std;
 enum st { LEX, ERR, VAL, NO_WRITE };
@@ -23,13 +27,13 @@ private:
 
 	
 
-	void checkKeyword(string lexText)
+	void checkKeyword(Token *t)
 	{
-		map<string, string>::iterator i = strToken.find(lexText);
-		if (i != strToken.end()) tokStr = i->second;
-		else tokStr = "ident";
+		map<string, string>::iterator i = strToken.find(t->lexText);
+		if (i != strToken.end()) t->token = i->second;
+		else t->token = "ident";
 	}
-	void checkOperation(string lexText)
+	/*void checkOperation(string lexText)
 	{
 		map<string, string>::iterator i = strToken.find(lexText);
 		if (i != strToken.end()) tokStr = i->second;
@@ -78,7 +82,7 @@ private:
 		val = Atoi(s);
 		ss << val;
 		valueStr = ss.str();
-	}
+	}*/
 
 	bool fromAtoZ(char c)
 	{
@@ -92,6 +96,21 @@ private:
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
+	}
+	bool toOperation(char c)
+	{
+		unsigned i = 0;
+		while (i < opChar.size() && c != opChar[i]) i++;
+		if (i < opChar.size()) return true;
+		else return false;
+	}
+
+	bool toSep(char c)
+	{
+		unsigned i = 0;
+		while (i < sepChar.size() && c != sepChar[i]) i++;
+		if (i < sepChar.size()) return true;
+		else return false;
 	}
 	void nextChar()
 	{
@@ -126,3 +145,5 @@ public:
 	Lexer();
 	void nextLexem();
 };
+
+#endif // LEXER_H_INCLUDED

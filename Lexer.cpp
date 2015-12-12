@@ -1,5 +1,4 @@
 #include "Lexer.h"
-#include<iostream>
 #include "Token.h"
 #define DIG "0123456789ABCDEF"
 
@@ -45,7 +44,7 @@ void Lexer::nextLexem()
 	if (fromAtoZ(ch) || ch == '_')
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-		checkKeyword(tok->lexText);
+		checkKeyword(tok);
 		s = LEX;
 	}
 	/*else if (toOperation(ch))
