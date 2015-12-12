@@ -13,10 +13,7 @@ ofstream fout;
 ifstream fin;
 stringstream ss;
 
-
 enum st {LEX, ERR, VAL, NO_WRITE};
-
-
 
 int Atoi(string s){
 	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
@@ -128,7 +125,6 @@ private:
 		lexText += ch;
 		if ((ch = fin.get()) != EOF)
 		{
-			//fin.get(ch);
 			if (ch == '\n')
 			{
 				line++;
