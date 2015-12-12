@@ -12,13 +12,10 @@
 
 using namespace std;
 
-static ofstream fout;
 static ifstream fin;
 
 class Token
 {
-private:
-
 public:
 	int lexLine;
 	int lexCol;

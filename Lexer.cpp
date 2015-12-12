@@ -18,7 +18,6 @@ int Atoi(string s){
 Lexer::Lexer()
 {
 	fin.open("input.txt");
-	fout.open("output.txt");
 	line = 1;
 	col = 0;
 	endFile = true;

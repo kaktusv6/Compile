@@ -4,6 +4,8 @@
 
 using namespace std;
 
+ofstream fout("output.txt");
+
 void Token::getToken()
 {
 	fout << lexLine << '\t'
