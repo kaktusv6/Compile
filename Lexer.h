@@ -1,10 +1,17 @@
 #pragma once
+#include "Token.h"
+
+using namespace std;
+enum st { LEX, ERR, VAL, NO_WRITE };
+
 class Lexer
 {
 private:
 	int line;
 	int col;
+
 	char ch;
+
 	st s;
 
 	string buffer;
@@ -13,6 +20,8 @@ private:
 	Token token;
 	TokenValue tokenValue;
 	TokenError tokenError;
+
+	bool endFile;
 
 	void checkKeyword(string lexText)
 	{
@@ -86,7 +95,7 @@ private:
 	}
 	void nextChar()
 	{
-		lexText += ch;
+		tok->lexText += ch;
 		if ((ch = fin.get()) != EOF)
 		{
 			if (ch == '\n')
@@ -94,10 +103,6 @@ private:
 				line++;
 				col = 0;
 			}
-			//else if (ch == '\t')
-			//{
-			//	col += (8 - col % 9);
-			//}
 			else col++;
 		}
 		else
@@ -116,168 +121,6 @@ private:
 	}
 
 public:
-	bool endFile;
-
-	Lexer()
-	{
-		fin.open("input.txt");
-		fout.open("output.txt");
-		line = 1;
-		col = 0;
-		s = NO_WRITE;
-		endFile = true;
-		buffer.clear();
-		nextChar();
-	}
-	void nextLexem()
-	{
-		PassWhiteSpaces();
-
-		lexText = "";
-		lexCol = col;
-		lexLine = line;
-
-		if (buffer.length() != 0)
-		{
-			lexText += buffer;
-			buffer.clear();
-		}
-
-		if (fromAtoZ(ch) || ch == '_')
-		{
-			while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-			tok.checkKeyword(lexText);
-			s = LEX;
-		}
-		else if (toOperation(ch))
-		{
-			nextChar();
-			lexText += ch;
-			tok.checkOperation(lexText);
-			if (tok.tokStr == "BadChar")
-			{
-				lexText.pop_back();
-				tok.checkOperation(lexText);
-				s = LEX;
-			}
-			else if (tok.tokStr == "op" || tok.tokStr == "sep")
-			{
-				lexText.pop_back();
-				nextChar();
-				s = LEX;
-			}
-			else if (tok.tokStr == "singlelineComment")
-			{
-				while (ch != '\n' && fin.good()) nextChar();
-				s = NO_WRITE;
-			}
-		}
-		else if (ch == '{')
-		{
-			while (ch != '}') nextChar();
-			nextChar();
-			s = NO_WRITE;
-		}
-		else if (from0to9(ch))
-		{
-			while (from0to9(ch)) nextChar();
-			if (ch == '.')
-			{
-				buffer += ch;
-				nextChar();
-				if (from0to9(ch))
-				{
-					buffer.clear();
-					while (from0to9(ch)) nextChar();
-					tok.tokStr = "real";
-					tok.valueStr = lexText;
-					s = VAL;
-				}
-				else
-				{
-					lexText.pop_back();
-					tok.tokStr = "integer";
-					tok.parsInteger(lexText);
-					s = VAL;
-				}
-			}
-			else
-			{
-				tok.tokStr = "integer";
-				tok.parsInteger(lexText);
-			}
-			s = VAL;
-		}
-		else if (ch == '$')
-		{
-			nextChar();
-			while (fromAtoF(ch) || from0to9(ch)) nextChar();
-			if (lexText.length() > 1)
-			{
-				tok.parsHex(lexText);
-				tok.tokStr = "hex";
-				s = VAL;
-			}
-			else
-			{
-				lexCol++;
-				tok.tokStr = "NoHex";
-				s = ERR;
-			}
-
-		}
-		else if (ch == '\'')
-		{
-			nextChar();
-			while (ch != '\'') nextChar();
-			nextChar();
-			tok.parsString(lexText, lexCol);
-			if (tok.tokStr == "BadNL") s = ERR;
-			else s = VAL;
-		}
-		else if (toSep(ch))
-		{
-			nextChar();
-			tok.tokStr = "sep";
-			s = LEX;
-		}
-		else
-		{
-			done();
-			if (ch == -1) s = NO_WRITE;
-			else
-			{
-				tok.tokStr = "BadChar";
-				s = ERR;
-			}
-		}
-		writeToken();
-	}
-	void writeToken()
-	{
-		switch (s)
-		{
-		case LEX: fout << lexLine << '\t'
-			<< lexCol << '\t'
-			<< tok.tokStr << '\t'
-			<< lexText + '\n';
-			break;
-		case ERR:
-			fout << lexLine << '\t'
-				<< lexCol << '\t'
-				<< tok.tokStr;
-			done();
-			break;
-		case VAL:
-			fout << lexLine << '\t'
-				<< lexCol << '\t'
-				<< tok.tokStr << '\t'
-				<< lexText << '\t'
-				<< tok.valueStr << '\n';
-			tok.valueStr = "";
-			break;
-		case NO_WRITE:break;
-		}
-	}
-
+	Lexer();
+	void nextLexem();
 };
