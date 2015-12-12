@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef TOKEN_H_INCLUDED
+#define TOKEN_H_INCLUDED
+
 #include <iostream>
 #include <string>
 #include <map>
@@ -8,8 +12,8 @@
 
 using namespace std;
 
-ofstream fout;
-ifstream fin;
+static ofstream fout;
+static ifstream fin;
 
 class Token
 {
@@ -39,3 +43,5 @@ public:
 	virtual void getToken();
 	virtual void clearToken();
 };
+
+#endif // TOKEN_H_INCLUDED
