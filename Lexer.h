@@ -22,14 +22,7 @@ private:
 	TokenValue tokenValue;
 	TokenError tokenError;
 
-	
-
-	void checkKeyword(Token *t)
-	{
-		map<string, string>::iterator i = strToken.find(t->lexText);
-		if (i != strToken.end()) t->token = i->second;
-		else t->token = "ident";
-	}
+	void checkKeyword(Token *t);
 	/*void checkOperation(string lexText)
 	{
 		map<string, string>::iterator i = strToken.find(lexText);
@@ -109,23 +102,7 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
-	void nextChar()
-	{
-		tok->lexText += ch;
-		if ((ch = fin.get()) != EOF)
-		{
-			if (ch == '\n')
-			{
-				line++;
-				col = 0;
-			}
-			else col++;
-		}
-		else
-		{
-			endFile = false;
-		}
-	}
+	void nextChar();
 	void done()
 	{
 		endFile = false;

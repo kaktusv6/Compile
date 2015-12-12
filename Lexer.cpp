@@ -21,12 +21,36 @@ Lexer::Lexer()
 	fout.open("output.txt");
 	line = 1;
 	col = 0;
-	s = NO_WRITE;
 	endFile = true;
 	buffer.clear();
+	tok = &token;
 	nextChar();
 }
 
+void Lexer::checkKeyword(Token *t)
+{
+	map<string, string>::iterator i = strToken.find(t->lexText);
+	if (i != strToken.end()) t->token = i->second;
+	else t->token = "ident";
+	t->getToken();
+}
+void Lexer::nextChar()
+{
+	tok->lexText += ch;
+	if ((ch = fin.get()) != EOF)
+	{
+		if (ch == '\n')
+		{
+			line++;
+			col = 0;
+		}
+		else col++;
+	}
+	else
+	{
+		endFile = false;
+	}
+}
 void Lexer::nextLexem()
 {
 	PassWhiteSpaces();

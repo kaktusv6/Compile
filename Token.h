@@ -25,6 +25,7 @@ public:
 
 	string lexText;
 	string token;
+
 	void getToken();
 	void clearToken();
 };
@@ -33,6 +34,7 @@ class TokenValue : public Token
 {
 public:
 	string valueToken;
+
 	virtual void getToken();
 	virtual void clearToken();
 };
