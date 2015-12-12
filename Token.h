@@ -4,8 +4,12 @@
 #include <map>
 #include <algorithm>
 #include <vector>
+#include <fstream>
 
 using namespace std;
+
+ofstream fout;
+ifstream fin;
 
 class Token
 {
@@ -18,4 +22,18 @@ public:
 	string lexText;
 	string token;
 	Token();
+	void getToken();
+};
+
+class TokenValue : public Token
+{
+public:
+	string valueToken;
+	virtual void getToken();
+};
+
+class TokenError : public Token
+{
+public:
+	virtual void getToken();
 };
