@@ -21,7 +21,7 @@ private:
 	TokenValue tokenValue;
 	TokenError tokenError;
 
-	bool endFile;
+	
 
 	void checkKeyword(string lexText)
 	{
@@ -121,6 +121,8 @@ private:
 	}
 
 public:
+	bool endFile;
+
 	Lexer();
 	void nextLexem();
 };
