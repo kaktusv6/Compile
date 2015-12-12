@@ -5,17 +5,17 @@
 
 using namespace std;
 
-Token::Token()
-{
-
-}
-
 void Token::getToken()
 {
 	fout << lexLine << '\t'
 		<< lexCol << '\t'
 		<< token << '\t'
 		<< lexText << '\n';
+}
+void Token::clearToken()
+{
+	lexText.clear();
+	token.clear();
 }
 
 void TokenValue::getToken()
@@ -26,10 +26,20 @@ void TokenValue::getToken()
 		<< lexText << '\t'
 		<< valueToken << '\n';
 }
+void TokenValue::clearToken()
+{
+	lexText.clear();
+	token.clear();
+}
 
 void TokenError::getToken()
 {
 	fout << lexLine << '\t'
 		<< lexCol << '\t'
 		<< token << '\n';
+}
+void TokenError::clearToken()
+{
+	lexText.clear();
+	token.clear();
 }

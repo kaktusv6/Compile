@@ -21,8 +21,8 @@ public:
 
 	string lexText;
 	string token;
-	Token();
 	void getToken();
+	void clearToken();
 };
 
 class TokenValue : public Token
@@ -30,10 +30,12 @@ class TokenValue : public Token
 public:
 	string valueToken;
 	virtual void getToken();
+	virtual void clearToken();
 };
 
 class TokenError : public Token
 {
 public:
 	virtual void getToken();
+	virtual void clearToken();
 };
