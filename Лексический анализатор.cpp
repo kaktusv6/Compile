@@ -9,8 +9,6 @@
 
 using namespace std;
 
-ofstream fout;
-ifstream fin;
 stringstream ss;
 
 enum st {LEX, ERR, VAL, NO_WRITE};
