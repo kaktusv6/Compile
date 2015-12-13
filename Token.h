@@ -12,10 +12,13 @@
 
 using namespace std;
 
-static ifstream fin;
+static ifstream fin("input.txt");
+
 
 class Token
 {
+private:
+
 public:
 	int lexLine;
 	int lexCol;
@@ -26,13 +29,12 @@ public:
 	virtual void printToken();
 };
 
-template<typename T>
+//template<typename T>
 class TokenValue : public Token
 {
 public:
-	T valueToken;
+	int valueToken;
 	
-	//TokenValue();
 	void printToken();
 };
 
