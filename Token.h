@@ -23,24 +23,23 @@ public:
 	string lexText;
 	string token;
 
-	void getToken();
-	void clearToken();
+	virtual void printToken();
 };
 
+template<typename T>
 class TokenValue : public Token
 {
 public:
-	string valueToken;
-
-	virtual void getToken();
-	virtual void clearToken();
+	T valueToken;
+	
+	//TokenValue();
+	void printToken();
 };
 
 class TokenError : public Token
 {
 public:
-	virtual void getToken();
-	virtual void clearToken();
+	void printToken();
 };
 
 #endif // TOKEN_H_INCLUDED
