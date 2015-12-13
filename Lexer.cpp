@@ -15,20 +15,16 @@ int Atoi(string s){
 }
 
 
-Lexer::Lexer()
+Lexer::Lexer() : line(1), col(0), endFile(true)
 {
-	fin.open("input.txt");
-	line = 1;
-	col = 0;
-	endFile = true;
 	buffer.clear();
 	nextChar();
 }
 
-void Lexer::parsInteger(TokenValue<int> t)
+void Lexer::parsInteger(TokenValue t)
 {
-	//t.valueToken = atoi(t.lexText.c_str());
-	//t.printToken();
+	tokValue.valueToken = atoi(t.lexText.c_str());
+	tokValue.printToken();
 }
 void Lexer::checkKeyword(Token t)
 {
@@ -105,16 +101,14 @@ void Lexer::nextLexem()
 	}*/
 	else if (from0to9(ch))
 	{
-		TokenValue<int> t;
-
-		t.lexLine = tok.lexLine;
-		t.lexCol = tok.lexCol;
+		tokValue.lexLine = tok.lexLine;
+		tokValue.lexCol = tok.lexCol;
 
 		while (from0to9(ch)) nextChar();
 
-		t.lexText = tok.lexText;
-
-		this->parsInteger(t);
+		tokValue.lexText = tok.lexText;
+		tokValue.token = "integer";
+		parsInteger(tokValue);
 		/*if (ch == '.')
 		{
 			buffer += ch;
