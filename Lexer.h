@@ -17,12 +17,9 @@ private:
 
 	string buffer;
 
-	Token *tok;
-	Token token;
-	TokenValue tokenValue;
-	TokenError tokenError;
+	Token tok;
+	TokenError tokError;
 
-	void checkKeyword(Token *t);
 	/*void checkOperation(string lexText)
 	{
 		map<string, string>::iterator i = strToken.find(lexText);
@@ -50,22 +47,9 @@ private:
 				tokStr = "BadNL";
 			}
 		}
-	}
-	void parsInteger(string s)
-	{
-		int n = s.length();
-		if (n == 1) valueStr = s;
-		else
-		{
-			int i = 0;
-			while (s[i] == '0' && i < n - 1) i++;
-			while (i < n)
-			{
-				valueStr += s[i];
-				i++;
-			}
-		}
-	}
+	}*/
+	void parsInteger(TokenValue<int> t);
+	/*
 	void parsHex(string s)
 	{
 		int val = 0;
@@ -94,7 +78,6 @@ private:
 		if (i < opChar.size()) return true;
 		else return false;
 	}
-
 	bool toSep(char c)
 	{
 		unsigned i = 0;
@@ -102,17 +85,19 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
+
+	void checkKeyword(Token t);
 	void nextChar();
-	void done()
-	{
-		endFile = false;
-		fin.close();
-	}
 	void PassWhiteSpaces()
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 
+	void done()
+	{
+		endFile = false;
+		fin.close();
+	}
 public:
 	bool endFile;
 
