@@ -22,20 +22,24 @@ Lexer::Lexer()
 	col = 0;
 	endFile = true;
 	buffer.clear();
-	tok = &token;
 	nextChar();
 }
 
-void Lexer::checkKeyword(Token *t)
+void Lexer::parsInteger(TokenValue<int> t)
 {
-	map<string, string>::iterator i = strToken.find(t->lexText);
-	if (i != strToken.end()) t->token = i->second;
-	else t->token = "ident";
-	t->getToken();
+	//t.valueToken = atoi(t.lexText.c_str());
+	//t.printToken();
+}
+void Lexer::checkKeyword(Token t)
+{
+	map<string, string>::iterator i = strToken.find(t.lexText);
+	if (i != strToken.end()) t.token = i->second;
+	else t.token = "ident";
+	t.printToken();
 }
 void Lexer::nextChar()
 {
-	tok->lexText += ch;
+	tok.lexText += ch;
 	if ((ch = fin.get()) != EOF)
 	{
 		if (ch == '\n')
@@ -50,17 +54,18 @@ void Lexer::nextChar()
 		endFile = false;
 	}
 }
+
 void Lexer::nextLexem()
 {
 	PassWhiteSpaces();
 
-	tok->lexText = "";
-	tok->lexCol = col;
-	tok->lexLine = line;
+	tok.lexText.clear();
+	tok.lexCol = col;
+	tok.lexLine = line;
 
 	if (buffer.length() != 0)
 	{
-		tok->lexText += buffer;
+		tok.lexText += buffer;
 		buffer.clear();
 	}
 
@@ -97,11 +102,20 @@ void Lexer::nextLexem()
 		while (ch != '}') nextChar();
 		nextChar();
 		s = NO_WRITE;
-	}
+	}*/
 	else if (from0to9(ch))
 	{
+		TokenValue<int> t;
+
+		t.lexLine = tok.lexLine;
+		t.lexCol = tok.lexCol;
+
 		while (from0to9(ch)) nextChar();
-		if (ch == '.')
+
+		t.lexText = tok.lexText;
+
+		this->parsInteger(t);
+		/*if (ch == '.')
 		{
 			buffer += ch;
 			nextChar();
@@ -126,9 +140,9 @@ void Lexer::nextLexem()
 			tr = "integer";
 			parsInteger(tok->lexText);
 		}
-		s = VAL;
+		s = VAL;*/
 	}
-	else if (ch == '$')
+	/*else if (ch == '$')
 	{
 		nextChar();
 		while (fromAtoF(ch) || from0to9(ch)) nextChar();
