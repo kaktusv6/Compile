@@ -283,14 +283,6 @@ public:
 				while (ch != '\n' && fin.good()) nextChar();
 				s = NO_WRITE;
 			}
-			else if (tok.tokStr == "multiLineComment")
-			{
-				while (ch != ')' && !endFile)
-				{
-
-				}
-			}
-
 		}
 		else if (ch == '{')
 		{
