@@ -169,12 +169,6 @@ public:
 	
 };
 
-//template<class C>
-//void print(C data){
-//	cout << data;
-//}
-//ValueTok<int>
-
 class Lexer
 {
 private:
@@ -216,22 +210,18 @@ private:
 			}
 			else if (ch == '\t')
 			{
-				col = ((col - 1) / 4 + 1) * 4 + 1;
+				col = (col / 4 + 1) * 4;
 			}
-			//else if (ch == '\t')
-			//{
-			//	col += (8 - col % 9);
-			//}
 			else col++;
 		}
 		else
 		{
-			notEndFile = false;
+			endFile = true;
 		}
 	}
 	void done()
 	{
-		notEndFile = false;
+		endFile = false;
 		fin.close();
 	}
 	void PassWhiteSpaces()
@@ -239,16 +229,13 @@ private:
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 public:
-	bool notEndFile;
+	bool endFile;
 
-	Lexer()
+	Lexer() : line(1), col(0), s(NO_WRITE), endFile(false)
 	{
 		fin.open("input.txt");
 		fout.open("output.txt");
-		line = 1;
-		col = 0;
-		s = NO_WRITE;
-		notEndFile = true;
+
 		buffer.clear();
 		nextChar();
 	}
@@ -275,17 +262,14 @@ public:
 		else if (toOperation(ch))
 		{
 			nextChar();
-			/*lexText += ch;*/
 			tok.checkOperation(lexText + ch);
 			if (tok.tokStr == "BadChar")
 			{
-				//lexText.pop_back();
 				tok.checkOperation(lexText);
 				s = LEX;
 			}
 			else if (tok.tokStr == "op" || tok.tokStr == "sep")
 			{
-				//lexText.pop_back();
 				nextChar();
 				s = LEX;
 			}
@@ -297,8 +281,8 @@ public:
 		}
 		else if (ch == '{')
 		{
-			while (ch != '}' && notEndFile) nextChar();
-			if (!notEndFile)
+			while (ch != '}' && endFile) nextChar();
+			if (!endFile)
 			{
 				lexCol = col;
 				tok.tokStr = "BadEOF";
@@ -361,16 +345,20 @@ public:
 		else if (ch == '\'')
 		{
 			nextChar();
-			while (ch != '\'' && notEndFile) nextChar();
-			if (!notEndFile)
+			while (ch != '\'' && !endFile) nextChar();
+			if (endFile)
 			{
-
+				lexCol = col + 1;
 				tok.tokStr = "BadEOF";
+				s = ERR;
 			}
-			nextChar();
-			tok.parsString(lexText, lexCol);
-			if (tok.tokStr == "BadNL") s = ERR;
-			else s = VAL;
+			else
+			{
+				nextChar();
+				tok.parsString(lexText, lexCol);
+				if (tok.tokStr == "BadNL") s = ERR;
+				else s = VAL;
+			}
 		}
 		else if (toSep(ch))
 		{
@@ -416,16 +404,13 @@ public:
 			case NO_WRITE:break;
 		}
 	}
-
 };
 
 int main()
 {
-	/*print<int>(1);
-	print<float>(1);*/
 	initMaps();
 	Lexer l;
-	while (l.notEndFile)
+	while (!l.endFile && fin.good())
 	{
 		l.nextLexem();
 	}
