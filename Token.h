@@ -29,7 +29,6 @@ public:
 	virtual void printToken();
 };
 
-//template<typename T>
 class TokenValue : public Token
 {
 public:

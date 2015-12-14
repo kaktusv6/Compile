@@ -59,19 +59,20 @@ private:
 		valueStr = ss.str();
 	}*/
 
-	bool fromAtoZ(char c)
+	inline bool fromAtoZ(char c)
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
-	bool fromAtoF(char c)
+	inline bool fromAtoF(char c)
 	{
 		c = toupper(c);
 		return (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
 	}
-	bool from0to9(char c)
+	inline bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
 	}
+
 	bool toOperation(char c)
 	{
 		unsigned i = 0;
@@ -89,7 +90,8 @@ private:
 
 	void checkKeyword(Token t);
 	void nextChar();
-	void PassWhiteSpaces()
+
+	inline void PassWhiteSpaces()
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
