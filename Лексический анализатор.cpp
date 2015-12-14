@@ -221,6 +221,7 @@ private:
 		}
 		else
 		{
+			ch = '~';
 			endFile = true;
 		}
 	}
@@ -286,8 +287,8 @@ public:
 		}
 		else if (ch == '{')
 		{
-			while (ch != '}' && endFile) nextChar();
-			if (!endFile)
+			while (ch != '}' && !endFile) nextChar();
+			if (endFile)
 			{
 				lexCol = col;
 				tok.tokStr = "BadEOF";
@@ -377,6 +378,36 @@ public:
 				else s = VAL;
 			}
 		}
+		else if (ch == '(')
+		{
+			nextChar();
+			tok.checkOperation(lexText + ch);
+			if (tok.tokStr == "multiLineComment")
+			{
+				while (ch != ')' && !endFile)
+				{
+					while (ch != '*' && !endFile) nextChar();
+					nextChar();
+				}
+
+				if (endFile)
+				{
+					lexCol = col + 1;
+					tok.tokStr = "BadEOF";
+					s = ERR;
+				}
+				else
+				{
+					nextChar();
+					s = NO_WRITE;
+				}
+			}
+			else
+			{
+				tok.tokStr = "sep";
+				s = LEX;
+			}
+		}
 		else if (toSep(ch))
 		{
 			nextChar();
@@ -386,7 +417,7 @@ public:
 		else
 		{
 			done();
-			if (ch == -1) s = NO_WRITE;
+			if (ch == '~') s = NO_WRITE;
 			else
 			{
 				tok.tokStr = "BadChar";
