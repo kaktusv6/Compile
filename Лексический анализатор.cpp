@@ -123,10 +123,15 @@ public:
 	}
 	void parsString(string lexText, int &col)
 	{
-		if (lexText.length() == 1)
+		if (lexText.length() - 2 == 1 && lexText[1] != '\n')
 		{
 			tokStr = "char";
-			valueStr = lexText[0];
+			valueStr = lexText[1];
+		}
+		else if (lexText == "''''")
+		{
+			tokStr = "char";
+			valueStr = "'";
 		}
 		else
 		{
@@ -290,7 +295,8 @@ public:
 			while (ch != '}' && !endFile) nextChar();
 			if (endFile)
 			{
-				lexCol = col;
+				lexCol = col + 1;
+				lexLine = line;
 				tok.tokStr = "BadEOF";
 				s = ERR;
 			}
@@ -318,6 +324,7 @@ public:
 				else
 				{
 					lexText.pop_back();
+					lexCol--;
 					tok.tokStr = "integer";
 					tok.parsInteger(lexText);
 					s = VAL;
@@ -393,6 +400,8 @@ public:
 				if (endFile)
 				{
 					lexCol = col + 1;
+					lexLine = line;
+
 					tok.tokStr = "BadEOF";
 					s = ERR;
 				}
