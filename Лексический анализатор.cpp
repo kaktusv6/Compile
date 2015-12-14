@@ -72,7 +72,7 @@ void initMaps()
 	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"),
 		addSeparator(":"), addSeparator(".."), addSeparator(",");
 
-	strToken["//"] = "singlelineComment";
+	strToken["//"] = "singlelineComment", strToken["(*"] = "multiLineComment";
 	initOpChar();
 	initSepChar();
 }
@@ -135,6 +135,11 @@ public:
 			{
 				for (int i = 1; i < lexText.length() - 1; i++) valueStr += lexText[i];
 				tokStr = "string";
+				for (int i = 0; i < valueStr.length(); i++)
+				{
+					if (valueStr[i] == '\'') valueStr.erase(i, 1);
+					i++;
+				}
 			}
 			else
 			{
@@ -221,7 +226,7 @@ private:
 	}
 	void done()
 	{
-		endFile = false;
+		endFile = true;
 		fin.close();
 	}
 	void PassWhiteSpaces()
@@ -278,6 +283,14 @@ public:
 				while (ch != '\n' && fin.good()) nextChar();
 				s = NO_WRITE;
 			}
+			else if (tok.tokStr == "multiLineComment")
+			{
+				while (ch != ')' && !endFile)
+				{
+
+				}
+			}
+
 		}
 		else if (ch == '{')
 		{
@@ -355,6 +368,18 @@ public:
 			else
 			{
 				nextChar();
+				while (ch == '\'' && !endFile)
+				{
+					nextChar();
+					while (ch != '\'' && !endFile) nextChar();
+					if (endFile)
+					{
+						lexCol = col + 1;
+						tok.tokStr = "BadEOF";
+						s = ERR;
+					}
+					nextChar();
+				}
 				tok.parsString(lexText, lexCol);
 				if (tok.tokStr == "BadNL") s = ERR;
 				else s = VAL;
