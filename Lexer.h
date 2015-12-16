@@ -12,12 +12,13 @@ class Lexer
 private:
 	int line;
 	int col;
+	int lexLine;
+	int lexCol;
 
-	char ch;
-
+	string lexText;
 	string buffer;
 
-	Token tok;
+	char ch;
 
 	/*void checkOperation(string lexText)
 	{
@@ -86,7 +87,7 @@ private:
 		else return false;
 	}
 
-	void checkKeyword(Token t);
+	void checkKeyword();
 	void nextChar();
 
 	inline void PassWhiteSpaces()

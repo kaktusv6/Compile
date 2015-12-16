@@ -23,21 +23,22 @@ Lexer::Lexer() : line(1), col(0), endFile(true)
 
 void Lexer::parsInteger()
 {
-	TokenValue<int> t;
-	t.valueToken = atoi(tok.lexText.c_str());
-	t.token = "integer";
+	//TokenValue<int> t;
+	//t.valueToken = atoi(lexText.c_str());
+	//t.token = "integer";
 	//t.printTokenValue();
 }
-void Lexer::checkKeyword(Token t)
+void Lexer::checkKeyword()
 {
-	map<string, string>::iterator i = strToken.find(t.lexText);
+	Token t(lexLine, lexCol, lexText);
+	map<string, string>::iterator i = strToken.find(lexText);
 	if (i != strToken.end()) t.token = i->second;
 	else t.token = "ident";
 	t.printToken();
 }
 void Lexer::nextChar()
 {
-	tok.lexText += ch;
+	lexText += ch;
 	if ((ch = fin.get()) != EOF)
 	{
 		if (ch == '\n')
@@ -57,50 +58,21 @@ void Lexer::nextLexem()
 {
 	PassWhiteSpaces();
 
-	tok.lexText.clear();
-	tok.lexCol = col;
-	tok.lexLine = line;
+	lexText.clear();
+	lexCol = col;
+	lexLine = line;
 
 	if (buffer.length() != 0)
 	{
-		tok.lexText += buffer;
+		lexText += buffer;
 		buffer.clear();
 	}
 
 	if (fromAtoZ(ch) || ch == '_')
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-		checkKeyword(tok);
+		checkKeyword();
 	}
-	/*else if (toOperation(ch))
-	{
-		nextChar();
-		tok->lexText += ch;
-		checkOperation(tok->lexText);
-		if ( == "BadChar")
-		{
-			tok->lexText.pop_back();
-			checkOperation(tok->lexText);
-			s = LEX;
-		}
-		else if (tr == "op" || tr == "sep")
-		{
-			tok->lexText.pop_back();
-			nextChar();
-			s = LEX;
-		}
-		else if (tr == "singlelineComment")
-		{
-			while (ch != '\n' && fin.good()) nextChar();
-			s = NO_WRITE;
-		}
-	}
-	else if (ch == '{')
-	{
-		while (ch != '}') nextChar();
-		nextChar();
-		s = NO_WRITE;
-	}*/
 	else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
@@ -132,7 +104,36 @@ void Lexer::nextLexem()
 		}
 		s = VAL;*/
 	}
-	/*else if (ch == '$')
+	/*else if (toOperation(ch))
+	{
+		nextChar();
+		tok->lexText += ch;
+		checkOperation(tok->lexText);
+		if ( == "BadChar")
+		{
+			tok->lexText.pop_back();
+			checkOperation(tok->lexText);
+			s = LEX;
+		}
+		else if (tr == "op" || tr == "sep")
+		{
+			tok->lexText.pop_back();
+			nextChar();
+			s = LEX;
+		}
+		else if (tr == "singlelineComment")
+		{
+			while (ch != '\n' && fin.good()) nextChar();
+			s = NO_WRITE;
+		}
+	}
+	else if (ch == '{')
+	{
+		while (ch != '}') nextChar();
+		nextChar();
+		s = NO_WRITE;
+	}
+	else if (ch == '$')
 	{
 		nextChar();
 		while (fromAtoF(ch) || from0to9(ch)) nextChar();

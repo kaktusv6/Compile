@@ -24,7 +24,9 @@ public:
 	string lexText;
 	string token;
 
+	Token(int, int, string);
 	virtual void printToken();
+	//~Token() { cout << "Destruktor" << '\n'; }
 };
 
 template<typename T>
@@ -33,6 +35,7 @@ class TokenValue : public Token
 public:
 	T valueToken;
 	
+	TokenValue() : Token() { };
 	void printTokenValue();
 	bool TrueFalse();
 };

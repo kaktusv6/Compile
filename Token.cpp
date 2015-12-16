@@ -3,6 +3,10 @@ using namespace std;
 
 ofstream fout("output.txt");
 
+Token::Token(int line, int col, string text): lexLine(line),
+												lexCol(col),
+												lexText(text)
+												{ }
 void Token::printToken()
 {
 	fout << lexLine << '\t'
