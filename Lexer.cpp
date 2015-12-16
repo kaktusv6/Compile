@@ -23,10 +23,10 @@ Lexer::Lexer() : line(1), col(0), endFile(true)
 
 void Lexer::parsInteger()
 {
-	//TokenValue<int> t;
-	//t.valueToken = atoi(lexText.c_str());
-	//t.token = "integer";
-	//t.printTokenValue();
+	TokenValue<int> t(lexLine, lexCol, lexText);
+	t.valueToken = atoi(lexText.c_str());
+	t.token = "integer";
+	t.printTokenValue();
 }
 void Lexer::checkKeyword()
 {

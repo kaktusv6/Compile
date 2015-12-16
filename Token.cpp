@@ -1,12 +1,15 @@
 #include "Token.h"
 using namespace std;
 
-ofstream fout("output.txt");
+static ofstream fout("output.txt");
 
-Token::Token(int line, int col, string text): lexLine(line),
-												lexCol(col),
-												lexText(text)
-												{ }
+Token::Token(int line, int col, string text)
+{
+	this->lexLine = line;
+	this->lexCol = col;
+	this->lexText = text;
+}
+
 void Token::printToken()
 {
 	fout << lexLine << '\t'
@@ -22,18 +25,20 @@ void TokenError::printToken()
 		<< token << '\n';
 }
 
-template<typename T>
-bool TokenValue<T>::TrueFalse()
+template<typename Value>
+TokenValue<Value>::TokenValue(int line, int col, string text)
 {
-	cout << true << endl;
-	system("pause");
+	this->lexLine = line;
+	this->lexCol = col;
+	this->lexText = text;
 }
-template<typename T>
-void TokenValue<T>::printTokenValue()
+
+template<typename Value>
+void TokenValue<Value>::printTokenValue()
 {
-	fout<< lexLine << '\t'
-		<< lexCol << '\t'
-		<< token << '\t'
-		<< lexText << '\t'
-		<< valueToken << '\n';
+	fout << this->lexLine << '\t'
+		<< this->lexCol << '\t'
+		<< this->token << '\t'
+		<< this->lexText << '\t'
+		<< this->valueToken << '\n';
 }

@@ -1,7 +1,5 @@
-#pragma once
-
-#ifndef TOKEN_H_INCLUDED
-#define TOKEN_H_INCLUDED
+#ifndef TOKEN
+#define TOKEN
 
 #include<iostream>
 #include <string>
@@ -15,8 +13,6 @@ static ifstream fin("input.txt");
 
 class Token
 {
-private:
-
 public:
 	int lexLine;
 	int lexCol;
@@ -24,27 +20,24 @@ public:
 	string lexText;
 	string token;
 
-	Token(int, int, string);
+	Token(int line, int col, string text);
 	virtual void printToken();
 	//~Token() { cout << "Destruktor" << '\n'; }
 };
 
-template<typename T>
+template<typename Value>
 class TokenValue : public Token
 {
 public:
-	T valueToken;
+	Value valueToken;
 	
-	TokenValue() : Token() { };
+	TokenValue(int line, int col, string text);
 	void printTokenValue();
-	bool TrueFalse();
 };
 
 class TokenError : public Token
 {
-
 public:
 	void printToken();
 };
-
-#endif // TOKEN_H_INCLUDED
+#endif // TOKEN

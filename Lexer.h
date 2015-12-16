@@ -1,6 +1,5 @@
-#pragma once
-#ifndef LEXER_H_INCLUDED
-#define LEXER_H_INCLUDED
+#ifndef LEXER
+#define LEXER
 #include <sstream>
 #include "Token.h"
 #include "Lexem.h"
@@ -22,40 +21,39 @@ private:
 
 	/*void checkOperation(string lexText)
 	{
-		map<string, string>::iterator i = strToken.find(lexText);
-		if (i != strToken.end()) tokStr = i->second;
-		else tokStr = "BadChar";
+	map<string, string>::iterator i = strToken.find(lexText);
+	if (i != strToken.end()) tokStr = i->second;
+	else tokStr = "BadChar";
 	}
 	void parsString(string lexText, int &col)
 	{
-		if (lexText.length() == 1)
-		{
-			tokStr = "char";
-			valueStr = lexText[0];
-		}
-		else
-		{
-			size_t found = lexText.find("\n");
-			if (found == string::npos)
-			{
-				for (int i = 1; i < lexText.length() - 1; i++) valueStr += lexText[i];
-				tokStr = "string";
-			}
-			else
-			{
-				col = found + 1;
-				tokStr = "BadNL";
-			}
-		}
+	if (lexText.length() == 1)
+	{
+	tokStr = "char";
+	valueStr = lexText[0];
+	}
+	else
+	{
+	size_t found = lexText.find("\n");
+	if (found == string::npos)
+	{
+	for (int i = 1; i < lexText.length() - 1; i++) valueStr += lexText[i];
+	tokStr = "string";
+	}
+	else
+	{
+	col = found + 1;
+	tokStr = "BadNL";
+	}
+	}
 	}*/
-	void parsInteger();
 	/*
 	void parsHex(string s)
 	{
-		int val = 0;
-		val = Atoi(s);
-		ss << val;
-		valueStr = ss.str();
+	int val = 0;
+	val = Atoi(s);
+	ss << val;
+	valueStr = ss.str();
 	}*/
 
 	inline bool fromAtoZ(char c)
@@ -95,6 +93,7 @@ private:
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 
+	void parsInteger();
 	void done()
 	{
 		endFile = false;
@@ -107,4 +106,4 @@ public:
 	void nextLexem();
 };
 
-#endif // LEXER_H_INCLUDED
+#endif // LEXER

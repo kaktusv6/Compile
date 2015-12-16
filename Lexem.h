@@ -1,5 +1,5 @@
-#ifndef LEXEM_H_INCLUDED
-#define LEXEM_H_INCLUDED
+#ifndef LEXEM
+#define LEXEM
 
 #include<map>
 #include<vector>
@@ -71,4 +71,4 @@ static void initMaps()
 	initSepChar();
 }
 
-#endif // LEXEM_H_INCLUDED
+#endif // LEXEM
