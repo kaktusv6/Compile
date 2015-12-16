@@ -6,13 +6,13 @@ using namespace std;
 
 stringstream ss;
 
-int Atoi(string s){
-	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
-	int i, p = 16, a = 0, digit[256] = { 0 };
-	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
-	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
-	return a;
-}
+//int Atoi(string s){
+//	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
+//	int i, p = 16, a = 0, digit[256] = { 0 };
+//	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
+//	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
+//	return a;
+//}
 
 
 Lexer::Lexer() : line(1), col(0), endFile(true)
@@ -21,10 +21,12 @@ Lexer::Lexer() : line(1), col(0), endFile(true)
 	nextChar();
 }
 
-void Lexer::parsInteger(TokenValue t)
+void Lexer::parsInteger()
 {
-	tokValue.valueToken = atoi(t.lexText.c_str());
-	tokValue.printToken();
+	TokenValue<int> t;
+	t.valueToken = atoi(tok.lexText.c_str());
+	t.token = "integer";
+	//t.printTokenValue();
 }
 void Lexer::checkKeyword(Token t)
 {
@@ -101,14 +103,8 @@ void Lexer::nextLexem()
 	}*/
 	else if (from0to9(ch))
 	{
-		tokValue.lexLine = tok.lexLine;
-		tokValue.lexCol = tok.lexCol;
-
 		while (from0to9(ch)) nextChar();
 
-		tokValue.lexText = tok.lexText;
-		tokValue.token = "integer";
-		parsInteger(tokValue);
 		/*if (ch == '.')
 		{
 			buffer += ch;

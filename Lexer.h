@@ -18,8 +18,6 @@ private:
 	string buffer;
 
 	Token tok;
-	TokenValue tokValue;
-	TokenError tokError;
 
 	/*void checkOperation(string lexText)
 	{
@@ -49,7 +47,7 @@ private:
 			}
 		}
 	}*/
-	void parsInteger(TokenValue t);
+	void parsInteger();
 	/*
 	void parsHex(string s)
 	{

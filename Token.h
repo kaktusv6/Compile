@@ -3,11 +3,9 @@
 #ifndef TOKEN_H_INCLUDED
 #define TOKEN_H_INCLUDED
 
-#include <iostream>
+#include<iostream>
 #include <string>
 #include <map>
-#include <algorithm>
-#include <vector>
 #include <fstream>
 
 using namespace std;
@@ -29,16 +27,19 @@ public:
 	virtual void printToken();
 };
 
+template<typename T>
 class TokenValue : public Token
 {
 public:
-	int valueToken;
+	T valueToken;
 	
-	void printToken();
+	void printTokenValue();
+	bool TrueFalse();
 };
 
 class TokenError : public Token
 {
+
 public:
 	void printToken();
 };
