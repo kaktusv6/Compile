@@ -1,7 +1,7 @@
 #include "Token.h"
-using namespace std;
+#include "Lexer.h"
 
-static ofstream fout("output.txt");
+using namespace std;
 
 Token::Token(int line, int col, string text)
 {
@@ -18,14 +18,20 @@ void Token::printToken()
 		<< lexText << '\n';
 }
 
+//TokenError::TokenError(int line, int col, string text)
+//{
+//	this->lexLine = line;
+//	this->lexCol = col;
+//	this->lexText = text;
+//}
 void TokenError::printToken()
 {
 	fout << lexLine << '\t'
 		<< lexCol << '\t'
-		<< token << '\n';
+		<< lexText << '\n';
 }
 
-template<typename Value>
+template<class Value>
 TokenValue<Value>::TokenValue(int line, int col, string text)
 {
 	this->lexLine = line;
@@ -33,12 +39,12 @@ TokenValue<Value>::TokenValue(int line, int col, string text)
 	this->lexText = text;
 }
 
-template<typename Value>
-void TokenValue<Value>::printTokenValue()
+template<class Value>
+inline void TokenValue<Value>::printTokenValue()
 {
-	fout << this->lexLine << '\t'
-		<< this->lexCol << '\t'
-		<< this->token << '\t'
-		<< this->lexText << '\t'
-		<< this->valueToken << '\n';
+	fout << lexLine << '\t'
+		<< lexCol << '\t'
+		<< token << '\t'
+		<< lexText << '\t'
+		<< valueToken << '\n';
 }
