@@ -1,8 +1,8 @@
-#ifndef LEXER
-#define LEXER
+#ifndef LEXER_H
+#define LEXER_H
 #include <sstream>
-#include "Token.h"
 #include "Lexem.h"
+#include "Token.h"
 
 using namespace std;
 
@@ -56,20 +56,19 @@ private:
 	valueStr = ss.str();
 	}*/
 
-	inline bool fromAtoZ(char c)
+	bool fromAtoZ(char c)
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
-	inline bool fromAtoF(char c)
+	bool fromAtoF(char c)
 	{
 		c = toupper(c);
 		return (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
 	}
-	inline bool from0to9(char c)
+	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
 	}
-
 	bool toOperation(char c)
 	{
 		unsigned i = 0;
@@ -93,10 +92,10 @@ private:
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 
-	void parsInteger();
+	//void parsInteger();
 	void done()
 	{
-		endFile = false;
+		endFile = true;
 		fin.close();
 	}
 public:

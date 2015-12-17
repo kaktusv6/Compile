@@ -1,5 +1,5 @@
-#ifndef LEXEM
-#define LEXEM
+#ifndef LEXEM_H
+#define LEXEM_H
 
 #include<map>
 #include<vector>

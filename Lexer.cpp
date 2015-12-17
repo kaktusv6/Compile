@@ -1,5 +1,5 @@
 #include "Lexer.h"
-#include "Token.h"
+
 #define DIG "0123456789ABCDEF"
 
 using namespace std;
@@ -14,20 +14,20 @@ stringstream ss;
 //	return a;
 //}
 
-
-Lexer::Lexer() : line(1), col(0), endFile(true)
+Lexer::Lexer() : line(1), col(0), endFile(false)
 {
 	buffer.clear();
 	nextChar();
 }
 
-void Lexer::parsInteger()
-{
-	TokenValue<int> t(lexLine, lexCol, lexText);
-	t.valueToken = atoi(lexText.c_str());
-	t.token = "integer";
-	t.printTokenValue();
-}
+//void Lexer::parsInteger()
+//{
+//	TokenValue<int> t(lexLine, lexCol, lexText);
+//	t.setValue( atoi(lexText.c_str()) );
+//	t.token = "integer";
+//	t.printTokenValue();
+//}
+
 void Lexer::checkKeyword()
 {
 	Token t(lexLine, lexCol, lexText);
@@ -36,6 +36,7 @@ void Lexer::checkKeyword()
 	else t.token = "ident";
 	t.printToken();
 }
+
 void Lexer::nextChar()
 {
 	lexText += ch;
@@ -50,7 +51,8 @@ void Lexer::nextChar()
 	}
 	else
 	{
-		endFile = false;
+		done();
+		endFile = true;
 	}
 }
 
@@ -73,11 +75,26 @@ void Lexer::nextLexem()
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
 		checkKeyword();
 	}
-	else if (from0to9(ch))
+	else if (toSep(ch))
+	{
+		nextChar();
+		Token *t = new Token(lexLine, lexCol, lexText);
+		t->token = "sep";
+		t->printToken();
+		delete t;
+	}
+	else if (!endFile)
+	{
+		nextChar();
+		done();
+		TokenError *t = new TokenError(lexLine, lexCol, "BadChar");
+		t->printToken();
+		delete t;
+	}
+	/*else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
-
-		/*if (ch == '.')
+	if (ch == '.')
 		{
 			buffer += ch;
 			nextChar();
@@ -102,8 +119,8 @@ void Lexer::nextLexem()
 			tr = "integer";
 			parsInteger(tok->lexText);
 		}
-		s = VAL;*/
-	}
+		s = VAL;
+	}*/
 	/*else if (toOperation(ch))
 	{
 		nextChar();
@@ -159,21 +176,6 @@ void Lexer::nextLexem()
 		parsString(tok->lexText, lexCol);
 		if (tr == "BadNL") s = ERR;
 		else s = VAL;
-	}
-	else if (toSep(ch))
-	{
-		nextChar();
-		tr = "sep";
-		s = LEX;
-	}
-	else
-	{
-		done();
-		if (ch == -1) s = NO_WRITE;
-		else
-		{
-			tr = "BadChar";
-			s = ERR;
-		}
 	}*/
 }
+
