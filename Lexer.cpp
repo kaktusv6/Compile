@@ -28,7 +28,7 @@ void Lexer::parsInteger()
 		lexText,
 		"integer",
 		integer);
-	t->printTokenValue();
+	t->printToken();
 }
 void Lexer::parsHex()
 {
@@ -38,7 +38,7 @@ void Lexer::parsHex()
 		value.erase(0,1);
 		int valueInt = Atoi(lexText);
 		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", lexText, valueInt);
-		t->printTokenValue();
+		t->printToken();
 	}
 	else
 	{
@@ -46,7 +46,25 @@ void Lexer::parsHex()
 		e->printToken();
 	}
 }
+void Lexer::parsString()
+{
+	value = lexText;
 
+	value.erase(0, 1);
+	value.erase(value.length()-1, 1);
+	
+	for (int i = 0; i < value.length(); i++)
+	{
+		if (value[i] == '\'') value.erase(i, 1);
+		i++;
+	}
+
+	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol, "", lexText, value);
+	if (value.length() == 1) t->setToken("char");
+	else t->setToken("string");
+
+	t->printToken();
+}
 void Lexer::checkKeyword()
 {
 	Token t(lexLine, lexCol, "ident", lexText);
@@ -119,6 +137,28 @@ void Lexer::nextLexem()
 		nextChar();
 		lexText.clear();
 	}
+	else if (ch == '\'')
+	{
+		while (ch == '\'' && !endFile)
+		{
+			nextChar();
+			while (ch != '\'' && !errorString(ch)) nextChar();
+			if (endFile)
+			{
+				done();
+				TokenError *t = new TokenError(lexLine, col + 1, "BadEOF");
+				t->printToken();
+			}
+			else if (ch == '\n')
+			{
+				done();
+				TokenError *t = new TokenError(lexLine, col + 1, "BadNL");
+				t->printToken();
+			}
+			nextChar();
+		}
+		if (!errorString(ch)) parsString();
+	}
 	else if (!endFile)
 	{
 		nextChar();
@@ -178,15 +218,6 @@ void Lexer::nextLexem()
 			while (ch != '\n' && fin.good()) nextChar();
 			s = NO_WRITE;
 		}
-	}
-	else if (ch == '\'')
-	{
-		nextChar();
-		while (ch != '\'') nextChar();
-		nextChar();
-		parsString(tok->lexText, lexCol);
-		if (tr == "BadNL") s = ERR;
-		else s = VAL;
 	}*/
 }
 
