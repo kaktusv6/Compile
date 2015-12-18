@@ -26,28 +26,6 @@ private:
 	map<string, string>::iterator i = strToken.find(lexText);
 	if (i != strToken.end()) tokStr = i->second;
 	else tokStr = "BadChar";
-	}
-	void parsString(string lexText, int &col)
-	{
-	if (lexText.length() == 1)
-	{
-	tokStr = "char";
-	valueStr = lexText[0];
-	}
-	else
-	{
-	size_t found = lexText.find("\n");
-	if (found == string::npos)
-	{
-	for (int i = 1; i < lexText.length() - 1; i++) valueStr += lexText[i];
-	tokStr = "string";
-	}
-	else
-	{
-	col = found + 1;
-	tokStr = "BadNL";
-	}
-	}
 	}*/
 	
 
@@ -59,7 +37,10 @@ private:
 	{
 		return (c >= '0' && c <= '9');
 	}
-
+	bool errorString(char c)
+	{
+		return ch == '\n' && endFile;
+	}
 	bool isHex(char c)
 	{
 		return c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f' || c >= '0' && c <= '9';
@@ -88,6 +69,7 @@ private:
 
 	void parsHex();
 	void parsInteger();
+	void parsString();
 
 	void done()
 	{
