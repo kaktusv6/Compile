@@ -20,6 +20,7 @@ private:
 
 	char ch;
 
+	bool endFile;
 	/*void checkOperation(string lexText)
 	{
 	map<string, string>::iterator i = strToken.find(lexText);
@@ -94,10 +95,10 @@ private:
 		fin.close();
 	}
 public:
-	bool endFile;
 
 	Lexer();
 	void nextLexem();
+	bool getEndFile() { return endFile; }
 };
 
 #endif // LEXER
