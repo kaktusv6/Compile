@@ -3,10 +3,11 @@
 
 using namespace std;
 
-Token::Token(int line, int col, string text)
+Token::Token(int line, int col, string token, string text)
 {
 	this->lexLine = line;
 	this->lexCol = col;
+	this->token = token;
 	this->lexText = text;
 }
 

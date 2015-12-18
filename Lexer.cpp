@@ -7,14 +7,6 @@ using namespace std;
 
 stringstream ss;
 
-//int Atoi(string s){
-//	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
-//	int i, p = 16, a = 0, digit[256] = { 0 };
-//	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
-//	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
-//	return a;
-//}
-
 Lexer::Lexer() : line(1), col(0), endFile(false)
 {
 	buffer.clear();
@@ -23,18 +15,20 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 
 void Lexer::parsInteger()
 {
-	int a = atoi(lexText.c_str());
-	TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, lexText, a);
-	t->token = "integer";
+	int integer = atoi(lexText.c_str());
+	TokenValue<int> *t = new TokenValue<int>(lexLine,
+		lexCol,
+		lexText,
+		"integer",
+		integer);
 	t->printTokenValue();
 }
 
 void Lexer::checkKeyword()
 {
-	Token t(lexLine, lexCol, lexText);
+	Token t(lexLine, lexCol, "ident", lexText);
 	map<string, string>::iterator i = strToken.find(lexText);
 	if (i != strToken.end()) t.token = i->second;
-	else t.token = "ident";
 	t.printToken();
 }
 
@@ -84,8 +78,7 @@ void Lexer::nextLexem()
 	else if (toSep(ch))
 	{
 		nextChar();
-		Token *t = new Token(lexLine, lexCol, lexText);
-		t->token = "sep";
+		Token *t = new Token(lexLine, lexCol, "sep", lexText );
 		t->printToken();
 		delete t;
 	}

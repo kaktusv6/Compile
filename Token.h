@@ -20,7 +20,7 @@ public:
 	string lexText;
 	string token;
 
-	Token(int line, int col, string text);
+	Token(int line, int col, string token, string text);
 	virtual void printToken();
 };
 
@@ -31,7 +31,9 @@ private:
 	Value valueToken;
 
 public:
-	TokenValue(int line, int col, string text, Value value) :Token(line, col, text) , valueToken(value) { }
+	TokenValue(int line, int col, string text, string token, Value value)
+		:Token(line, col, text, token),
+		valueToken(value) { }
 	
 	void setValue(Value v);
 	void printTokenValue();
@@ -44,7 +46,9 @@ private:
 	double valueToken;
 
 public:
-	TokenValue(int line, int col, string text, double value) :Token(line, col, text), valueToken(value) {}
+	TokenValue(int line, int col, string text, string token, double value)
+		:Token(line, col, text, token),
+		valueToken(value) {}
 
 	void setValue(double v);
 	void printTokenValue();
