@@ -2,8 +2,10 @@
 #include <fstream>
 #include <map>
 #include <string>
+#include <algorithm>
 #include <vector>
 #include <sstream>
+#include <stdio.h>
 #define DIG "0123456789ABCDEF"
 
 using namespace std;
@@ -168,6 +170,15 @@ public:
 				}
 		}
 	}
+	void parsReal(string s)
+	{
+		double a;
+		a = atof(s.c_str());
+		char buf[11];
+		sprintf(buf, "%.4E", a);
+		buf[8] = buf[9]; buf[9] = buf[10]; buf[10] = 0;
+		valueStr = buf;
+	}
 	void parsHex(string s)
 	{
 		int val = 0;
@@ -317,8 +328,8 @@ public:
 				{
 					buffer.clear();
 					while (from0to9(ch)) nextChar();
+					tok.parsReal(lexText);
 					tok.tokStr = "real";
-					tok.valueStr = lexText;
 					s = VAL;
 				}
 				else
