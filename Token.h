@@ -26,7 +26,7 @@ public:
 	virtual void printToken();
 };
 
-template<typename Value>
+template<class Value>
 class TokenValue : public Token
 {
 protected:
@@ -38,7 +38,7 @@ public:
 		valueToken(value) { }
 	
 	void setValue(Value v);
-	void printTokenValue();
+	void printToken();
 };
 
 template<>
@@ -64,14 +64,14 @@ public:
 	void printToken();
 };
 
-template<typename Value>
+template<class Value>
 inline void TokenValue<Value>::setValue(Value v)
 {
 	valueToken = v;
 }
 
 template<class Value>
-inline void TokenValue<Value>::printTokenValue()
+inline void TokenValue<Value>::printToken()
 {
 	fout << lexLine << '\t'
 		<< lexCol << '\t'
