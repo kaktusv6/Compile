@@ -6,10 +6,10 @@
 int main()
 {
 	initMaps();
-	Lexer l;
-	while (!l.endFile && !fin.eof())
+	Lexer *l = new Lexer();
+	while (!l->getEndFile() && !fin.eof())
 	{
-		l.nextLexem();
+		l->nextLexem();
 	}
 	return 0;
 }
