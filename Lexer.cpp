@@ -1,5 +1,5 @@
 #include "Lexer.h"
-#include "Lexem.h"
+
 
 #define DIG "0123456789ABCDEF"
 
@@ -28,7 +28,7 @@ void Lexer::checkKeyword()
 {
 	Token t(lexLine, lexCol, "ident", lexText);
 	map<string, string>::iterator i = strToken.find(lexText);
-	if (i != strToken.end()) t.token = i->second;
+	if (i != strToken.end()) t.setToken( i->second );
 	t.printToken();
 }
 

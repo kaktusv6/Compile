@@ -2,7 +2,7 @@
 #define LEXER_H
 #include <sstream>
 #include "Token.h"
-
+#include "Lexem.h"
 
 using namespace std;
 

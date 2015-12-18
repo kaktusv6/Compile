@@ -13,13 +13,15 @@ static ofstream fout("output.txt");
 
 class Token
 {
-public:
+protected:
 	int lexLine;
 	int lexCol;
 
 	string lexText;
 	string token;
-
+public:
+	
+	void setToken(string);
 	Token(int line, int col, string token, string text);
 	virtual void printToken();
 };
@@ -27,7 +29,7 @@ public:
 template<typename Value>
 class TokenValue : public Token
 {
-private:
+protected:
 	Value valueToken;
 
 public:
@@ -42,7 +44,7 @@ public:
 template<>
 class TokenValue<double> : public Token
 {
-private:
+protected:
 	double valueToken;
 
 public:
@@ -57,7 +59,7 @@ public:
 class TokenError : public Token
 {
 public:
-	TokenError(int line, int col, string text) :Token(line, col, text) {}
+	TokenError(int line, int col, string text) :Token(line, col, "", text) {}
 	
 	void printToken();
 };

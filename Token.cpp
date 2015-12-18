@@ -19,16 +19,15 @@ void Token::printToken()
 		<< lexText << '\n';
 }
 
-//TokenError::TokenError(int line, int col, string text)
-//{
-//	this->lexLine = line;
-//	this->lexCol = col;
-//	this->lexText = text;
-//}
+void Token::setToken(string s)
+{
+	this->token = s;
+}
+
 void TokenError::printToken()
 {
-	fout << lexLine << '\t'
-		<< lexCol << '\t'
-		<< lexText << '\n';
+	fout << this->lexLine << '\t'
+		<<  this->lexCol << '\t'
+		<<  this->lexText << '\n';
 }
 
