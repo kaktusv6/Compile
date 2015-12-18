@@ -1,7 +1,14 @@
 #include "Lexer.h"
 
-
 #define DIG "0123456789ABCDEF"
+
+int Atoi(string s){
+	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
+	int i, p = 16, a = 0, digit[256] = { 0 };
+	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
+	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
+	return a;
+}
 
 using namespace std;
 
@@ -22,6 +29,21 @@ void Lexer::parsInteger()
 		"integer",
 		integer);
 	t->printTokenValue();
+}
+void Lexer::parsHex()
+{
+	if (lexText.length() > 1)
+	{
+		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, lexText, "hex", 0);
+		lexText.erase(0);
+		int value = Atoi(lexText);
+		t->setValue(value);
+	}
+	else
+	{
+		TokenError *e = new TokenError(lexLine, lexCol + 1, "NoHex");
+		e->printToken();
+	}
 }
 
 void Lexer::checkKeyword()
@@ -74,6 +96,12 @@ void Lexer::nextLexem()
 	{
 		while (from0to9(ch)) nextChar();
 		parsInteger();
+	}
+	else if (ch == '$')
+	{
+		nextChar();
+		while (fromAtoF(ch) || from0to9(ch)) nextChar();
+		parsHex();
 	}
 	else if (toSep(ch))
 	{
@@ -148,24 +176,6 @@ void Lexer::nextLexem()
 			while (ch != '\n' && fin.good()) nextChar();
 			s = NO_WRITE;
 		}
-	}
-	else if (ch == '$')
-	{
-		nextChar();
-		while (fromAtoF(ch) || from0to9(ch)) nextChar();
-		if (tok->lexText.length() > 1)
-		{
-			parsHex(tok->lexText);
-			tr = "hex";
-			s = VAL;
-		}
-		else
-		{
-			lexCol++;
-			tr = "NoHex";
-			s = ERR;
-		}
-
 	}
 	else if (ch == '\'')
 	{

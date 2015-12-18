@@ -47,14 +47,8 @@ private:
 	}
 	}
 	}*/
-	/*
-	void parsHex(string s)
-	{
-	int val = 0;
-	val = Atoi(s);
-	ss << val;
-	valueStr = ss.str();
-	}*/
+	
+	void parsHex();
 
 	bool fromAtoZ(char c)
 	{
