@@ -1,7 +1,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include<iostream>
+#include <iostream>
 #include <string>
 #include <map>
 #include <fstream>
@@ -31,12 +31,24 @@ private:
 	Value valueToken;
 
 public:
-	TokenValue(int line, int col, string text) :Token(line, col, text){ }
+	TokenValue(int line, int col, string text, Value value) :Token(line, col, text) : valueToken(value) { }
 	
 	void setValue(Value v);
 	void printTokenValue();
 };
 
+template<>
+class TokenValue<double> : public Token
+{
+private:
+	double valueToken;
+
+public:
+	TokenValue(int line, int col, string text, double value) :Token(line, col, text), valueToken(value) {}
+
+	void setValue(double v);
+	void printTokenValue();
+};
 
 class TokenError : public Token
 {
@@ -47,7 +59,7 @@ public:
 };
 
 template<typename Value>
-void TokenValue<Value>::setValue(Value v)
+inline void TokenValue<Value>::setValue(Value v)
 {
 	valueToken = v;
 }
@@ -61,4 +73,14 @@ inline void TokenValue<Value>::printTokenValue()
 		<< lexText << '\t'
 		<< valueToken << '\n';
 }
+
+//template<>
+//inline void TokenValue<double>::printTokenValue()
+//{
+//	fout << lexLine << '\t'
+//		<< lexCol << '\t'
+//		<< token << '\t'
+//		<< lexText << '\t'
+//		<< valueToken << '\n';
+//}
 #endif // TOKEN
