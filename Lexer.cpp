@@ -34,15 +34,15 @@ void Lexer::parsHex()
 {
 	if (lexText.length() > 1)
 	{
-		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", lexText, 0);
-		lexText.erase(0,1);
-		int value = Atoi(lexText);
-		t->setValue(value);
+		value = lexText;
+		value.erase(0,1);
+		int valueInt = Atoi(lexText);
+		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", lexText, valueInt);
 		t->printTokenValue();
 	}
 	else
 	{
-		TokenError *e = new TokenError(line, lexCol, "NoHex");
+		TokenError *e = new TokenError(line, col, "NoHex");
 		e->printToken();
 	}
 }
@@ -70,6 +70,7 @@ void Lexer::nextChar()
 	}
 	else
 	{
+		col++;
 		done();
 		endFile = true;
 	}
@@ -105,7 +106,7 @@ void Lexer::nextLexem()
 		while (isHex(ch)) nextChar();
 		parsHex();
 	}
-	else if (toSep(ch))
+	else if (isSep(ch))
 	{
 		nextChar();
 		Token *t = new Token(lexLine, lexCol, "sep", lexText );

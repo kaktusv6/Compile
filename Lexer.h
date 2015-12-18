@@ -15,6 +15,7 @@ private:
 	int lexCol;
 
 	string lexText;
+	string value;
 	string buffer;
 
 	char ch;
@@ -48,44 +49,45 @@ private:
 	}
 	}*/
 	
-	void parsHex();
 
 	bool fromAtoZ(char c)
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
-	bool isHex(char c)
-	{
-		return c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f' || c >= '0' && c <= '9';
-	}
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
 	}
-	bool toOperation(char c)
+
+	bool isHex(char c)
+	{
+		return c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f' || c >= '0' && c <= '9';
+	}
+	bool isOperation(char c)
 	{
 		unsigned i = 0;
 		while (i < opChar.size() && c != opChar[i]) i++;
 		if (i < opChar.size()) return true;
 		else return false;
 	}
-	bool toSep(char c)
+	bool isSep(char c)
 	{
 		unsigned i = 0;
 		while (i < sepChar.size() && c != sepChar[i]) i++;
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
-
 	void checkKeyword();
-	void nextChar();
 
-	inline void PassWhiteSpaces()
+	void nextChar();
+	void PassWhiteSpaces()
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 
+	void parsHex();
 	void parsInteger();
+
 	void done()
 	{
 		endFile = true;
