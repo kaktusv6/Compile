@@ -27,11 +27,11 @@ public:
 template<typename Value>
 class TokenValue : public Token
 {
-protected:
+private:
 	Value valueToken;
 
 public:
-	TokenValue(int, int, string);
+	TokenValue(int line, int col, string text) :Token(line, col, text){ }
 	
 	void setValue(Value v);
 	void printTokenValue();
@@ -50,5 +50,15 @@ template<typename Value>
 void TokenValue<Value>::setValue(Value v)
 {
 	valueToken = v;
+}
+
+template<class Value>
+inline void TokenValue<Value>::printTokenValue()
+{
+	fout << lexLine << '\t'
+		<< lexCol << '\t'
+		<< token << '\t'
+		<< lexText << '\t'
+		<< valueToken << '\n';
 }
 #endif // TOKEN

@@ -31,20 +31,3 @@ void TokenError::printToken()
 		<< lexText << '\n';
 }
 
-template<class Value>
-TokenValue<Value>::TokenValue(int line, int col, string text)
-{
-	this->lexLine = line;
-	this->lexCol = col;
-	this->lexText = text;
-}
-
-template<class Value>
-inline void TokenValue<Value>::printTokenValue()
-{
-	fout << lexLine << '\t'
-		<< lexCol << '\t'
-		<< token << '\t'
-		<< lexText << '\t'
-		<< valueToken << '\n';
-}
