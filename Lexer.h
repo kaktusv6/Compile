@@ -54,10 +54,9 @@ private:
 	{
 		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
-	bool fromAtoF(char c)
+	bool isHex(char c)
 	{
-		c = toupper(c);
-		return (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
+		return c >= 'A' && c <= 'F' || c >= 'a' && c <= 'f' || c >= '0' && c <= '9';
 	}
 	bool from0to9(char c)
 	{
