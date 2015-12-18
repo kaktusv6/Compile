@@ -1,4 +1,5 @@
 #include "Lexer.h"
+#include "Lexem.h"
 
 #define DIG "0123456789ABCDEF"
 
@@ -22,8 +23,8 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 
 void Lexer::parsInteger()
 {
-	TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, lexText);
-	t->setValue( atoi(lexText.c_str()) );
+	int a = atoi(lexText.c_str());
+	TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, lexText, a);
 	t->token = "integer";
 	t->printTokenValue();
 }
@@ -88,6 +89,12 @@ void Lexer::nextLexem()
 		t->printToken();
 		delete t;
 	}
+	else if (ch == '{')
+	{
+		while (ch != '}') nextChar();
+		nextChar();
+		lexText.clear();
+	}
 	else if (!endFile)
 	{
 		nextChar();
@@ -148,12 +155,6 @@ void Lexer::nextLexem()
 			while (ch != '\n' && fin.good()) nextChar();
 			s = NO_WRITE;
 		}
-	}
-	else if (ch == '{')
-	{
-		while (ch != '}') nextChar();
-		nextChar();
-		s = NO_WRITE;
 	}
 	else if (ch == '$')
 	{

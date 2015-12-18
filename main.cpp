@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Lexer.h"
+#include "Lexem.h"
 
 int main()
 {

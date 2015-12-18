@@ -31,7 +31,7 @@ private:
 	Value valueToken;
 
 public:
-	TokenValue(int line, int col, string text, Value value) :Token(line, col, text) : valueToken(value) { }
+	TokenValue(int line, int col, string text, Value value) :Token(line, col, text) , valueToken(value) { }
 	
 	void setValue(Value v);
 	void printTokenValue();
