@@ -20,13 +20,13 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-//void Lexer::parsInteger()
-//{
-//	TokenValue<int> t(lexLine, lexCol, lexText);
-//	t.setValue( atoi(lexText.c_str()) );
-//	t.token = "integer";
-//	t.printTokenValue();
-//}
+void Lexer::parsInteger()
+{
+	TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, lexText);
+	t->setValue( atoi(lexText.c_str()) );
+	t->token = "integer";
+	t->printTokenValue();
+}
 
 void Lexer::checkKeyword()
 {
@@ -75,6 +75,11 @@ void Lexer::nextLexem()
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
 		checkKeyword();
 	}
+	else if (from0to9(ch))
+	{
+		while (from0to9(ch)) nextChar();
+		parsInteger();
+	}
 	else if (toSep(ch))
 	{
 		nextChar();
@@ -94,7 +99,7 @@ void Lexer::nextLexem()
 	/*else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
-	if (ch == '.')
+		if (ch == '.')
 		{
 			buffer += ch;
 			nextChar();

@@ -92,7 +92,7 @@ private:
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 
-	//void parsInteger();
+	void parsInteger();
 	void done()
 	{
 		endFile = true;
