@@ -24,12 +24,6 @@ private:
 	string buffer;
 
 
-	/*void checkOperation(string lexText)
-	{
-	map<string, string>::iterator i = strToken.find(lexText);
-	if (i != strToken.end()) tokStr = i->second;
-	else tokStr = "BadChar";
-	}*/
 
 	bool fromAtoZ(char c)
 	{
@@ -61,7 +55,7 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
-	void checkKeyword();
+	
 
 	void nextChar();
 	void PassWhiteSpaces()
@@ -73,6 +67,9 @@ private:
 		endFile = true;
 		fin.close();
 	}
+	
+	Token* checkKeyword(string);
+	Token* checkOperation(string);
 
 	Token* parsHex(string);
 	Token* parsInteger(string);

@@ -39,11 +39,14 @@ static void addSepChar(char c)
 static void initialize()
 {
 	addKeyword("begin"), addKeyword("forward"), addKeyword("do"),
-		addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"),
+		addKeyword("else"), addKeyword("end"), addKeyword("for"),
+		addKeyword("function"),
 		addKeyword("if"), addKeyword("array"), addKeyword("of"),
-		addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"),
+		addKeyword("procedure"), addKeyword("program"), addKeyword("record"),
+		addKeyword("then"),
 		addKeyword("to"), addKeyword("type"), addKeyword("var"),
-		addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"),
+		addKeyword("while"), addKeyword("break"), addKeyword("continue"),
+		addKeyword("downto"),
 		addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
 
 	addOperation("and"), addOperation("div"), addOperation("mod"),
@@ -55,11 +58,14 @@ static void initialize()
 		addOperation(">="), addOperation("="), addOperation("<>"), addOperation(":="),
 		addOperation("@"), addOperation(".");
 
-	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"),
+	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"),
+		addSeparator(";"),
 		addSeparator(":"), addSeparator(".."), addSeparator(",");
 
-	addOpChar('+'), addOpChar('-'), addOpChar('*'), addOpChar('^'), addOpChar('/'),
-		addOpChar('<'), addOpChar('>'), addOpChar('<'), addOpChar('>'), addOpChar('='),
+	addOpChar('+'), addOpChar('-'), addOpChar('*'), addOpChar('^'),
+		addOpChar('/'),
+		addOpChar('<'), addOpChar('>'), addOpChar('<'), addOpChar('>'),
+		addOpChar('='),
 		addOpChar('<'), addOpChar(':'), addOpChar('@'), addOpChar('.');
 
 	addSepChar('('), addSepChar(')'),

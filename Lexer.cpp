@@ -21,13 +21,23 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-void Lexer::checkKeyword()
+Token* Lexer::checkKeyword(string text)
 {
-	Token *t = new Token(lexLine, lexCol, "ident", lexText);
-	map<string, string>::iterator i = strToken.find(lexText);
+	Token *t = new Token(lexLine, lexCol, "ident", text);
+	map<string, string>::iterator i = strToken.find(text);
+	if (i != strToken.end())
+	{
+		t->setToken(i->second);
+		return t;
+	}
+}
+
+Token* Lexer::checkOperation(string text)
+{
+	Token *t = new Token(lexLine, lexCol, "", text);
+	map<string, string>::iterator i = strToken.find(text);
 	if (i != strToken.end()) t->setToken(i->second);
-	t->printToken();
-	delete t;
+	return t;
 }
 
 Token* Lexer::parsHex(string text)
@@ -92,7 +102,7 @@ void Lexer::nextChar()
 		if (ch == '\n')
 		{
 			line++;
-			col = 0;
+			col = 1;
 		}
 		else if (ch == '\t') col = (col / 4 + 1) * 4;
 		else col++;
@@ -122,7 +132,7 @@ Token*Lexer::nextToken()
 	if (fromAtoZ(ch) || ch == '_')
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-		checkKeyword();
+		return checkKeyword(lexText);
 	}
 	else if (from0to9(ch))
 	{
@@ -139,8 +149,7 @@ Token*Lexer::nextToken()
 	{
 		nextChar();
 		Token *t = new Token(lexLine, lexCol, "sep", lexText );
-		t->printToken();
-		delete t;
+		return t;
 	}
 	else if (ch == '{')
 	{
@@ -162,25 +171,22 @@ Token*Lexer::nextToken()
 	else if (isOperation(ch))
 	{
 		nextChar();
-		tok->lexText += ch;
-		checkOperation(tok->lexText);
-		if (== "BadChar")
+		Token *t = checkOperation(lexText + ch);
+
+		if (t->getToken() == "")
 		{
-			tok->lexText.pop_back();
-			checkOperation(tok->lexText);
-			s = LEX;
+			return checkOperation(lexText);
 		}
-		else if (tr == "op" || tr == "sep")
+		else if (t->getToken() == "op" || t->getToken() == "sep")
 		{
-			tok->lexText.pop_back();
 			nextChar();
-			s = LEX;
+			return checkOperation(lexText);
 		}
-		else if (tr == "singlelineComment")
+		else if (t->getToken() == "singlelineComment")
 		{
-			while (ch != '\n' && fin.good()) nextChar();
-			s = NO_WRITE;
+			while (ch != '\n' && !endFile) nextChar();
 		}
+		return NULL;
 	}
 	else if (!endFile)
 	{
