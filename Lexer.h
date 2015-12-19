@@ -52,11 +52,7 @@ private:
 		else return false;
 	}
 	
-	bool checkKeyword(string text)
-	{
-		return (strToken.find(text) != strToken.end() ? true : false);
-	}
-	bool checkOperation(string text)
+	bool checkLexem(string text)
 	{
 		return (strToken.find(text) != strToken.end() ? true : false);
 	}
