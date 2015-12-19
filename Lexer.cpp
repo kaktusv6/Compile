@@ -16,6 +16,7 @@ stringstream ss;
 
 Lexer::Lexer() : line(1), col(0), endFile(false)
 {
+	initMaps();
 	buffer.clear();
 	nextChar();
 }
@@ -158,6 +159,29 @@ Token*Lexer::nextToken()
 		}
 		return parsString(lexText);
 	}
+	else if (isOperation(ch))
+	{
+		nextChar();
+		tok->lexText += ch;
+		checkOperation(tok->lexText);
+		if (== "BadChar")
+		{
+			tok->lexText.pop_back();
+			checkOperation(tok->lexText);
+			s = LEX;
+		}
+		else if (tr == "op" || tr == "sep")
+		{
+			tok->lexText.pop_back();
+			nextChar();
+			s = LEX;
+		}
+		else if (tr == "singlelineComment")
+		{
+			while (ch != '\n' && fin.good()) nextChar();
+			s = NO_WRITE;
+		}
+	}
 	else if (!endFile)
 	{
 		done();
@@ -197,29 +221,6 @@ Token*Lexer::nextToken()
 			parsInteger(tok->lexText);
 		}
 		s = VAL;
-	}*/
-	/*else if (toOperation(ch))
-	{
-		nextChar();
-		tok->lexText += ch;
-		checkOperation(tok->lexText);
-		if ( == "BadChar")
-		{
-			tok->lexText.pop_back();
-			checkOperation(tok->lexText);
-			s = LEX;
-		}
-		else if (tr == "op" || tr == "sep")
-		{
-			tok->lexText.pop_back();
-			nextChar();
-			s = LEX;
-		}
-		else if (tr == "singlelineComment")
-		{
-			while (ch != '\n' && fin.good()) nextChar();
-			s = NO_WRITE;
-		}
 	}*/
 }
 
