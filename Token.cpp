@@ -24,10 +24,14 @@ void Token::setToken(string s)
 	this->token = s;
 }
 
+string Token::getToken()
+{
+	return this->token;
+}
+
 void TokenError::printToken()
 {
 	fout << this->lexLine << '\t'
 		<<  this->lexCol << '\t'
 		<<  this->lexText << '\n';
 }
-

@@ -22,6 +22,7 @@ protected:
 public:
 	
 	void setToken(string);
+	string getToken();
 	Token(int line, int col, string token, string text);
 	virtual void printToken();
 };
