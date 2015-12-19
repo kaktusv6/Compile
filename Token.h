@@ -8,8 +8,6 @@
 
 using namespace std;
 
-static ifstream fin("input.txt");
-static ofstream fout("output.txt");
 
 class Token
 {
@@ -20,7 +18,7 @@ protected:
 	string lexText;
 	string token;
 public:
-	
+	static ofstream fout;
 	void setToken(string);
 	string getToken();
 	Token(int line, int col, string token, string text);
@@ -74,11 +72,11 @@ inline void TokenValue<Value>::setValue(Value v)
 template<class Value>
 inline void TokenValue<Value>::printToken()
 {
-	fout <<this->lexLine << '\t'
-		<< this->lexCol << '\t'
-		<< this->token << '\t'
-		<< this->lexText << '\t'
-		<< this->valueToken << '\n';
+	fout << lexLine << '\t'
+		<< lexCol << '\t'
+		<< token << '\t'
+		<< lexText << '\t'
+		<< valueToken << '\n';
 }
 
 //template<>

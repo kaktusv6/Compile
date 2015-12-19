@@ -19,10 +19,6 @@ static void addOperation(string s)
 {
 	strToken[s] = "op";
 }
-static void addSeparators(string s)
-{
-	strToken[s] = "sep";
-}
 static void addSeparator(string s)
 {
 	strToken[s] = "sep";
