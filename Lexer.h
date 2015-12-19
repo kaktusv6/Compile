@@ -67,9 +67,9 @@ private:
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
 
-	void parsHex();
-	void parsInteger();
-	void parsString();
+	Token* parsHex(string);
+	Token* parsInteger();
+	Token* parsString();
 
 	void done()
 	{

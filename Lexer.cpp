@@ -22,25 +22,27 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 
 void Lexer::checkKeyword()
 {
-	Token t(lexLine, lexCol, "ident", lexText);
+	Token *t = new Token(lexLine, lexCol, "ident", lexText);
 	map<string, string>::iterator i = strToken.find(lexText);
-	if (i != strToken.end()) t.setToken( i->second );
-	t.printToken();
+	if (i != strToken.end()) t->setToken(i->second);
+	t->printToken();
+	delete t;
 }
 
-void Lexer::parsHex()
+Token* Lexer::parsHex(string text)
 {
 	if (lexText.length() > 1)
 	{
-		value = lexText;
-		value.erase(0,1);
-		int valueInt = Atoi(lexText);
-		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", lexText, valueInt);
-		t->printToken();
+		int valueInt = Atoi(text);
+		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", text, valueInt);
+		return t;
 	}
-	else printError("NoHex");
+	else
+	{
+		TokenError *error = new TokenError(lexLine, col, "NoHex");
+	}
 }
-void Lexer::parsInteger()
+Token* Lexer::parsInteger()
 {
 	int integer = atoi(lexText.c_str());
 	TokenValue<int> *t = new TokenValue<int>(lexLine,
@@ -48,9 +50,9 @@ void Lexer::parsInteger()
 		lexText,
 		"integer",
 		integer);
-	t->printToken();
+	return t;
 }
-void Lexer::parsString()
+Token* Lexer::parsString()
 {
 	value = lexText;
 
@@ -67,20 +69,19 @@ void Lexer::parsString()
 	if (value.length() == 1) t->setToken("char");
 	else t->setToken("string");
 
-	t->printToken();
+	return t;
 }
 
 void Lexer::printError(string s)
 {
-	TokenError *t = new TokenError(lexLine, lexCol, s);
+	TokenError *t = new TokenError(lexLine, col, s);
 	t->printToken();
 	done();
 }
 
 void Lexer::nextChar()
 {
-	lexText += ch;
-	if ((ch = fin.get()) != EOF)
+	if (ch != EOF)
 	{
 		if (ch == '\n')
 		{
@@ -90,11 +91,12 @@ void Lexer::nextChar()
 		else if (ch == '\t') col = (col / 4 + 1) * 4;
 		else col++;
 	}
-	else
+	lexText += ch;
+	ch = fin.get();
+	if (ch == EOF)
 	{
-		col++;
+		ch = '~';
 		done();
-		endFile = true;
 	}
 }
 
@@ -126,7 +128,7 @@ void Lexer::nextLexem()
 	{
 		nextChar();
 		while (isHex(ch)) nextChar();
-		parsHex();
+		return parsHex(lexText);
 	}
 	else if (isSep(ch))
 	{
@@ -163,10 +165,13 @@ void Lexer::nextLexem()
 	}
 	else if (!endFile)
 	{
-		nextChar();
 		done();
 		printError("BadChar");
 	}
+	//else if (endFile && ch == '~')
+	//{
+	//	done();
+	//}
 	/*else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
