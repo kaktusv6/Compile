@@ -23,16 +23,6 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-bool Lexer::checkKeyword(string text)
-{
-	return (strToken.find(text) != strToken.end() ? true : false );
-}
-
-bool Lexer::checkOperation(string text)
-{
-	return (strToken.find(text) != strToken.end() ? true : false );
-}
-
 Token* Lexer::parsHex(string text)
 {
 	if (lexText.length() > 1)
@@ -112,7 +102,11 @@ Token*Lexer::nextToken()
 	if (fromAtoZ(ch) || ch == '_')
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-		return checkKeyword(lexText);
+		if (checkKeyword(lexText))
+		{
+			return new Token(lexLine, lexCol, "keyword", lexText);
+		}
+		return new Token(lexLine, lexCol, "ident", lexText);
 	}
 	else if (from0to9(ch))
 	{

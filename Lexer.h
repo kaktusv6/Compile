@@ -51,9 +51,16 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
-	bool checkKeyword(string);
-	bool checkOperation(string);
 	
+	bool checkKeyword(string text)
+	{
+		return (strToken.find(text) != strToken.end() ? true : false);
+	}
+	bool checkOperation(string text)
+	{
+		return (strToken.find(text) != strToken.end() ? true : false);
+	}
+
 	void nextChar();
 	void PassWhiteSpaces()
 	{
