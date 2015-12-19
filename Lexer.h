@@ -21,13 +21,16 @@ private:
 	string value;
 	string buffer;
 
-	bool fromAtoZ(char c)
-	{
-		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
-	}
+	int parsHex(string);
+	Token* parsInteger(string);
+
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
+	}
+	bool fromAtoZ(char c)
+	{
+		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
 	}
 	bool errorString(char c)
 	{
@@ -67,8 +70,6 @@ private:
 		endFile = true;
 	}
 	
-	Token* parsHex(string);
-	Token* parsInteger(string);
 	Token* parsString(string);
 	Token* creatError(string);
 public:

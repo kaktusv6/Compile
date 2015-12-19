@@ -1,16 +1,16 @@
 #include "Lexer.h"
 
-#define DIG "0123456789ABCDEF"
+//#define DIG "0123456789ABCDEF"
 
 static ifstream fin("input.txt");
 
-int Atoi(string s){
-	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
-	int i, p = 16, a = 0, digit[256] = { 0 };
-	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
-	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
-	return a;
-}
+//int Atoi(string s){
+//	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
+//	int i, p = 16, a = 0, digit[256] = { 0 };
+//	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
+//	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
+//	return a;
+//}
 
 using namespace std;
 
@@ -23,18 +23,13 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-Token* Lexer::parsHex(string text)
+int Lexer::parsHex(string text)
 {
-	if (lexText.length() > 1)
-	{
-		text.erase(0, 1);
-		int valueInt = Atoi(text);
-		return new TokenValue<int>(lexLine, lexCol, "hex", text, valueInt);
-	}
-	else
-	{
-		return new TokenError(lexLine, col, "NoHex");
-	}
+	text.erase(0, 1);
+	int b;
+	istringstream str(text);
+	str >> hex >> b;
+	return b;
 }
 Token* Lexer::parsInteger(string text)
 {
@@ -117,7 +112,11 @@ Token*Lexer::nextToken()
 	{
 		nextChar();
 		while (isHex(ch)) nextChar();
-		return parsHex(lexText);
+		if (lexText.length() > 1) 
+		{
+			return new TokenValue<int>(lexLine, lexCol, "hex", lexText, parsHex(lexText));
+		}
+		return creatError("NoHex");
 	}
 	else if (isSep(ch))
 	{
@@ -144,11 +143,7 @@ Token*Lexer::nextToken()
 	else if (isOperation(ch))
 	{
 		nextChar();
-		if (checkLexem(lexText + ch))
-		{
-			nextChar();
-			return new Token(lexLine, lexCol, strToken[lexText], lexText);
-		}
+		if (checkLexem(lexText + ch)) { nextChar(); }
 		return new Token(lexLine, lexCol, strToken[lexText], lexText);
 	}
 	else if (!endFile)
