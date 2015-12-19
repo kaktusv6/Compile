@@ -51,6 +51,8 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
+	bool checkKeyword(string);
+	bool checkOperation(string);
 	
 	void nextChar();
 	void PassWhiteSpaces()
@@ -62,13 +64,9 @@ private:
 		endFile = true;
 	}
 	
-	bool checkKeyword(string);
-	Token* checkOperation(string);
-
 	Token* parsHex(string);
 	Token* parsInteger(string);
 	Token* parsString(string);
-
 	Token* creatError(string);
 public:
 

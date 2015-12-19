@@ -30,10 +30,7 @@ bool Lexer::checkKeyword(string text)
 
 bool Lexer::checkOperation(string text)
 {
-	Token *t = new Token(lexLine, lexCol, "", text);
-	map<string, string>::iterator i = strToken.find(text);
-	if (i != strToken.end()) { t->setToken(i->second); }
-	return t;
+	return (strToken.find(text) != strToken.end() ? true : false );
 }
 
 Token* Lexer::parsHex(string text)
