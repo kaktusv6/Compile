@@ -1,12 +1,10 @@
 #ifndef LEXER_H
 #define LEXER_H
 #include <sstream>
-
-#include "Token.h"
 #include "Lexem.h"
+#include "Token.h"
 
 using namespace std;
-
 class Lexer
 {
 private:
@@ -22,8 +20,6 @@ private:
 	string lexText;
 	string value;
 	string buffer;
-
-
 
 	bool fromAtoZ(char c)
 	{
@@ -56,7 +52,6 @@ private:
 		else return false;
 	}
 	
-
 	void nextChar();
 	void PassWhiteSpaces()
 	{
@@ -65,7 +60,6 @@ private:
 	void done()
 	{
 		endFile = true;
-		fin.close();
 	}
 	
 	Token* checkKeyword(string);
@@ -79,9 +73,24 @@ private:
 public:
 
 	Lexer();
-
 	Token* nextToken();
 	bool getEndFile() { return endFile; }
 };
+
+//if (ch == '\''){
+//	nextChar();
+//	do{
+//		if (ch == '\'' && nextChar == '\'') continue;
+//		else if (endFile) { 
+//			return Error(); 
+//		}
+//		else if (ch == '\n') {
+//			return Error();
+//		}
+//		nextChar();
+//
+//	} while (ch =='\'')
+//}
+
 
 #endif // LEXER

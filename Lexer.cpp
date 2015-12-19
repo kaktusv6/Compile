@@ -2,6 +2,8 @@
 
 #define DIG "0123456789ABCDEF"
 
+static ifstream fin("input.txt");
+
 int Atoi(string s){
 	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
 	int i, p = 16, a = 0, digit[256] = { 0 };
@@ -59,7 +61,11 @@ Token* Lexer::parsHex(string text)
 Token* Lexer::parsInteger(string text)
 {
 	int integer = atoi(text.c_str());
-	Token *t = new TokenValue<int>(lexLine, lexCol, "integer", text, integer);
+	TokenValue<int> *t = new TokenValue<int>(lexLine,
+		lexCol,
+		"integer",
+		text,
+		integer);
 	return t;
 }
 Token* Lexer::parsString(string text)
@@ -69,14 +75,11 @@ Token* Lexer::parsString(string text)
 	
 	for (int i = 0; i < text.length(); i++)
 	{
-		if (text[i] == '\'')
-		{
-			text.erase(i, 1);
-			i++;
-		}
+		if (text[i] == '\'') { text.erase(i, 1); }
 	}
 
-	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol, "", lexText, text);
+	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol,
+													"", text, value);
 	if (value.length() == 1) t->setToken("char");
 	else t->setToken("string");
 
