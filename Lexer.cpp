@@ -121,9 +121,13 @@ Token*Lexer::nextToken()
 		{
 			nextChar();
 			while (isHex(ch)) nextChar();
-			if (lexText.length() > 2){ true; }
+			if (lexText.length() > 2)
 			{
-				return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)parsHex(lexText));
+				if (isCodeChar(parsHex(lexText)))
+				{
+					return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)parsHex(lexText));
+				}
+				return creatError("NoCC");
 			}
 			return creatError("NoHex");
 		}
