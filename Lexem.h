@@ -7,6 +7,7 @@
 using namespace std;
 
 static map <string, string> strToken;
+
 static vector<char> opChar;
 static vector<char> sepChar;
 

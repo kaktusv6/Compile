@@ -14,20 +14,20 @@ private:
 	int lexLine;
 	int lexCol;
 
+	char ch;
+	
 	string lexText;
 	string value;
 	string buffer;
 
-	char ch;
-
 	bool endFile;
+
 	/*void checkOperation(string lexText)
 	{
 	map<string, string>::iterator i = strToken.find(lexText);
 	if (i != strToken.end()) tokStr = i->second;
 	else tokStr = "BadChar";
 	}*/
-	
 
 	bool fromAtoZ(char c)
 	{
@@ -39,7 +39,7 @@ private:
 	}
 	bool errorString(char c)
 	{
-		return ch == '\n' && endFile;
+		return ch == '\n' || endFile;
 	}
 	bool isHex(char c)
 	{
@@ -76,9 +76,10 @@ private:
 		endFile = true;
 		fin.close();
 	}
+	void printError(string);
 public:
-
 	Lexer();
+
 	void nextLexem();
 	bool getEndFile() { return endFile; }
 };

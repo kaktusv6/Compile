@@ -20,16 +20,14 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-void Lexer::parsInteger()
+void Lexer::checkKeyword()
 {
-	int integer = atoi(lexText.c_str());
-	TokenValue<int> *t = new TokenValue<int>(lexLine,
-		lexCol,
-		lexText,
-		"integer",
-		integer);
-	t->printToken();
+	Token t(lexLine, lexCol, "ident", lexText);
+	map<string, string>::iterator i = strToken.find(lexText);
+	if (i != strToken.end()) t.setToken( i->second );
+	t.printToken();
 }
+
 void Lexer::parsHex()
 {
 	if (lexText.length() > 1)
@@ -40,11 +38,17 @@ void Lexer::parsHex()
 		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", lexText, valueInt);
 		t->printToken();
 	}
-	else
-	{
-		TokenError *e = new TokenError(line, col, "NoHex");
-		e->printToken();
-	}
+	else printError("NoHex");
+}
+void Lexer::parsInteger()
+{
+	int integer = atoi(lexText.c_str());
+	TokenValue<int> *t = new TokenValue<int>(lexLine,
+		lexCol,
+		lexText,
+		"integer",
+		integer);
+	t->printToken();
 }
 void Lexer::parsString()
 {
@@ -65,12 +69,12 @@ void Lexer::parsString()
 
 	t->printToken();
 }
-void Lexer::checkKeyword()
+
+void Lexer::printError(string s)
 {
-	Token t(lexLine, lexCol, "ident", lexText);
-	map<string, string>::iterator i = strToken.find(lexText);
-	if (i != strToken.end()) t.setToken( i->second );
-	t.printToken();
+	TokenError *t = new TokenError(lexLine, lexCol, s);
+	t->printToken();
+	done();
 }
 
 void Lexer::nextChar()
@@ -146,16 +150,14 @@ void Lexer::nextLexem()
 			if (endFile)
 			{
 				done();
-				TokenError *t = new TokenError(lexLine, col + 1, "BadEOF");
-				t->printToken();
+				printError("BadEOF");
 			}
 			else if (ch == '\n')
 			{
 				done();
-				TokenError *t = new TokenError(lexLine, col + 1, "BadNL");
-				t->printToken();
+				printError("BadNL");
 			}
-			nextChar();
+			else nextChar();
 		}
 		if (!errorString(ch)) parsString();
 	}
@@ -163,8 +165,7 @@ void Lexer::nextLexem()
 	{
 		nextChar();
 		done();
-		TokenError *t = new TokenError(lexLine, lexCol, "BadChar");
-		t->printToken();
+		printError("BadChar");
 	}
 	/*else if (from0to9(ch))
 	{
