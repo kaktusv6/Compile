@@ -3,21 +3,18 @@
 
 #include<map>
 #include<vector>
-
+#include "Lexer.h"
 using namespace std;
 
-static map <string, string> strToken;
-
-static vector<char> opChar;
-static vector<char> sepChar;
+Lexer *l = new Lexer();
 
 static void addKeyword(string s)
 {
-	strToken[s] = "keyword";
+	l->strToken[s] = "keyword";
 }
 static void addOperation(string s)
 {
-	strToken[s] = "op";
+	l->strToken[s] = "op";
 }
 static void addSeparators(string s)
 {

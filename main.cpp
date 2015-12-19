@@ -7,9 +7,11 @@ int main()
 {
 	initMaps();
 	Lexer *l = new Lexer();
+	Token *t;
 	while (!l->getEndFile() && !fin.eof())
 	{
-		l->nextToken()->printToken();
+		t = l->nextToken();
+		if (t != NULL) t->printToken();
 	}
 	return 0;
 }

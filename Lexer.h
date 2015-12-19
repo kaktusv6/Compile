@@ -14,14 +14,19 @@ private:
 	int lexLine;
 	int lexCol;
 
+	bool endFile;
+
 	char ch;
 	
 	string lexText;
 	string value;
 	string buffer;
 
-	bool endFile;
 
+	static vector<char> opChar;
+	static vector<char> sepChar;
+
+	static map <string, string> strToken;
 	/*void checkOperation(string lexText)
 	{
 	map<string, string>::iterator i = strToken.find(lexText);
@@ -66,16 +71,16 @@ private:
 	{
 		while (ch == ' ' || ch == '\n' || ch == '\t') nextChar();
 	}
-
-	Token* parsHex(string);
-	Token* parsInteger(string);
-	Token* parsString(string);
-
 	void done()
 	{
 		endFile = true;
 		fin.close();
 	}
+
+	Token* parsHex(string);
+	Token* parsInteger(string);
+	Token* parsString(string);
+
 	Token* creatError(string);
 public:
 	Lexer();
