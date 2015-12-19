@@ -146,7 +146,8 @@ Token*Lexer::nextToken()
 		nextChar();
 		if (checkLexem(lexText + ch))
 		{
-			return new Token(lexLine, lexCol, strToken[lexText + ch], lexText + ch);
+			nextChar();
+			return new Token(lexLine, lexCol, strToken[lexText], lexText);
 		}
 		return new Token(lexLine, lexCol, strToken[lexText], lexText);
 	}
