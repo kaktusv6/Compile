@@ -104,7 +104,6 @@ void Lexer::nextChar()
 		done();
 	}
 }
-
 Token*Lexer::nextToken()
 {
 	PassWhiteSpaces();
@@ -157,13 +156,14 @@ Token*Lexer::nextToken()
 			else if (ch == '\n') return creatError("BadNL");
 			else nextChar();
 		}
-		if (!errorString(ch)) return parsString(lexText);
+		return parsString(lexText);
 	}
 	else if (!endFile)
 	{
 		done();
-		creatError("BadChar");
+		return creatError("BadChar");
 	}
+	return NULL;
 	//else if (endFile && ch == '~')
 	//{
 	//	done();
