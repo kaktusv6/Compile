@@ -28,8 +28,8 @@ Token* Lexer::checkKeyword(string text)
 	if (i != strToken.end())
 	{
 		t->setToken(i->second);
-		return t;
 	}
+	return t;
 }
 
 Token* Lexer::checkOperation(string text)
@@ -44,6 +44,7 @@ Token* Lexer::parsHex(string text)
 {
 	if (lexText.length() > 1)
 	{
+		text.erase(0, 1);
 		int valueInt = Atoi(text);
 		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol,
 											"hex", text, valueInt);
@@ -52,36 +53,30 @@ Token* Lexer::parsHex(string text)
 	else
 	{
 		TokenError *error = new TokenError(lexLine, col, "NoHex");
+		return error;
 	}
 }
 Token* Lexer::parsInteger(string text)
 {
 	int integer = atoi(text.c_str());
-	TokenValue<int> *t = new TokenValue<int>(lexLine,
-		lexCol,
-		text,
-		"integer",
-		integer);
+	Token *t = new TokenValue<int>(lexLine, lexCol, "integer", text, integer);
 	return t;
 }
 Token* Lexer::parsString(string text)
 {
-	value = text;
-
-	value.erase(0, 1);
-	value.erase(value.length()-1, 1);
+	text.erase(0, 1);
+	text.erase(value.length()-1, 1);
 	
-	for (int i = 0; i < value.length(); i++)
+	for (int i = 0; i < text.length(); i++)
 	{
-		if (value[i] == '\'')
+		if (text[i] == '\'')
 		{
-			value.erase(i, 1);
+			text.erase(i, 1);
 			i++;
 		}
 	}
 
-	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol,
-													"", text, value);
+	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol, "", lexText, text);
 	if (value.length() == 1) t->setToken("char");
 	else t->setToken("string");
 

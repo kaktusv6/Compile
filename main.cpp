@@ -9,7 +9,10 @@ int main()
 	while (!l->getEndFile() && !fin.eof())
 	{
 		t = l->nextToken();
-		if (t != NULL) t->printToken();
+		if (t != NULL)
+		{
+			t->printToken();
+		}
 	}
 	return 0;
 }

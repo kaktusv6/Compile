@@ -74,11 +74,11 @@ inline void TokenValue<Value>::setValue(Value v)
 template<class Value>
 inline void TokenValue<Value>::printToken()
 {
-	fout << lexLine << '\t'
-		<< lexCol << '\t'
-		<< token << '\t'
-		<< lexText << '\t'
-		<< valueToken << '\n';
+	fout <<this->lexLine << '\t'
+		<< this->lexCol << '\t'
+		<< this->token << '\t'
+		<< this->lexText << '\t'
+		<< this->valueToken << '\n';
 }
 
 //template<>

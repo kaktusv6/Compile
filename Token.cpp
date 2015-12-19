@@ -13,10 +13,10 @@ Token::Token(int line, int col, string token, string text)
 
 void Token::printToken()
 {
-	fout << lexLine << '\t'
-		<< lexCol << '\t'
-		<< token << '\t'
-		<< lexText << '\n';
+	fout <<this->lexLine << '\t'
+		<< this->lexCol << '\t'
+		<< this->token << '\t'
+		<< this->lexText << '\n';
 }
 
 void Token::setToken(string s)
