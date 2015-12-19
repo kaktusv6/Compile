@@ -72,11 +72,11 @@ Token* Lexer::parsString()
 	return t;
 }
 
-void Lexer::printError(string s)
+Token* Lexer::creatError(string s)
 {
-	TokenError *t = new TokenError(lexLine, col, s);
-	t->printToken();
 	done();
+	TokenError *t = new TokenError(lexLine, col, s);
+	return t;
 }
 
 void Lexer::nextChar()
@@ -100,7 +100,7 @@ void Lexer::nextChar()
 	}
 }
 
-void Lexer::nextLexem()
+Token*Lexer::nextToken()
 {
 	PassWhiteSpaces();
 
@@ -149,16 +149,8 @@ void Lexer::nextLexem()
 		{
 			nextChar();
 			while (ch != '\'' && !errorString(ch)) nextChar();
-			if (endFile)
-			{
-				done();
-				printError("BadEOF");
-			}
-			else if (ch == '\n')
-			{
-				done();
-				printError("BadNL");
-			}
+			if (endFile) creatError("BadEOF");
+			else if (ch == '\n') creatError("BadNL");
 			else nextChar();
 		}
 		if (!errorString(ch)) parsString();
