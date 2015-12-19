@@ -1,6 +1,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 #include <sstream>
+
 #include "Token.h"
 #include "Lexem.h"
 
@@ -23,10 +24,6 @@ private:
 	string buffer;
 
 
-	static vector<char> opChar;
-	static vector<char> sepChar;
-
-	static map <string, string> strToken;
 	/*void checkOperation(string lexText)
 	{
 	map<string, string>::iterator i = strToken.find(lexText);
@@ -83,6 +80,7 @@ private:
 
 	Token* creatError(string);
 public:
+
 	Lexer();
 
 	Token* nextToken();

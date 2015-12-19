@@ -3,45 +3,39 @@
 
 #include<map>
 #include<vector>
-#include "Lexer.h"
+
 using namespace std;
 
-Lexer *l = new Lexer();
+static map <string, string> strToken;
+
+static vector<char> opChar;
+static vector<char> sepChar;
 
 static void addKeyword(string s)
 {
-	l->strToken[s] = "keyword";
+	strToken[s] = "keyword";
 }
 static void addOperation(string s)
 {
-	l->strToken[s] = "op";
+	strToken[s] = "op";
 }
 static void addSeparators(string s)
 {
 	strToken[s] = "sep";
 }
-static void addOperationInKeywordMap(string s)
-{
-	strToken[s] = "op";
-}
 static void addSeparator(string s)
 {
 	strToken[s] = "sep";
 }
+static void addOpChar(char c)
+{
+	opChar.push_back(c);
+}
+static void addSepChar(char c)
+{
+	sepChar.push_back(c);
+}
 
-static void initOpChar()
-{
-	opChar.push_back('+'), opChar.push_back('-'), opChar.push_back('*'), opChar.push_back('^'), opChar.push_back('/'),
-		opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('<'), opChar.push_back('>'), opChar.push_back('='),
-		opChar.push_back('<'), opChar.push_back(':'), opChar.push_back('@'), opChar.push_back('.');
-}
-static void initSepChar()
-{
-	sepChar.push_back('('), sepChar.push_back(')'),
-		sepChar.push_back('['), sepChar.push_back(']'),
-		sepChar.push_back(';'), sepChar.push_back(':'),
-		sepChar.push_back(',');
-}
 static void initMaps()
 {
 	addKeyword("begin"), addKeyword("forward"), addKeyword("do"),
@@ -52,8 +46,8 @@ static void initMaps()
 		addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"),
 		addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
 
-	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"),
-		addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
+	addOperation("and"), addOperation("div"), addOperation("mod"),
+		addOperation("not"), addOperation("or"), addOperation("xor");
 
 	addOperation("+"), addOperation("-"), addOperation("*"), addOperation("/"),
 		addOperation("^"), addOperation("+="), addOperation("-="), addOperation("*="),
@@ -64,9 +58,16 @@ static void initMaps()
 	addSeparator("("), addSeparator(")"), addSeparator("["), addSeparator("]"), addSeparator(";"),
 		addSeparator(":"), addSeparator(".."), addSeparator(",");
 
+	addOpChar('+'), addOpChar('-'), addOpChar('*'), addOpChar('^'), addOpChar('/'),
+		addOpChar('<'), addOpChar('>'), addOpChar('<'), addOpChar('>'), addOpChar('='),
+		addOpChar('<'), addOpChar(':'), addOpChar('@'), addOpChar('.');
+
+	addSepChar('('), addSepChar(')'),
+		addSepChar('['), addSepChar(']'),
+		addSepChar(';'), addSepChar(':'),
+		addSepChar(',');
+
 	strToken["//"] = "singlelineComment";
-	initOpChar();
-	initSepChar();
 }
 
 #endif // LEXEM
