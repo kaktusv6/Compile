@@ -62,7 +62,7 @@ private:
 		endFile = true;
 	}
 	
-	Token* checkKeyword(string);
+	bool checkKeyword(string);
 	Token* checkOperation(string);
 
 	Token* parsHex(string);

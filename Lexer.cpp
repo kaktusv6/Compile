@@ -23,22 +23,16 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-Token* Lexer::checkKeyword(string text)
+bool Lexer::checkKeyword(string text)
 {
-	Token *t = new Token(lexLine, lexCol, "ident", text);
-	map<string, string>::iterator i = strToken.find(text);
-	if (i != strToken.end())
-	{
-		t->setToken(i->second);
-	}
-	return t;
+	return (strToken.find(text) != strToken.end() ? true : false );
 }
 
-Token* Lexer::checkOperation(string text)
+bool Lexer::checkOperation(string text)
 {
 	Token *t = new Token(lexLine, lexCol, "", text);
 	map<string, string>::iterator i = strToken.find(text);
-	if (i != strToken.end()) t->setToken(i->second);
+	if (i != strToken.end()) { t->setToken(i->second); }
 	return t;
 }
 
@@ -48,25 +42,17 @@ Token* Lexer::parsHex(string text)
 	{
 		text.erase(0, 1);
 		int valueInt = Atoi(text);
-		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol,
-											"hex", text, valueInt);
-		return t;
+		return new TokenValue<int>(lexLine, lexCol, "hex", text, valueInt);
 	}
 	else
 	{
-		TokenError *error = new TokenError(lexLine, col, "NoHex");
-		return error;
+		return new TokenError(lexLine, col, "NoHex");
 	}
 }
 Token* Lexer::parsInteger(string text)
 {
 	int integer = atoi(text.c_str());
-	TokenValue<int> *t = new TokenValue<int>(lexLine,
-		lexCol,
-		"integer",
-		text,
-		integer);
-	return t;
+	return new TokenValue<int>(lexLine, lexCol, "integer", text, integer);
 }
 Token* Lexer::parsString(string text)
 {
@@ -89,8 +75,7 @@ Token* Lexer::parsString(string text)
 Token* Lexer::creatError(string s)
 {
 	done();
-	TokenError *t = new TokenError(lexLine, col, s);
-	return t;
+	return new TokenError(lexLine, col, s);
 }
 
 void Lexer::nextChar()
@@ -146,8 +131,7 @@ Token*Lexer::nextToken()
 	else if (isSep(ch))
 	{
 		nextChar();
-		Token *t = new Token(lexLine, lexCol, "sep", lexText );
-		return t;
+		return new Token(lexLine, lexCol, "sep", lexText);
 	}
 	else if (ch == '{')
 	{

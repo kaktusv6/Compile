@@ -19,10 +19,13 @@ protected:
 	string token;
 public:
 	static ofstream fout;
-	void setToken(string);
-	string getToken();
+
 	Token(int line, int col, string token, string text);
+	
+	string getToken();
+
 	virtual void printToken();
+	void setToken(string);
 };
 
 template<class Value>
@@ -33,8 +36,8 @@ protected:
 
 public:
 	TokenValue(int line, int col, string text, string token, Value value)
-		:Token(line, col, text, token),
-		valueToken(value) { }
+											:Token(line, col, text, token),
+											valueToken(value) { }
 	
 	void setValue(Value v);
 	void printToken();
@@ -48,8 +51,8 @@ protected:
 
 public:
 	TokenValue(int line, int col, string text, string token, double value)
-		:Token(line, col, text, token),
-		valueToken(value) {}
+											:Token(line, col, text, token),
+											valueToken(value) {}
 
 	void setValue(double v);
 	void printTokenValue();
@@ -64,10 +67,7 @@ public:
 };
 
 template<class Value>
-inline void TokenValue<Value>::setValue(Value v)
-{
-	valueToken = v;
-}
+inline void TokenValue<Value>::setValue(Value v) { valueToken = v; }
 
 template<class Value>
 inline void TokenValue<Value>::printToken()
