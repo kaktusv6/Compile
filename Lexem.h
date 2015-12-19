@@ -36,7 +36,7 @@ static void addSepChar(char c)
 	sepChar.push_back(c);
 }
 
-static void initMaps()
+static void initialize()
 {
 	addKeyword("begin"), addKeyword("forward"), addKeyword("do"),
 		addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"),

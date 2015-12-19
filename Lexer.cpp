@@ -16,7 +16,7 @@ stringstream ss;
 
 Lexer::Lexer() : line(1), col(0), endFile(false)
 {
-	initMaps();
+	initialize();
 	buffer.clear();
 	nextChar();
 }
