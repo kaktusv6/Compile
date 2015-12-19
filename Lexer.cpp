@@ -102,9 +102,9 @@ Token*Lexer::nextToken()
 	if (fromAtoZ(ch) || ch == '_')
 	{
 		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
-		if (checkKeyword(lexText))
+		if (checkLexem(lexText))
 		{
-			return new Token(lexLine, lexCol, "keyword", lexText);
+			return new Token(lexLine, lexCol, strToken[lexText], lexText);
 		}
 		return new Token(lexLine, lexCol, "ident", lexText);
 	}
@@ -144,22 +144,11 @@ Token*Lexer::nextToken()
 	else if (isOperation(ch))
 	{
 		nextChar();
-		Token *t = checkOperation(lexText + ch);
-
-		if (t->getToken() == "")
+		if (checkLexem(lexText + ch))
 		{
-			return checkOperation(lexText);
+			return new Token(lexLine, lexCol, strToken[lexText + ch], lexText + ch);
 		}
-		else if (t->getToken() == "op" || t->getToken() == "sep")
-		{
-			nextChar();
-			return checkOperation(lexText);
-		}
-		else if (t->getToken() == "singlelineComment")
-		{
-			while (ch != '\n' && !endFile) nextChar();
-		}
-		return NULL;
+		return new Token(lexLine, lexCol, strToken[lexText], lexText);
 	}
 	else if (!endFile)
 	{
