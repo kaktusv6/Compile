@@ -22,7 +22,6 @@ private:
 	string buffer;
 
 	int parsHex(string);
-	Token* parsInteger(string);
 
 	bool from0to9(char c)
 	{

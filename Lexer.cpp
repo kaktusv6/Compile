@@ -31,11 +31,6 @@ int Lexer::parsHex(string text)
 	str >> hex >> b;
 	return b;
 }
-Token* Lexer::parsInteger(string text)
-{
-	int integer = atoi(text.c_str());
-	return new TokenValue<int>(lexLine, lexCol, "integer", text, integer);
-}
 Token* Lexer::parsString(string text)
 {
 	text.erase(0, 1);
@@ -106,7 +101,8 @@ Token*Lexer::nextToken()
 	else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
-		return parsInteger(lexText);
+		return new TokenValue<int>(lexLine, lexCol, "integer",
+									lexText, atoi(lexText.c_str()));
 	}
 	else if (ch == '$')
 	{
