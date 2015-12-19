@@ -122,6 +122,10 @@ Token*Lexer::nextToken()
 			nextChar();
 			while (isHex(ch)) nextChar();
 			if (lexText.length() > 2){ true; }
+			{
+				return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)parsHex(lexText));
+			}
+			return creatError("NoHex");
 		}
 		while (from0to9(ch)) nextChar();
 
