@@ -1,72 +1,91 @@
+#ifndef TOKEN_H
+#define TOKEN_H
 
 #include <iostream>
 #include <string>
 #include <map>
-#include <algorithm>
-#include <vector>
+#include <fstream>
 
 using namespace std;
 
-//static map <string, string> separatorsToken;
-//static map <string, string> keywordsToken;
-//static map <string, string> operationToken;
-
-static vector<char> opCharacter = {'+','-','*','^','/','<','>','<','>','=','<',':','@','.'};
-
-map <string, string> separatorsToken;
-map <string, string> keywordsToken;
-map <string, string> operationToken;
-
-static void addKeyword(string s)
-{
-	keywordsToken[s] = "keyword";
-}
-static void addOperation(string s)
-{
-	operationToken[s] = "op";
-}
-static void addSeparators(string s)
-{
-	separatorsToken[s] = "sep";
-}
-static void addOperationInKeywordMap(string s)
-{
-	keywordsToken[s] = "op";
-}
-
-static void initMaps()
-{
-	addKeyword("begin"), addKeyword("forward"), addKeyword("do"), addKeyword("else"), addKeyword("end"), addKeyword("for"), addKeyword("function"), addKeyword("if"), addKeyword("array"), addKeyword("of"), addKeyword("procedure"), addKeyword("program"), addKeyword("record"), addKeyword("then"), addKeyword("to"), addKeyword("type"), addKeyword("var"), addKeyword("while"), addKeyword("break"), addKeyword("continue"), addKeyword("downto"), addKeyword("exit"), addKeyword("repeat"), addKeyword("until");
-
-	addOperationInKeywordMap("and"), addOperationInKeywordMap("div"), addOperationInKeywordMap("mod"), addOperationInKeywordMap("not"), addOperationInKeywordMap("or"), addOperationInKeywordMap("xor");
-
-	addSeparators("+"), addSeparators("-"), addSeparators("*"), addSeparators("/"), addSeparators("^"), addSeparators("+="), addSeparators("-="), addSeparators("*="), addSeparators("/="), addSeparators("<"), addSeparators(">"), addSeparators("<="), addSeparators(">="), addSeparators("="), addSeparators("<>"), addSeparators(":="), addSeparators("@"), addSeparators(".");
-}
-
-static bool toOperation(char c)
-{
-	unsigned i = 0;
-	while (i < opCharacter.size() && c != opCharacter[i]) i++;
-	if (i < opCharacter.size()) return true;
-	else return false;
-}
 
 class Token
 {
-private:
+protected:
+	int lexLine;
+	int lexCol;
 
+	string lexText;
+	string token;
 public:
-	//static map <string, string> separatorsToken;
-	//static map <string, string> keywordsToken;
-	//static map <string, string> operationToken;
-	string tokenString;
-	int f = 0;
+	static ofstream fout;
+
+	Token(int line, int col, string token, string text);
 	
-	Token();
-	void checkKeyword(string lexText);
-	void checkOperation(string lexText);
-	void checkString(string lexText);
+	string getToken();
+
+	virtual void printToken();
+	void setToken(string);
 };
 
+template<class Value>
+class TokenValue : public Token
+{
+protected:
+	Value valueToken;
 
+public:
+	TokenValue(int line, int col, string text, string token, Value value)
+											:Token(line, col, text, token),
+											valueToken(value) { }
+	
+	void setValue(Value v);
+	void printToken();
+};
 
+template<>
+class TokenValue<double> : public Token
+{
+protected:
+	double valueToken;
+
+public:
+	TokenValue(int line, int col, string text, string token, double value)
+											:Token(line, col, text, token),
+											valueToken(value) {}
+
+	void setValue(double v);
+	void printTokenValue();
+};
+
+class TokenError : public Token
+{
+public:
+	TokenError(int line, int col, string text) :Token(line, col, "", text) {}
+	
+	void printToken();
+};
+
+template<class Value>
+inline void TokenValue<Value>::setValue(Value v) { valueToken = v; }
+
+template<class Value>
+inline void TokenValue<Value>::printToken()
+{
+	fout << lexLine << '\t'
+		<< lexCol << '\t'
+		<< token << '\t'
+		<< lexText << '\t'
+		<< valueToken << '\n';
+}
+
+//template<>
+//inline void TokenValue<double>::printTokenValue()
+//{
+//	fout << lexLine << '\t'
+//		<< lexCol << '\t'
+//		<< token << '\t'
+//		<< lexText << '\t'
+//		<< valueToken << '\n';
+//}
+#endif // TOKEN
