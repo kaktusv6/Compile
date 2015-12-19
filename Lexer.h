@@ -53,7 +53,10 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
-	
+	bool isCodeChar(int i)
+	{
+		return i >= 0 && i <= 127;
+	}
 	bool checkLexem(string text)
 	{
 		return (strToken.find(text) != strToken.end() ? true : false);
