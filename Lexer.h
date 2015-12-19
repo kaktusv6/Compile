@@ -76,11 +76,11 @@ private:
 		endFile = true;
 		fin.close();
 	}
-	void printError(string);
+	Token* creatError(string);
 public:
 	Lexer();
 
-	void nextLexem();
+	Token* nextToken();
 	bool getEndFile() { return endFile; }
 };
 

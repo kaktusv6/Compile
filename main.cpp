@@ -9,7 +9,7 @@ int main()
 	Lexer *l = new Lexer();
 	while (!l->getEndFile() && !fin.eof())
 	{
-		l->nextLexem();
+		l->nextToken()->printToken();
 	}
 	return 0;
 }
