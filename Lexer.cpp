@@ -34,7 +34,8 @@ Token* Lexer::parsHex(string text)
 	if (lexText.length() > 1)
 	{
 		int valueInt = Atoi(text);
-		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol, "hex", text, valueInt);
+		TokenValue<int> *t = new TokenValue<int>(lexLine, lexCol,
+											"hex", text, valueInt);
 		return t;
 	}
 	else
@@ -52,20 +53,24 @@ Token* Lexer::parsInteger(string text)
 		integer);
 	return t;
 }
-Token* Lexer::parsString()
+Token* Lexer::parsString(string text)
 {
-	value = lexText;
+	value = text;
 
 	value.erase(0, 1);
 	value.erase(value.length()-1, 1);
 	
 	for (int i = 0; i < value.length(); i++)
 	{
-		if (value[i] == '\'') value.erase(i, 1);
-		i++;
+		if (value[i] == '\'')
+		{
+			value.erase(i, 1);
+			i++;
+		}
 	}
 
-	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol, "", lexText, value);
+	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol,
+													"", text, value);
 	if (value.length() == 1) t->setToken("char");
 	else t->setToken("string");
 
@@ -152,7 +157,7 @@ Token*Lexer::nextToken()
 			else if (ch == '\n') return creatError("BadNL");
 			else nextChar();
 		}
-		if (!errorString(ch)) return parsString();
+		if (!errorString(ch)) return parsString(lexText);
 	}
 	else if (!endFile)
 	{

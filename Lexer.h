@@ -69,7 +69,7 @@ private:
 
 	Token* parsHex(string);
 	Token* parsInteger(string);
-	Token* parsString();
+	Token* parsString(string);
 
 	void done()
 	{
