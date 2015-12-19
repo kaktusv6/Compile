@@ -25,8 +25,8 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 
 int Lexer::parsHex(string text)
 {
+	while (!isHex(text[0])) { text.erase(0, 1); }
 	int b;
-	text.erase(0, 1);
 	istringstream str(text);
 	str >> hex >> b;
 	return b;
