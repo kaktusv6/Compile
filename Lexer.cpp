@@ -25,8 +25,8 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 
 int Lexer::parsHex(string text)
 {
-	text.erase(0, 1);
 	int b;
+	text.erase(0, 1);
 	istringstream str(text);
 	str >> hex >> b;
 	return b;
@@ -113,6 +113,19 @@ Token*Lexer::nextToken()
 			return new TokenValue<int>(lexLine, lexCol, "hex", lexText, parsHex(lexText));
 		}
 		return creatError("NoHex");
+	}
+	else if (ch == '#')
+	{
+		nextChar();
+		if (ch == '$')
+		{
+			nextChar();
+			while (isHex(ch)) nextChar();
+			if (lexText.length() > 2){ true; }
+		}
+		while (from0to9(ch)) nextChar();
+
+		
 	}
 	else if (isSep(ch))
 	{
