@@ -68,7 +68,7 @@ private:
 	}
 
 	Token* parsHex(string);
-	Token* parsInteger();
+	Token* parsInteger(string);
 	Token* parsString();
 
 	void done()

@@ -42,12 +42,12 @@ Token* Lexer::parsHex(string text)
 		TokenError *error = new TokenError(lexLine, col, "NoHex");
 	}
 }
-Token* Lexer::parsInteger()
+Token* Lexer::parsInteger(string text)
 {
-	int integer = atoi(lexText.c_str());
+	int integer = atoi(text.c_str());
 	TokenValue<int> *t = new TokenValue<int>(lexLine,
 		lexCol,
-		lexText,
+		text,
 		"integer",
 		integer);
 	return t;
@@ -122,7 +122,7 @@ Token*Lexer::nextToken()
 	else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
-		parsInteger();
+		return parsInteger(lexText);
 	}
 	else if (ch == '$')
 	{
@@ -141,7 +141,6 @@ Token*Lexer::nextToken()
 	{
 		while (ch != '}') nextChar();
 		nextChar();
-		lexText.clear();
 	}
 	else if (ch == '\'')
 	{
@@ -149,16 +148,16 @@ Token*Lexer::nextToken()
 		{
 			nextChar();
 			while (ch != '\'' && !errorString(ch)) nextChar();
-			if (endFile) creatError("BadEOF");
-			else if (ch == '\n') creatError("BadNL");
+			if (endFile) return creatError("BadEOF");
+			else if (ch == '\n') return creatError("BadNL");
 			else nextChar();
 		}
-		if (!errorString(ch)) parsString();
+		if (!errorString(ch)) return parsString();
 	}
 	else if (!endFile)
 	{
 		done();
-		printError("BadChar");
+		creatError("BadChar");
 	}
 	//else if (endFile && ch == '~')
 	//{
