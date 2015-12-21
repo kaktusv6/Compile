@@ -19,15 +19,11 @@ private:
 	
 	string lexText;
 	string value;
-	string buffer;
+	Token* buffer;
 
-	bool from0to9(char c)
+	bool isExponent(char c)
 	{
-		return (c >= '0' && c <= '9');
-	}
-	bool fromAtoZ(char c)
-	{
-		return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+		return c == 'e' || c == 'E';
 	}
 	bool errorString(char c)
 	{
