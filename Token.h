@@ -5,6 +5,8 @@
 #include <string>
 #include <map>
 #include <fstream>
+//#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
 using namespace std;
 
@@ -39,7 +41,6 @@ public:
 											:Token(line, col, text, token),
 											valueToken(value) { }
 	
-	void setValue(Value v);
 	void printToken();
 };
 
@@ -54,20 +55,8 @@ public:
 											:Token(line, col, text, token),
 											valueToken(value) {}
 
-	void setValue(double v);
-	void printTokenValue();
-};
-
-class TokenError : public Token
-{
-public:
-	TokenError(int line, int col, string text) :Token(line, col, "", text) {}
-	
 	void printToken();
 };
-
-template<class Value>
-inline void TokenValue<Value>::setValue(Value v) { valueToken = v; }
 
 template<class Value>
 inline void TokenValue<Value>::printToken()
@@ -79,13 +68,27 @@ inline void TokenValue<Value>::printToken()
 		<< valueToken << '\n';
 }
 
-//template<>
-//inline void TokenValue<double>::printTokenValue()
-//{
-//	fout << lexLine << '\t'
-//		<< lexCol << '\t'
-//		<< token << '\t'
-//		<< lexText << '\t'
-//		<< valueToken << '\n';
-//}
+inline void TokenValue<double>::printToken()
+{
+	char buf[245];
+	sprintf_s(buf, "%.4E", valueToken);
+	
+	// remove extra digit in exp
+	buf[8] = buf[9]; buf[9] = buf[10]; buf[10] = 0;
+
+	fout << lexLine << '\t'
+		<< lexCol << '\t'
+		<< token << '\t'
+		<< lexText << '\t'
+		<< buf << '\n';
+}
+
+class TokenError : public Token
+{
+public:
+	TokenError(int line, int col, string text) :Token(line, col, "", text) {}
+	
+	void printToken();
+};
+
 #endif // TOKEN
