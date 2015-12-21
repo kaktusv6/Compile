@@ -23,22 +23,13 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-Token* Lexer::parsString(string text)
+string Lexer::parsString(string text)
 {
-	text.erase(0, 1);
-	text.erase(value.length()-1, 1);
-	
 	for (int i = 0; i < text.length(); i++)
 	{
-		if (text[i] == '\'') { text.erase(i, 1); }
+		if (text.at(i) == '\'') { text.erase(i, 1); }
 	}
-
-	TokenValue<string> *t = new TokenValue<string>(lexLine, lexCol,
-													"", text, value);
-	if (value.length() == 1) t->setToken("char");
-	else t->setToken("string");
-
-	return t;
+	return text;
 }
 
 Token* Lexer::creatError(string s)
@@ -126,6 +117,15 @@ Token*Lexer::nextToken()
 			return creatError("NoHex");
 		}
 		while (from0to9(ch)) nextChar();
+		if (lexText.length() > 1)
+		{
+			int value = atoi(lexText.substr(1).c_str());
+			if (isCodeChar(value))
+			{
+				return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)value);
+			}
+		}
+		return creatError("NoCC");
 	}
 	else if (isSep(ch))
 	{
@@ -147,7 +147,11 @@ Token*Lexer::nextToken()
 			else if (ch == '\n') return creatError("BadNL");
 			else nextChar();
 		}
-		return parsString(lexText);
+		string value = parsString(lexText);
+		if (value.length() > 1)
+			return new TokenValue<string>(lexLine, lexCol, "string", lexText, value);
+
+		return new TokenValue<string>(lexLine, lexCol, "char", lexText, value);
 	}
 	else if (isOperation(ch))
 	{

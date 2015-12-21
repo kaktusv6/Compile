@@ -70,7 +70,8 @@ private:
 		endFile = true;
 	}
 	
-	Token* parsString(string);
+	string parsString(string);
+
 	Token* creatError(string);
 public:
 
