@@ -23,11 +23,6 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 	nextChar();
 }
 
-int Lexer::parsHex(string text)
-{
-	while (!isHex(text[0])) { text.erase(0, 1); }
-	return stoll(text, nullptr, 16);
-}
 Token* Lexer::parsString(string text)
 {
 	text.erase(0, 1);
@@ -107,7 +102,8 @@ Token*Lexer::nextToken()
 		while (isHex(ch)) nextChar();
 		if (lexText.length() > 1) 
 		{
-			return new TokenValue<int>(lexLine, lexCol, "hex", lexText, parsHex(lexText));
+			int value = stoll(lexText.substr(1), nullptr, 16);
+			return new TokenValue<int>(lexLine, lexCol, "hex", lexText, value);
 		}
 		return creatError("NoHex");
 	}
@@ -120,17 +116,16 @@ Token*Lexer::nextToken()
 			while (isHex(ch)) nextChar();
 			if (lexText.length() > 2)
 			{
-				if (isCodeChar(parsHex(lexText)))
+				int value = stoll(lexText.substr(2), nullptr, 16);
+				if (isCodeChar(value))
 				{
-					return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)parsHex(lexText));
+					return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)value);
 				}
 				return creatError("NoCC");
 			}
 			return creatError("NoHex");
 		}
 		while (from0to9(ch)) nextChar();
-
-		
 	}
 	else if (isSep(ch))
 	{

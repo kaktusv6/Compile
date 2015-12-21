@@ -21,8 +21,6 @@ private:
 	string value;
 	string buffer;
 
-	int parsHex(string);
-
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
