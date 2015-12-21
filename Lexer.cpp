@@ -70,6 +70,17 @@ Token*Lexer::nextToken()
 		}
 		return new Token(lexLine, lexCol, "ident", lexText);
 	}
+	else if (isOperation(ch))
+	{
+		nextChar();
+		if (lexText + ch == "//")
+		{
+			while (ch != '\n') { nextChar(); }
+			return NULL;
+		}
+		if (checkLexem(lexText + ch)) { nextChar(); }
+		return new Token(lexLine, lexCol, strToken[lexText], lexText);
+	}
 	else if (from0to9(ch))
 	{
 		while (from0to9(ch)) nextChar();
@@ -119,12 +130,31 @@ Token*Lexer::nextToken()
 	else if (isSep(ch))
 	{
 		nextChar();
+		if (ch == '*')
+		{
+			nextChar();
+			while (ch != ')')
+			{
+				while (ch != '*')
+				{
+					nextChar();
+				}
+				nextChar();
+			}
+			nextChar();
+			return NULL;
+		}
 		return new Token(lexLine, lexCol, "sep", lexText);
 	}
 	else if (ch == '{')
 	{
-		while (ch != '}') nextChar();
+		while (ch != '}')
+		{
+			nextChar();
+			if (endFile) { return creatError("BadEOF"); }
+		}
 		nextChar();
+		return NULL;
 	}
 	else if (ch == '\'')
 	{
@@ -141,12 +171,6 @@ Token*Lexer::nextToken()
 			return new TokenValue<string>(lexLine, lexCol, "string", lexText, value);
 
 		return new TokenValue<string>(lexLine, lexCol, "char", lexText, value);
-	}
-	else if (isOperation(ch))
-	{
-		nextChar();
-		if (checkLexem(lexText + ch)) { nextChar(); }
-		return new Token(lexLine, lexCol, strToken[lexText], lexText);
 	}
 	else if (!endFile)
 	{

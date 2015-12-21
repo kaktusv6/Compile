@@ -68,8 +68,6 @@ static void initialize()
 		addSepChar('['), addSepChar(']'),
 		addSepChar(';'), addSepChar(':'),
 		addSepChar(',');
-
-	strToken["//"] = "singlelineComment";
 }
 
 #endif // LEXEM
