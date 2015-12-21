@@ -4,10 +4,9 @@ static ifstream fin("input.txt");
 
 using namespace std;
 
-Lexer::Lexer() : line(1), col(0), endFile(false)
+Lexer::Lexer() : line(1), col(0), endFile(false), buffer(NULL)
 {
 	initialize();
-	buffer.clear();
 	nextChar();
 }
 
@@ -55,15 +54,16 @@ Token*Lexer::nextToken()
 	lexCol = col;
 	lexLine = line;
 
-	if (buffer.length() != 0)
+	if (buffer != NULL)
 	{
-		lexText += buffer;
-		buffer.clear();
+		Token* t = buffer;
+		buffer = NULL;
+		return t;
 	}
 
-	if (fromAtoZ(ch) || ch == '_')
+	if (isalpha(ch) || ch == '_')
 	{
-		while (fromAtoZ(ch) || from0to9(ch) || ch == '_') nextChar();
+		while (isalnum(ch) || ch == '_') nextChar();
 		if (checkLexem(lexText))
 		{
 			return new Token(lexLine, lexCol, strToken[lexText], lexText);
@@ -75,17 +75,76 @@ Token*Lexer::nextToken()
 		nextChar();
 		if (lexText + ch == "//")
 		{
-			while (ch != '\n') { nextChar(); }
+			while (ch != '\n')
+			{
+				nextChar();
+				if (endFile) break;
+			}
 			return NULL;
 		}
 		if (checkLexem(lexText + ch)) { nextChar(); }
 		return new Token(lexLine, lexCol, strToken[lexText], lexText);
 	}
-	else if (from0to9(ch))
+	else if (isdigit(ch))
 	{
-		while (from0to9(ch)) nextChar();
-		return new TokenValue<int>(lexLine, lexCol, "integer",
+		while (isdigit(ch)) nextChar();
+
+		if (ch == '.') nextChar();
+		else if (isExponent(ch))
+		{
+			nextChar();
+			bool chIsOp = ch == '+' || ch == '-';
+			if (chIsOp)
+			{
+				nextChar();
+				if (!isdigit(ch)) return creatError("NoExp");
+				while (isdigit(ch)) nextChar();
+				return new TokenValue<double>(lexLine, lexCol, "real",
+										lexText, atof(lexText.c_str()));
+			}
+			if (!isdigit(ch)) return creatError("NoFract");
+			while (isdigit(ch)) nextChar();
+			return new TokenValue<double>(lexLine, lexCol, "real",
+				lexText, atof(lexText.c_str()));
+		}
+		else 
+		{
+			return new TokenValue<int>(lexLine, lexCol, "integer",
+										lexText, atoi(lexText.c_str()));
+		}
+		if (isdigit(ch))
+		{
+			while (isdigit(ch)) nextChar();
+			if (isExponent(ch))
+			{
+				nextChar();
+				bool chIsOp = ch == '+' || ch == '-';
+				if (chIsOp)
+				{
+					nextChar();
+					if (!isdigit(ch)) return creatError("NoExp");
+					while (isdigit(ch)) nextChar();
+					return new TokenValue<double>(lexLine, lexCol, "real",
+						lexText, atof(lexText.c_str()));
+				}
+				else return creatError("NoExp");
+			}
+			else
+			{
+				return new TokenValue<double>(lexLine, lexCol, "real",
+										lexText, atof(lexText.c_str()));
+			}
+		}
+		if (ch == '.')
+		{
+			buffer = new Token(line, col - 1, "sep", "..");
+			nextChar();
+			lexText.pop_back(), lexText.pop_back();
+			return new TokenValue<int>(lexLine, lexCol, "integer",
 									lexText, atoi(lexText.c_str()));
+		}
+
+		return creatError("NoFract");
 	}
 	else if (ch == '$')
 	{
@@ -110,19 +169,21 @@ Token*Lexer::nextToken()
 				int value = stoll(lexText.substr(2), nullptr, 16);
 				if (isCodeChar(value))
 				{
-					return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)value);
+					return new TokenValue<char>(lexLine, lexCol, "char",
+													lexText, (char)value);
 				}
 				return creatError("NoCC");
 			}
 			return creatError("NoHex");
 		}
-		while (from0to9(ch)) nextChar();
+		while (isdigit(ch)) nextChar();
 		if (lexText.length() > 1)
 		{
 			int value = atoi(lexText.substr(1).c_str());
 			if (isCodeChar(value))
 			{
-				return new TokenValue<char>(lexLine, lexCol, "char", lexText, (char)value);
+				return new TokenValue<char>(lexLine, lexCol, "char",
+												lexText, (char)value);
 			}
 		}
 		return creatError("NoCC");
