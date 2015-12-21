@@ -26,10 +26,7 @@ Lexer::Lexer() : line(1), col(0), endFile(false)
 int Lexer::parsHex(string text)
 {
 	while (!isHex(text[0])) { text.erase(0, 1); }
-	int b;
-	istringstream str(text);
-	str >> hex >> b;
-	return b;
+	return stoll(text, nullptr, 16);
 }
 Token* Lexer::parsString(string text)
 {
