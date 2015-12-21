@@ -1,20 +1,8 @@
 #include "Lexer.h"
 
-//#define DIG "0123456789ABCDEF"
-
 static ifstream fin("input.txt");
 
-//int Atoi(string s){
-//	for (int i = 0; i < s.length(); i++) s[i] = toupper(s[i]);
-//	int i, p = 16, a = 0, digit[256] = { 0 };
-//	for (i = 0; DIG[i]; i++) digit[DIG[i]] = i;
-//	for (i = 1; i < s.length(); i++) a = a * p + digit[s[i]];
-//	return a;
-//}
-
 using namespace std;
-
-stringstream ss;
 
 Lexer::Lexer() : line(1), col(0), endFile(false)
 {
@@ -58,6 +46,7 @@ void Lexer::nextChar()
 		done();
 	}
 }
+
 Token*Lexer::nextToken()
 {
 	PassWhiteSpaces();
@@ -147,7 +136,7 @@ Token*Lexer::nextToken()
 			else if (ch == '\n') return creatError("BadNL");
 			else nextChar();
 		}
-		string value = parsString(lexText);
+		string value = parsString(lexText.substr(1, lexText.length() - 2));
 		if (value.length() > 1)
 			return new TokenValue<string>(lexLine, lexCol, "string", lexText, value);
 
@@ -165,39 +154,4 @@ Token*Lexer::nextToken()
 		return creatError("BadChar");
 	}
 	return NULL;
-	//else if (endFile && ch == '~')
-	//{
-	//	done();
-	//}
-	/*else if (from0to9(ch))
-	{
-		while (from0to9(ch)) nextChar();
-		if (ch == '.')
-		{
-			buffer += ch;
-			nextChar();
-			if (from0to9(ch))
-			{
-				buffer.clear();
-				while (from0to9(ch)) nextChar();
-				tr = "real";
-				valueStr = tok->lexText;
-				s = VAL;
-			}
-			else
-			{
-				tok->lexText.pop_back();
-				tr = "integer";
-				parsInteger(tok->lexText);
-				s = VAL;
-			}
-		}
-		else
-		{
-			tr = "integer";
-			parsInteger(tok->lexText);
-		}
-		s = VAL;
-	}*/
 }
-
