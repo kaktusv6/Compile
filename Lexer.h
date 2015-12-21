@@ -21,8 +21,6 @@ private:
 	string value;
 	string buffer;
 
-	int parsHex(string);
-
 	bool from0to9(char c)
 	{
 		return (c >= '0' && c <= '9');
@@ -53,7 +51,10 @@ private:
 		if (i < sepChar.size()) return true;
 		else return false;
 	}
-	
+	bool isCodeChar(int i)
+	{
+		return i >= 0 && i <= 127;
+	}
 	bool checkLexem(string text)
 	{
 		return (strToken.find(text) != strToken.end() ? true : false);
@@ -69,7 +70,8 @@ private:
 		endFile = true;
 	}
 	
-	Token* parsString(string);
+	string parsString(string);
+
 	Token* creatError(string);
 public:
 
