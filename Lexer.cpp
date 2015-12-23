@@ -34,7 +34,7 @@ void Lexer::nextChar()
 			line++;
 			col = 1;
 		}
-		else if (ch == '\t') col = (col / 4 + 1) * 4;
+		else if (ch == '\t') col = (((col - 1) / 4) + 1) * 4 + 1;
 		else col++;
 	}
 	lexText += ch;
