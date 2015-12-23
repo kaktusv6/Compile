@@ -20,6 +20,7 @@ private:
 	
 	string lexText;
 	string value;
+
 	Token* buffer;
 
 	bool isExponent(char c)
@@ -71,9 +72,11 @@ private:
 
 	Token* creatError(string);
 public:
-
 	Lexer();
+
 	Token* nextToken();
+	Token* getBuffer() { return buffer; }
+
 	bool getEndFile() { return endFile; }
 };
 
