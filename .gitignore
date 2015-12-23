@@ -9,5 +9,5 @@
 /resource.h
 /Компилятор.APS
 /Компилятор.rc
-Token.h
-Token.cpp
+mainCode.cpp
+lib.cpp
