@@ -74,6 +74,8 @@ private:
 public:
 	Lexer();
 
+	void setBuffer(Token * t) { buffer = t; }
+	
 	Token* nextToken();
 	Token* getBuffer() { return buffer; }
 
