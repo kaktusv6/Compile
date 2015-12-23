@@ -102,7 +102,7 @@ Token*Lexer::nextToken()
 				return new TokenValue<double>(lexLine, lexCol, "real",
 										lexText, atof(lexText.c_str()));
 			}
-			if (!isdigit(ch)) return creatError("NoFract");
+			if (!isdigit(ch)) return creatError("NoExp");
 			while (isdigit(ch)) nextChar();
 			return new TokenValue<double>(lexLine, lexCol, "real",
 				lexText, atof(lexText.c_str()));
@@ -125,9 +125,12 @@ Token*Lexer::nextToken()
 					if (!isdigit(ch)) return creatError("NoExp");
 					while (isdigit(ch)) nextChar();
 					return new TokenValue<double>(lexLine, lexCol, "real",
-						lexText, atof(lexText.c_str()));
+							lexText, atof(lexText.c_str()));
 				}
-				else return creatError("NoExp");
+				if (!isdigit(ch)) return creatError("NoFract");
+				while (isdigit(ch)) nextChar();
+				return new TokenValue<double>(lexLine, lexCol, "real",
+							lexText, atof(lexText.c_str()));
 			}
 			else
 			{
