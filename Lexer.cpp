@@ -22,7 +22,7 @@ string Lexer::parsString(string text)
 Token* Lexer::creatError(string s)
 {
 	done();
-	return new TokenError(lexLine, col, s);
+	return new TokenError(line, col, s);
 }
 
 void Lexer::nextChar()
@@ -127,7 +127,7 @@ Token*Lexer::nextToken()
 					return new TokenValue<double>(lexLine, lexCol, "real",
 							lexText, atof(lexText.c_str()));
 				}
-				if (!isdigit(ch)) return creatError("NoFract");
+				if (!isdigit(ch)) return creatError("NoExp");
 				while (isdigit(ch)) nextChar();
 				return new TokenValue<double>(lexLine, lexCol, "real",
 							lexText, atof(lexText.c_str()));
