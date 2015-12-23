@@ -1,10 +1,9 @@
 #include "Token.h"
-#include "Lexer.h"
-#include "Token.h"
 
 using namespace std;
 
 ofstream Token::fout("output.txt");
+
 Token::Token(int line, int col, string token, string text)
 {
 	this->lexLine = line;

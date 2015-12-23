@@ -175,12 +175,12 @@ Token*Lexer::nextToken()
 					return new TokenValue<char>(lexLine, lexCol, "char",
 													lexText, (char)value);
 				}
-				return creatError("NoCC");
+				return creatError("BadCC");
 			}
 			return creatError("NoHex");
 		}
 		while (isdigit(ch)) nextChar();
-		if (lexText.length() > 1)
+		if (lexText.length() != 1)
 		{
 			int value = atoi(lexText.substr(1).c_str());
 			if (isCodeChar(value))
@@ -188,22 +188,24 @@ Token*Lexer::nextToken()
 				return new TokenValue<char>(lexLine, lexCol, "char",
 												lexText, (char)value);
 			}
+			return creatError("BadCC");
 		}
 		return creatError("NoCC");
 	}
 	else if (isSep(ch))
 	{
 		nextChar();
-		if (ch == '*')
+		if (lexText + ch == "(*")
 		{
-			nextChar();
 			while (ch != ')')
 			{
 				while (ch != '*')
 				{
 					nextChar();
+					if (endFile) return creatError("BadEOF");
 				}
 				nextChar();
+				if (endFile) return creatError("BadEOF");
 			}
 			nextChar();
 			return NULL;
@@ -231,7 +233,7 @@ Token*Lexer::nextToken()
 			else nextChar();
 		}
 		string value = parsString(lexText.substr(1, lexText.length() - 2));
-		if (value.length() > 1)
+		if (value.length() != 1)
 			return new TokenValue<string>(lexLine, lexCol, "string", lexText, value);
 
 		return new TokenValue<string>(lexLine, lexCol, "char", lexText, value);

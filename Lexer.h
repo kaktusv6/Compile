@@ -5,6 +5,7 @@
 #include "Token.h"
 
 using namespace std;
+
 class Lexer
 {
 private:
@@ -76,20 +77,5 @@ public:
 	bool getEndFile() { return endFile; }
 };
 
-//if (ch == '\''){
-//	nextChar();
-//	do{
-//		if (ch == '\'' && nextChar == '\'') continue;
-//		else if (endFile) { 
-//			return Error(); 
-//		}
-//		else if (ch == '\n') {
-//			return Error();
-//		}
-//		nextChar();
-//
-//	} while (ch =='\'')
-//}
-
-
+//#include"Lexer.cpp"
 #endif // LEXER

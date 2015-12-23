@@ -1,7 +1,5 @@
-#include <iostream>
-#include <fstream>
-
 #include "Lexer.h"
+
 int main()
 {
 	Lexer *l = new Lexer();
