@@ -54,13 +54,6 @@ Token*Lexer::nextToken()
 	lexCol = col;
 	lexLine = line;
 
-	if (buffer != NULL)
-	{
-		Token* t = buffer;
-		buffer = NULL;
-		return t;
-	}
-
 	if (isalpha(ch) || ch == '_')
 	{
 		while (isalnum(ch) || ch == '_') nextChar();

@@ -8,6 +8,7 @@ int main()
 	{
 		t = l->nextToken();
 		if (t != NULL) { t->printToken(); }
+		if (l->getBuffer() != NULL) { l->getBuffer()->printToken(); }
 	}
 	return 0;
 }
