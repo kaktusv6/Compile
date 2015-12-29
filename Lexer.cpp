@@ -46,10 +46,10 @@ void Lexer::nextChar()
 	}
 }
 
-Token*Lexer::nextToken()
+Token* Lexer::nextToken()
 {
 	PassWhiteSpaces();
-
+	 
 	lexText.clear();
 	lexCol = col;
 	lexLine = line;
