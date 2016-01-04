@@ -10,7 +10,7 @@ using namespace std;
 class Node
 {
 private:
-	Token *expression;
+	string expression;
 	list<Node*> child;
 	//Node *left;
 	//Node *right;
@@ -20,16 +20,16 @@ public:
 	Node() : expression(NULL), parent(NULL)
 	{}
 
-	Node(Token *t) : parent(NULL)
+	Node(string s) : parent(NULL)
 	{
-		expression = t;
+		expression = s;
 	}
 
-	void setExpression(Token* t) { this->expression = t; }
+	void setExpression(string s) { this->expression = s; }
 
 	void setParent(Node *n) { this->parent = n; }
 
-	Token* getExpression() { return this->expression; }
+	string getExpression() { return this->expression; }
 
 	Node* getParent() { return this->parent; }
 };
