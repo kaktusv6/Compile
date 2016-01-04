@@ -8,17 +8,29 @@ void Syntax::takeToken(Token *t)
 {
 	Node *n = new Node(t);
 
-	if (t->getToken() == "integer" && node->getExpression() == NULL)
+	if (t->getToken() == "integer")
 	{
-		node->setLeft(n);
+		if (node->getExpression() == NULL)
+			node->setLeft(n);
+
+		else
+		if (node->getExpression()->getToken() == "op")
+			node->setRight(n);
+
 	}
-	else if (t->getToken() == "op" && node->getExpression() == NULL)
+	else if (t->getToken() == "op")
 	{
-		node->setExpression(t);
-	}
-	else if (t->getToken() == "integer" &&
-				node->getExpression()->getToken() == "op")
-	{
-		node->setRight(n);
+		if (node->getExpression() == NULL)
+			node->setExpression(t);
+		else if (node->getExpression()->getToken() == "op")
+		{
+			if (node->getRight() != NULL)
+			{
+				n->setLeft(node->getRight());
+				node->setRight(n);
+				n->setParent(node);
+				node = n;
+			}
+		}
 	}
 }

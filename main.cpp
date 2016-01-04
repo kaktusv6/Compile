@@ -1,5 +1,6 @@
 #include "Lexer.h"
 #include "Syntax.h"
+
 int main()
 {
 	Lexer *l = new Lexer();
