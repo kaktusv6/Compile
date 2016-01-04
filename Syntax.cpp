@@ -13,12 +13,12 @@ void Syntax::takeToken(Token *t)
 	{
 		if (node->getExpression() == NULL)
 		{
-			node->setLeft(n);
+			//node->setLeft(n);
 		}
 		else
 		if (node->getExpression()->getToken() == "op")
 		{
-			node->setRight(n);
+			//node->setRight(n);
 		}
 
 	}
@@ -30,7 +30,7 @@ void Syntax::takeToken(Token *t)
 		}
 		else if (node->getExpression()->getToken() == "op")
 		{
-			n->setLeft(node);
+			//n->setLeft(node);
 			node->setParent(n);
 			node = n;
 		}
