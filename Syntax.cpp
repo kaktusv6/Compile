@@ -1,12 +1,7 @@
 #include "Syntax.h"
 
-
-
-Syntax::Syntax()
+void Syntax::takeToken(Token *t)
 {
-}
+	Node *n = new Node();
 
-
-Syntax::~Syntax()
-{
 }
