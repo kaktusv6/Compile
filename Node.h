@@ -7,23 +7,26 @@
 
 using namespace std;
 
+enum kind
+{
+	REALAT_OP, ADD_OP, UNARY_OP, MULTI_OP,
+	PRIM_EXPR, ADD_EXPR, UNARY_EXPR, MULTI_EXPR, EXPR
+};
+
 class Node
 {
 private:
 	string expression;
 	list<Node*> child;
-	//Node *left;
-	//Node *right;
+	kind kindNode;
 	Node *parent;
 
 public:
-	Node() : expression(NULL), parent(NULL)
-	{}
+	Node() : kindNode(EXPR), expression(NULL), parent(NULL)
+	{  }
 
-	Node(string s) : parent(NULL)
-	{
-		expression = s;
-	}
+	Node(string s, kind k) : kindNode(k), expression(s), parent(NULL)
+	{  }
 
 	void setExpression(string s) { this->expression = s; }
 
