@@ -8,6 +8,7 @@ class Syntax
 private:
 	Node *node;
 public:
+	Syntax();
 	void takeToken(Token*);
 };
 
