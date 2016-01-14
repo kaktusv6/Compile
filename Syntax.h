@@ -9,6 +9,11 @@ private:
 	Node* currentNode;
 
 	kindNode detKindNode(Node*);
+	void toChild(Node *parent, Node *child)
+	{
+		child->parent = parent;
+		parent->addChild(child);
+	}
 public:
 	Syntax() : currentNode(NULL)
 	{}
