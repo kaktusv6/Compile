@@ -9,14 +9,16 @@ using namespace std;
 class Node
 {
 private:
-	Token token;
-	vector<Node> child;
+	Token* token;
+	vector<Node*> child;
 
 public:
-	Node(Token t) : token(t)
-	{ }
+	Node* parent;
 
-	void addChild(Node n) { child.push_back(n); }
+	Node(Token* t) : token(t), parent(NULL)
+	{ }
+	Token* getTokenNode() { return this->token; }
+	void addChild(Node* n) { child.push_back(n); }
 };
 
 #endif // NODE
