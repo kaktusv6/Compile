@@ -8,6 +8,7 @@ private:
 public:
 	Syntax() : currentNode(NULL)
 	{}
-	Node takeToken(Token*);
+	
+	Node* takeToken(Token*);
 };
 
