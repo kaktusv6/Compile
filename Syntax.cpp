@@ -1,5 +1,18 @@
 #include "Syntax.h"
 
+
+kindNode Syntax::detKindNode(Node *n)
+{
+	if (n->getTokenNode()->getLexText() == "*" 
+		|| n->getTokenNode()->getLexText() == "/")
+		return MULTI;
+	if (n->getTokenNode()->getLexText() == "+"
+		|| n->getTokenNode()->getLexText() == "-")
+		return ADD;
+	if (n->getTokenNode()->getToken() == "integer")
+		return PRIMER;
+}
+
 Node* Syntax::takeToken(Token* t)
 {
 	Node *n = new Node(t);
