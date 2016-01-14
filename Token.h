@@ -24,10 +24,13 @@ public:
 
 	Token(int line, int col, string token, string text);
 	
-	string getToken();
+	string getToken()
+	{ return this->token; }
+
+	string getLexText() 
+	{ return this->lexText; }
 
 	virtual void printToken();
-	void setToken(string);
 };
 
 template<class Value>
