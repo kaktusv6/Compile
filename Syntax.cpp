@@ -16,24 +16,19 @@ kindNode Syntax::detKindNode(Node *n)
 Node* Syntax::takeToken(Token* t)
 {
 	Node *n = new Node(t);
-	if (t->getToken() == "integer")
+	if (currentNode == NULL)
 	{
-		if (currentNode == NULL) currentNode = n;
-		else if (currentNode != NULL)
-		{
-			n->parent = currentNode;
-			currentNode->addChild(n);
-		}
+		if (detKindNode(n) == PRIMER)
+			currentNode = n;
+	}
+	else if (t->getToken() == "integer")
+	{
+		toChild(currentNode, n);
 	}
 	else if (t->getToken() == "op")
 	{
-		if (currentNode == NULL) currentNode = n;
-		else if (currentNode != NULL)
-		{
-			currentNode->parent = n;
-			n->addChild(currentNode);
-			currentNode = n;
-		}
+		toChild(n, currentNode);
+		currentNode = n;
 	}
-	return n;
+	return currentNode;
 }
