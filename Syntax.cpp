@@ -3,13 +3,15 @@
 
 kindNode Syntax::detKindNode(Node *n)
 {
-	if (n->getTokenNode()->getLexText() == "*" 
-		|| n->getTokenNode()->getLexText() == "/")
+	string
+		token = n->getTokenNode()->getToken(),
+		lexText = n->getTokenNode()->getLexText();
+
+	if (lexText == "*" || lexText == "/")
 		return MULTI;
-	if (n->getTokenNode()->getLexText() == "+"
-		|| n->getTokenNode()->getLexText() == "-")
+	if (lexText == "+" || lexText == "-")
 		return ADD;
-	if (n->getTokenNode()->getToken() == "integer")
+	if (token == "integer")
 		return PRIMER;
 }
 
@@ -18,17 +20,61 @@ Node* Syntax::takeToken(Token* t)
 	Node *n = new Node(t);
 	if (currentNode == NULL)
 	{
-		if (detKindNode(n) == PRIMER)
+		//if (detKindNode(n) == PRIMER)
 			currentNode = n;
 	}
-	else if (t->getToken() == "integer")
+	else if (detKindNode(n) == PRIMER)
 	{
 		toChild(currentNode, n);
 	}
 	else if (t->getToken() == "op")
 	{
-		toChild(n, currentNode);
-		currentNode = n;
+		kindNode
+			kindCurrentNode = detKindNode(currentNode),
+			kindNewNode = detKindNode(n);
+
+		if (kindCurrentNode == PRIMER)
+		{
+			toChild(n, currentNode);
+			currentNode = n;
+		}
+		else if (kindNewNode == ADD)
+		{
+			if (kindCurrentNode == MULTI && currentNode->parent != NULL)
+			{
+				Node *c = currentNode;
+				while (detKindNode(c) != ADD)
+				{
+					c = c->parent;
+				}
+
+				toChild(n, c);
+				currentNode = n;
+			}
+			else
+			{
+				toChild(n, currentNode);
+				currentNode = n;
+			}
+		}
+		else if (kindNewNode == MULTI)
+		{
+			if (kindCurrentNode == MULTI)
+			{
+				toChild(n, currentNode);
+				currentNode = n;
+			}
+			else if (kindCurrentNode == ADD)
+			{
+				Node *child = currentNode->child[1];
+				child->parent = n;
+				n->addChild(child);
+
+				n->parent = currentNode;
+				currentNode->child[1] = n;
+				currentNode = n;
+			}
+		}
 	}
 	return currentNode;
 }
