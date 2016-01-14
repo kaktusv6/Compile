@@ -10,9 +10,9 @@ class Node
 {
 private:
 	Token* token;
-	vector<Node*> child;
 
 public:
+	vector<Node*> child;
 	Node* parent;
 
 	Node(Token* t) : token(t), parent(NULL)
