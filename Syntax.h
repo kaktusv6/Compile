@@ -1,8 +1,13 @@
-#pragma once
+
+#include "Node.h"
+
 class Syntax
 {
+private:
+	Node* currentNode;
 public:
-	Syntax();
-	~Syntax();
+	Syntax() : currentNode(NULL)
+	{}
+	Node takeToken(Token*);
 };
 
