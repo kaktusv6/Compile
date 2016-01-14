@@ -3,7 +3,7 @@
 #include "Node.h"
 
 enum kindNode {ADD, MULTI, PRIMER};
-class Syntax
+class Syntaxer
 {
 private:
 	Node* currentNode;
@@ -15,10 +15,10 @@ private:
 		parent->addChild(child);
 	}
 public:
-	Syntax() : currentNode(NULL)
+	Syntaxer() : currentNode(NULL)
 	{}
 	
-	Node* takeToken(Token*);
+	Node* addNodeInTree(Token*);
 };
 
 #endif // SYNTAXER_H

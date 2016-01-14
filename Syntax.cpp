@@ -1,7 +1,7 @@
-#include "Syntax.h"
+#include "Syntaxer.h"
 
 
-kindNode Syntax::detKindNode(Node *n)
+kindNode Syntaxer::detKindNode(Node *n)
 {
 	string
 		token = n->getTokenNode()->getToken(),
@@ -15,7 +15,7 @@ kindNode Syntax::detKindNode(Node *n)
 		return PRIMER;
 }
 
-Node* Syntax::takeToken(Token* t)
+Node* Syntaxer::addNodeInTree(Token* t)
 {
 	Node *n = new Node(t);
 	if (currentNode == NULL)

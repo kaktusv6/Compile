@@ -1,10 +1,10 @@
 #include "Lexer.h"
-#include "Syntax.h"
+#include "Syntaxer.h"
 
 int main()
 {
 	Lexer *l = new Lexer();
-	Syntax *s = new Syntax();
+	Syntaxer *s = new Syntaxer();
 	Token *t;
 	Node *n;
 	while (!l->getEndFile())
@@ -13,12 +13,12 @@ int main()
 		if (t != NULL)
 		{
 			t->printToken();
-			n = s->takeToken(t);
+			n = s->addNodeInTree(t);
 		}
 		if (l->getBuffer() != NULL)
 		{
 			l->getBuffer()->printToken();
-			n = s->takeToken(l->getBuffer());
+			n = s->addNodeInTree(l->getBuffer());
 			l->setBuffer(NULL);
 		}
 	}
