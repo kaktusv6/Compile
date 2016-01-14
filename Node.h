@@ -2,18 +2,21 @@
 #define NODE_H
 
 #include "Token.h"
-#include <string>
+#include <vector>
 
 using namespace std;
 
 class Node
 {
 private:
-	Token expression;
-	Node *rightChild;
-	Node *leftChild;
+	Token token;
+	vector<Node> child;
+
 public:
-	Node();
+	Node(Token t) : token(t)
+	{ }
+
+	void addChild(Node n) { child.push_back(n); }
 };
 
 #endif // NODE
