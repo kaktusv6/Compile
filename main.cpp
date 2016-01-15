@@ -10,5 +10,7 @@ int main(int argc, char* argv[])
 	{
 		n = p->parsAdd();
 	}
+	n->printNode(0);
+	system("pause");
 	return 0;
 }
