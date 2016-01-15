@@ -10,15 +10,21 @@ class Node
 {
 private:
 	Token* token;
+	vector<Node*> child;
 
 public:
-	vector<Node*> child;
 	Node* parent;
 
+	Node() : parent(NULL)
+	{  }
 	Node(Token* t) : token(t), parent(NULL)
 	{ }
 	Token* getTokenNode() { return this->token; }
-	void addChild(Node* n) { child.push_back(n); }
+	void addChild(Node* n)
+	{
+		n->parent = this;
+		child.push_back(n);
+	}
 };
 
 #endif // NODE
