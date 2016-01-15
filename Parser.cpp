@@ -46,6 +46,7 @@ Node* Parser::parsMulti()
 			current = createNode();
 			current->addChild(n);
 			current->addChild(parsPrim());
+			n = current;
 		}
 		else
 		{
