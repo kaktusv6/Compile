@@ -14,67 +14,68 @@ kindNode Parser::detKindNode(Node *n)
 	if (token == "integer")
 		return PRIMER;
 }
-
-Node* Parser::addNodeInTree(Token* t)
+kindNode Parser::detKindNode(Token *tok)
 {
-	Node *n = new Node(t);
-	if (currentNode == NULL)
-	{
-		//if (detKindNode(n) == PRIMER)
-			currentNode = n;
-	}
-	else if (detKindNode(n) == PRIMER)
-	{
-		toChild(currentNode, n);
-	}
-	else if (t->getToken() == "op")
-	{
-		kindNode
-			kindCurrentNode = detKindNode(currentNode),
-			kindNewNode = detKindNode(n);
+	string
+		token = tok->getToken(),
+		lexText = tok->getLexText();
 
-		if (kindCurrentNode == PRIMER)
+	if (lexText == "*" || lexText == "/")
+		return MULTI;
+	if (lexText == "+" || lexText == "-")
+		return ADD;
+	if (token == "integer")
+		return PRIMER;
+}
+
+
+Node* Parser::parsPrim()
+{
+	//if createNode(t) == PRIM
+	return createNode();
+}
+
+Node* Parser::parsMulti()
+{
+	Node* n = parsPrim();
+	Node* current = NULL;
+	while (true)
+	{
+		if (t != NULL && detKindNode(t) == MULTI)
 		{
-			toChild(n, currentNode);
-			currentNode = n;
+			current = createNode();
+			current->addChild(n);
+			current->addChild(parsPrim());
 		}
-		else if (kindNewNode == ADD)
+		else
 		{
-			if (kindCurrentNode == MULTI && currentNode->parent != NULL)
-			{
-				Node *c = currentNode;
-				while (detKindNode(c) != ADD)
-				{
-					c = c->parent;
-				}
+			if (current != NULL)
+				return current;
 
-				toChild(n, c);
-				currentNode = n;
-			}
-			else
-			{
-				toChild(n, currentNode);
-				currentNode = n;
-			}
-		}
-		else if (kindNewNode == MULTI)
-		{
-			if (kindCurrentNode == MULTI)
-			{
-				toChild(n, currentNode);
-				currentNode = n;
-			}
-			else if (kindCurrentNode == ADD)
-			{
-				Node *child = currentNode->child[1];
-				child->parent = n;
-				n->addChild(child);
-
-				n->parent = currentNode;
-				currentNode->child[1] = n;
-				currentNode = n;
-			}
+			return n;
 		}
 	}
-	return currentNode;
+}
+
+Node* Parser::parsAdd()
+{
+	Node* n = parsMulti();
+	Node* current = NULL;
+	while (true)
+	{
+		if (t != NULL && detKindNode(t) == ADD)
+		{
+			current = createNode();
+			current->addChild(n);
+			current->addChild(parsMulti());
+			n = current;
+		}
+		else
+		{
+			if (current != NULL)
+				return current;
+
+			return n;
+		}
+	}
 }
