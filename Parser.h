@@ -1,13 +1,15 @@
-#ifndef SYNTAXER_H
-#define SYNTAXER_H
+#ifndef Parser_H
+#define Parser_H
+#include "Lexer.h"
 #include "Node.h"
 
 enum kindNode {ADD, MULTI, PRIMER};
-class Syntaxer
+
+class Parser
 {
 private:
 	Node* currentNode;
-
+	Lexer *lexer;
 	kindNode detKindNode(Node*);
 	void toChild(Node *parent, Node *child)
 	{
@@ -15,10 +17,10 @@ private:
 		parent->addChild(child);
 	}
 public:
-	Syntaxer() : currentNode(NULL)
-	{}
+	Parser(Lexer *l) : currentNode(NULL), lexer(l)
+	{ }
 	
 	Node* addNodeInTree(Token*);
 };
 
-#endif // SYNTAXER_H
+#endif // Parser_H

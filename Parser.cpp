@@ -1,7 +1,7 @@
-#include "Syntaxer.h"
+#include "Parser.h"
 
 
-kindNode Syntaxer::detKindNode(Node *n)
+kindNode Parser::detKindNode(Node *n)
 {
 	string
 		token = n->getTokenNode()->getToken(),
@@ -15,7 +15,7 @@ kindNode Syntaxer::detKindNode(Node *n)
 		return PRIMER;
 }
 
-Node* Syntaxer::addNodeInTree(Token* t)
+Node* Parser::addNodeInTree(Token* t)
 {
 	Node *n = new Node(t);
 	if (currentNode == NULL)
