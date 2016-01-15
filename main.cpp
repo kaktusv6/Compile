@@ -1,26 +1,14 @@
-#include "Lexer.h"
-#include "Syntaxer.h"
+#include "Parser.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 	Lexer *l = new Lexer();
-	Syntaxer *s = new Syntaxer();
+	Parser *p = new Parser(l);
 	Token *t;
-	Node *n;
+	Node *n = new Node();
 	while (!l->getEndFile())
 	{
-		t = l->nextToken();
-		if (t != NULL)
-		{
-			t->printToken();
-			n = s->addNodeInTree(t);
-		}
-		if (l->getBuffer() != NULL)
-		{
-			l->getBuffer()->printToken();
-			n = s->addNodeInTree(l->getBuffer());
-			l->setBuffer(NULL);
-		}
+		n = p->parsAdd();
 	}
 	return 0;
 }
