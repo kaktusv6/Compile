@@ -1,38 +1,47 @@
 #include "Parser.h"
 
-
-kindNode Parser::detKindNode(Node *n)
-{
-	string
-		token = n->getTokenNode()->getToken(),
-		lexText = n->getTokenNode()->getLexText();
-
-	if (lexText == "*" || lexText == "/")
-		return MULTI;
-	if (lexText == "+" || lexText == "-")
-		return ADD;
-	if (token == "integer")
-		return PRIMER;
-}
+//kindNode Parser::detKindNode(Node *n)
+//{
+//	string
+//		token = n->getTokenNode()->getToken(),
+//		lexText = n->getTokenNode()->getLexText();
+//
+//	if (lexText == "*" || lexText == "/")
+//		return MULTI;
+//	if (lexText == "+" || lexText == "-")
+//		return ADD;
+//	if (token == "integer")
+//		return PRIMER;
+//}
 kindNode Parser::detKindNode(Token *tok)
 {
 	string
 		token = tok->getToken(),
 		lexText = tok->getLexText();
 
-	if (lexText == "*" || lexText == "/")
+	if (lexText == "*" || lexText == "/" ||
+		lexText == "div" || lexText == "mod")
 		return MULTI;
 	if (lexText == "+" || lexText == "-")
 		return ADD;
-	if (token == "integer")
+	if (token == "integer" || token == "ident" ||
+		token == "string" || token == "real")
 		return PRIMER;
+	if (lexText == "(")
+		return OPEN_SEP;
 }
-
 
 Node* Parser::parsPrim()
 {
-	//if createNode(t) == PRIM
-	return createNode();
+	if (detKindNode(t) == PRIMER)
+		return createNode();
+	if (detKindNode(t) == OPEN_SEP)
+	{
+		nextToken();
+		Node* n = parsAdd();
+		nextToken();
+		return n;
+	}
 }
 
 Node* Parser::parsMulti()
