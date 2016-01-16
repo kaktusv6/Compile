@@ -13,7 +13,7 @@ private:
 	Lexer *lexer;
 	Token* t;
 
-	kindNode detKindNode(Token*);
+	kindNode detKindOp(Token*);
 
 	Token* nextToken()
 	{

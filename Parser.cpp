@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-kindNode Parser::detKindNode(Token *tok)
+kindNode Parser::detKindOp(Token *tok)
 {
 	string
 		token = tok->getToken(),
@@ -27,13 +27,13 @@ kindNode Parser::detKindNode(Token *tok)
 
 Node* Parser::parsPrim()
 {
-	if (detKindNode(t) == PRIMER)
+	if (detKindOp(t) == PRIMER)
 		return createNode();
-	if (detKindNode(t) == OPEN_SEP)
+	if (detKindOp(t) == OPEN_SEP)
 	{
 		nextToken();
 		Node* n = parsRelat();
-		//if (!detKindNode(t) == CLOSE_SEP){
+		//if (!detKindOp(t) == CLOSE_SEP){
 		//	//throw SynError();
 		//}
 		nextToken();
@@ -59,7 +59,7 @@ Node* Parser::parsUnary()
 Node* Parser::parsMulti()
 {
 	Node* n = parsUnary();
-	while (t != NULL && detKindNode(t) == MULTI)
+	while (t != NULL && detKindOp(t) == MULTI)
 	{
 		n = createNode(n);
 		n->addChild(parsUnary());
@@ -70,7 +70,7 @@ Node* Parser::parsMulti()
 Node* Parser::parsAdd()
 {
 	Node* n = parsMulti();
-	while (t != NULL && detKindNode(t) == ADD)
+	while (t != NULL && detKindOp(t) == ADD)
 	{
 		n = createNode(n);
 		n->addChild(parsUnary());
@@ -81,7 +81,7 @@ Node* Parser::parsAdd()
 Node* Parser::parsRelat()
 {
 	Node* n = parsAdd();
-	while (t != NULL && detKindNode(t) == RELAT)
+	while (t != NULL && detKindOp(t) == RELAT)
 	{
 		n = createNode(n);
 		n->addChild(parsUnary());
