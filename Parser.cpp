@@ -6,15 +6,19 @@ kindOp Parser::detKindOp(Token *tok)
 		lexText = tok->getLexText();
 
 	if (lexText == "*" || lexText == "/" ||
-		lexText == "div" || lexText == "mod" || lexText == "in")
+		lexText == "div" || lexText == "mod" ||
+		lexText == "in" || lexText == "and")
 		return MULTI;
+
 	if (lexText == "+" || lexText == "-" ||
 		lexText == "or")
 		return ADD;
+
 	if (lexText == "<" || lexText == "<=" ||
 		lexText == "<>" || lexText == ">=" || lexText == ">" ||
 		lexText == "=")
 		return RELAT;
+
 	if (lexText == "(")
 		return OPEN_SEP;
 	if (lexText == ")")
@@ -70,7 +74,7 @@ Node* Parser::parsAdd()
 	while (t != NULL && detKindOp(t) == ADD)
 	{
 		n = createNode(n);
-		n->addChild(parsUnary());
+		n->addChild(parsMulti());
 	}
 	return n;
 }
@@ -81,7 +85,7 @@ Node* Parser::parsRelat()
 	while (t != NULL && detKindOp(t) == RELAT)
 	{
 		n = createNode(n);
-		n->addChild(parsUnary());
+		n->addChild(parsAdd());
 	}
 	return n;
 }
