@@ -3,7 +3,7 @@
 #include "Lexer.h"
 #include "Node.h"
 
-enum kindNode { ADD, MULTI, PRIMER, OPEN_SEP};
+enum kindNode { ADD, MULTI, PRIMER, OPEN_SEP, CLOSE_SEP, RELAT, UNARY };
 
 class Parser
 {
@@ -25,19 +25,28 @@ private:
 		t = lexer->nextToken();
 	}
 public:
-	Parser(Lexer *l) : bufferNode(NULL), lexer(l), t(NULL)
+	Parser(Lexer *l) : currentNode(NULL), lexer(l), t(NULL)
 	{
 		t = lexer->nextToken();
 	}
-	
 	Node* createNode()
 	{
 		Node* n = new Node(t);
+		//n->addChild(c);
+		nextToken();
+		return n;
+	}
+	
+	Node* createNode(Node* c)
+	{
+		Node* n = new Node(t);
+		n->addChild(c);
 		nextToken();
 		return n;
 	}
 
 	Node* addNodeInTree(Token*);
+	Node* parsRelat();
 	Node* parsAdd();
 	Node* parsMulti();
 	Node* parsPrim();
