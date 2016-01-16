@@ -29,7 +29,8 @@ kindNode Parser::detKindNode(Token *tok)
 		token == "string" || token == "real" || token == "char")
 		return PRIMER;
 	if (lexText == "<" || lexText == "<=" ||
-		lexText == "<>" || lexText == ">=" || lexText == ">")
+		lexText == "<>" || lexText == ">=" || lexText == ">" ||
+		lexText == "=")
 		return RELAT;
 	if (lexText == "(")
 		return OPEN_SEP;
@@ -44,22 +45,37 @@ Node* Parser::parsPrim()
 	if (detKindNode(t) == OPEN_SEP)
 	{
 		nextToken();
-		Node* n = parsAdd();
-		if (!detKindNode(t) == CLOSE_SEP){
-			//throw SynError();
-		}
+		Node* n = parsRelat();
+		//if (!detKindNode(t) == CLOSE_SEP){
+		//	//throw SynError();
+		//}
 		nextToken();
 		return n;
 	}
 }
 
+Node* Parser::parsUnary()
+{
+	if (isUnary(t))
+	{
+		Node *n = createNode();
+		while (t != NULL && isUnary(t))
+		{
+			n = createNode(n);
+		}
+		n->addChild(parsPrim());
+		return n;
+	}
+	return parsPrim();
+}
+
 Node* Parser::parsMulti()
 {
-	Node* n = parsPrim();
+	Node* n = parsUnary();
 	while (t != NULL && detKindNode(t) == MULTI)
 	{
 		n = createNode(n);
-		n->addChild(parsPrim());
+		n->addChild(parsUnary());
 	}
 	return n;
 }
@@ -70,7 +86,7 @@ Node* Parser::parsAdd()
 	while (t != NULL && detKindNode(t) == ADD)
 	{
 		n = createNode(n);
-		n->addChild(parsPrim());
+		n->addChild(parsUnary());
 	}
 	return n;
 }
@@ -81,7 +97,7 @@ Node* Parser::parsRelat()
 	while (t != NULL && detKindNode(t) == RELAT)
 	{
 		n = createNode(n);
-		n->addChild(parsPrim());
+		n->addChild(parsUnary());
 	}
 	return n;
 }
