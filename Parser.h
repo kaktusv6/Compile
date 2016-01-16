@@ -20,6 +20,7 @@ private:
 		t = lexer->nextToken();
 		return t;
 	}
+
 	bool isUnary(Token* tok)
 	{
 		string lexText = tok->getLexText();
@@ -33,11 +34,6 @@ private:
 			return true;
 
 		return false;
-	}
-public:
-	Parser(Lexer *l) : currentNode(NULL), lexer(l), t(NULL)
-	{
-		t = lexer->nextToken();
 	}
 
 	Node* createNode()
@@ -53,12 +49,18 @@ public:
 		nextToken();
 		return n;
 	}
-
-	Node* parsRelat();
+	
 	Node* parsAdd();
 	Node* parsMulti();
 	Node* parsUnary();
 	Node* parsPrim();
+public:
+	Parser(Lexer *l) : currentNode(NULL), lexer(l), t(NULL)
+	{
+		t = lexer->nextToken();
+	}
+
+	Node* parsRelat();
 };
 
 #endif // PARSER_H
