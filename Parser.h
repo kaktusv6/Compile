@@ -24,6 +24,11 @@ private:
 	{
 		t = lexer->nextToken();
 	}
+	bool isUnary(Token* tok)
+	{
+		string lexText = tok->getLexText();
+		return lexText == "+" || lexText == "-" || lexText == "not";
+	}
 public:
 	Parser(Lexer *l) : currentNode(NULL), lexer(l), t(NULL)
 	{
@@ -49,6 +54,7 @@ public:
 	Node* parsRelat();
 	Node* parsAdd();
 	Node* parsMulti();
+	Node* parsUnary();
 	Node* parsPrim();
 };
 
