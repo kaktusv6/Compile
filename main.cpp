@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 	Node *n = new Node();
 	while (!l->getEndFile())
 	{
-		n = p->parsAdd();
+		n = p->parsRelat();
 	}
 	n->printNode(0);
 	system("pause");
