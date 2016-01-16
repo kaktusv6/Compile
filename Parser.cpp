@@ -1,9 +1,8 @@
 #include "Parser.h"
 
-kindNode Parser::detKindOp(Token *tok)
+kindOp Parser::detKindOp(Token *tok)
 {
 	string
-		token = tok->getToken(),
 		lexText = tok->getLexText();
 
 	if (lexText == "*" || lexText == "/" ||
@@ -12,9 +11,6 @@ kindNode Parser::detKindOp(Token *tok)
 	if (lexText == "+" || lexText == "-" ||
 		lexText == "or")
 		return ADD;
-	if (token == "integer" || token == "ident" ||
-		token == "string" || token == "real" || token == "char")
-		return PRIMER;
 	if (lexText == "<" || lexText == "<=" ||
 		lexText == "<>" || lexText == ">=" || lexText == ">" ||
 		lexText == "=")
@@ -27,9 +23,10 @@ kindNode Parser::detKindOp(Token *tok)
 
 Node* Parser::parsPrim()
 {
-	if (detKindOp(t) == PRIMER)
+	kindOp k = detKindOp(t);
+	if (isPrimer(t))
 		return createNode();
-	if (detKindOp(t) == OPEN_SEP)
+	if (k == OPEN_SEP)
 	{
 		nextToken();
 		Node* n = parsRelat();

@@ -3,7 +3,7 @@
 #include "Lexer.h"
 #include "Node.h"
 
-enum kindNode { ADD, MULTI, PRIMER, OPEN_SEP,
+enum kindOp { ADD, MULTI, PRIMER, OPEN_SEP,
 	CLOSE_SEP, RELAT, UNARY };
 
 class Parser
@@ -13,7 +13,7 @@ private:
 	Lexer *lexer;
 	Token* t;
 
-	kindNode detKindOp(Token*);
+	kindOp detKindOp(Token*);
 
 	Token* nextToken()
 	{
@@ -24,6 +24,15 @@ private:
 	{
 		string lexText = tok->getLexText();
 		return lexText == "+" || lexText == "-" || lexText == "not";
+	}
+	bool isPrimer(Token* tok)
+	{
+		string token = tok->getToken();
+		if (token == "integer" || token == "ident" ||
+			token == "string" || token == "real" || token == "char")
+			return true;
+
+		return false;
 	}
 public:
 	Parser(Lexer *l) : currentNode(NULL), lexer(l), t(NULL)
