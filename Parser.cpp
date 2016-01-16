@@ -20,15 +20,21 @@ kindNode Parser::detKindNode(Token *tok)
 		lexText = tok->getLexText();
 
 	if (lexText == "*" || lexText == "/" ||
-		lexText == "div" || lexText == "mod")
+		lexText == "div" || lexText == "mod" || lexText == "in")
 		return MULTI;
-	if (lexText == "+" || lexText == "-")
+	if (lexText == "+" || lexText == "-" ||
+		lexText == "or")
 		return ADD;
 	if (token == "integer" || token == "ident" ||
-		token == "string" || token == "real")
+		token == "string" || token == "real" || token == "char")
 		return PRIMER;
+	if (lexText == "<" || lexText == "<=" ||
+		lexText == "<>" || lexText == ">=" || lexText == ">")
+		return RELAT;
 	if (lexText == "(")
 		return OPEN_SEP;
+	if (lexText == ")")
+		return CLOSE_SEP;
 }
 
 Node* Parser::parsPrim()
@@ -39,6 +45,9 @@ Node* Parser::parsPrim()
 	{
 		nextToken();
 		Node* n = parsAdd();
+		if (!detKindNode(t) == CLOSE_SEP){
+			//throw SynError();
+		}
 		nextToken();
 		return n;
 	}
@@ -47,45 +56,32 @@ Node* Parser::parsPrim()
 Node* Parser::parsMulti()
 {
 	Node* n = parsPrim();
-	Node* current = NULL;
-	while (true)
+	while (t != NULL && detKindNode(t) == MULTI)
 	{
-		if (t != NULL && detKindNode(t) == MULTI)
-		{
-			current = createNode();
-			current->addChild(n);
-			current->addChild(parsPrim());
-			n = current;
-		}
-		else
-		{
-			if (current != NULL)
-				return current;
-
-			return n;
-		}
+		n = createNode(n);
+		n->addChild(parsPrim());
 	}
+	return n;
 }
 
 Node* Parser::parsAdd()
 {
 	Node* n = parsMulti();
-	Node* current = NULL;
-	while (true)
+	while (t != NULL && detKindNode(t) == ADD)
 	{
-		if (t != NULL && detKindNode(t) == ADD)
-		{
-			current = createNode();
-			current->addChild(n);
-			current->addChild(parsMulti());
-			n = current;
-		}
-		else
-		{
-			if (current != NULL)
-				return current;
-
-			return n;
-		}
+		n = createNode(n);
+		n->addChild(parsPrim());
 	}
+	return n;
+}
+
+Node* Parser::parsRelat()
+{
+	Node* n = parsAdd();
+	while (t != NULL && detKindNode(t) == RELAT)
+	{
+		n = createNode(n);
+		n->addChild(parsPrim());
+	}
+	return n;
 }
