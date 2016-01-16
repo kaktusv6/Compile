@@ -1,18 +1,5 @@
 #include "Parser.h"
 
-//kindNode Parser::detKindNode(Node *n)
-//{
-//	string
-//		token = n->getTokenNode()->getToken(),
-//		lexText = n->getTokenNode()->getLexText();
-//
-//	if (lexText == "*" || lexText == "/")
-//		return MULTI;
-//	if (lexText == "+" || lexText == "-")
-//		return ADD;
-//	if (token == "integer")
-//		return PRIMER;
-//}
 kindNode Parser::detKindNode(Token *tok)
 {
 	string

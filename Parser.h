@@ -3,7 +3,8 @@
 #include "Lexer.h"
 #include "Node.h"
 
-enum kindNode { ADD, MULTI, PRIMER, OPEN_SEP, CLOSE_SEP, RELAT, UNARY };
+enum kindNode { ADD, MULTI, PRIMER, OPEN_SEP,
+	CLOSE_SEP, RELAT, UNARY };
 
 class Parser
 {
@@ -12,17 +13,12 @@ private:
 	Lexer *lexer;
 	Token* t;
 
-	//kindNode detKindNode(Node*);
 	kindNode detKindNode(Token*);
 
-	void toChild(Node *parent, Node *child)
-	{
-		child->parent = parent;
-		parent->addChild(child);
-	}
-	void nextToken()
+	Token* nextToken()
 	{
 		t = lexer->nextToken();
+		return t;
 	}
 	bool isUnary(Token* tok)
 	{
@@ -34,14 +30,13 @@ public:
 	{
 		t = lexer->nextToken();
 	}
+
 	Node* createNode()
 	{
 		Node* n = new Node(t);
-		//n->addChild(c);
 		nextToken();
 		return n;
 	}
-	
 	Node* createNode(Node* c)
 	{
 		Node* n = new Node(t);
@@ -50,7 +45,6 @@ public:
 		return n;
 	}
 
-	Node* addNodeInTree(Token*);
 	Node* parsRelat();
 	Node* parsAdd();
 	Node* parsMulti();
