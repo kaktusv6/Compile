@@ -12,7 +12,6 @@ class Node
 private:
 	Token* token;
 	vector<Node*> childs;
-
 public:
 	Node* parent;
 
@@ -20,7 +19,9 @@ public:
 	{  }
 	Node(Token* t) : token(t), parent(NULL)
 	{ }
-	Token* getTokenNode() { return this->token; }
+
+	//Token* getTokenNode() { return this->token; } Пока ни где не применяется
+
 	void addChild(Node* n)
 	{
 		n->parent = this;
@@ -35,12 +36,12 @@ public:
 			a--;
 		}
 		cout << this->token->getLexText() << endl;
-		int j = 0;
-		while (j < childs.size())
+		int j = childs.size();
+		while (j > 0)
 		{
-			if (childs[j] != NULL)
-			{ childs[j]->printNode(i + 1); }
-			j++;
+			if (childs[j-1] != NULL)
+			{ childs[j-1]->printNode(i + 1); }
+			j--;
 		}
 	}
 };
