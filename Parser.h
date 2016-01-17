@@ -3,8 +3,10 @@
 #include "Lexer.h"
 #include "Node.h"
 
-enum kindOp { ADD, MULTI, PRIMER, OPEN_SEP,
-	CLOSE_SEP, RELAT, UNARY };
+enum kindOp {
+	ADD, MULTI, PRIMER, OPEN_SEP, CLOSE_SEP,
+	RELAT, UNARY, ERR, END_EXPR
+};
 
 class Parser
 {
@@ -13,7 +15,7 @@ private:
 	Lexer *lexer;
 	Token* t;
 
-	kindOp detKindOp(Token*);
+	kindOp detKindToken(Token*);
 
 	Token* nextToken()
 	{
@@ -63,4 +65,11 @@ public:
 	Node* parsRelat();
 };
 
+class SynError
+{
+public:
+
+private:
+
+};
 #endif // PARSER_H
