@@ -1,6 +1,6 @@
 #include "Parser.h"
 
-kindOp Parser::detKindToken(Token *tok)
+kindExpr Parser::detKindToken(Token *tok)
 {
 	if (t == NULL) return END_EXPR;
 
@@ -29,19 +29,21 @@ kindOp Parser::detKindToken(Token *tok)
 
 Node* Parser::parsPrim()
 {
-	kindOp k = detKindToken(t);
+	kindExpr k = detKindToken(t);
 	if (isPrimer(t))
 		return createNode();
-	if (k == OPEN_SEP)
+	else if (k == OPEN_SEP)
 	{
 		nextToken();
 		Node* n = parsRelat();
 		if (detKindToken(t) != CLOSE_SEP)
-		{
-			throw SynError();
-		}
+			throw SynError(NO_CLOSE_SEP);
 		nextToken();
 		return n;
+	}
+	else
+	{
+		throw SynError(NO_PRIMER);
 	}
 }
 
@@ -61,11 +63,9 @@ Node* Parser::parsUnary()
 		}
 		return parsPrim();
 	}
-	catch (SynError)
+	catch (SynError e)
 	{
-		cout << "No closing parenthesis" << endl;
-		system("pause");
-		exit(1);
+		e.printError();
 	}
 }
 
