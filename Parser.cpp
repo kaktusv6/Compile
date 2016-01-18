@@ -2,24 +2,11 @@
 
 kindExpr Parser::detKindToken(Token *tok)
 {
-	if (t == NULL) return END_EXPR;
+	if (t == NULL)
+		return END_EXPR;
 
 	string
 		lexText = tok->getLexText();
-
-	if (lexText == "*" || lexText == "/" ||
-		lexText == "div" || lexText == "mod" ||
-		lexText == "in" || lexText == "and")
-		return MULTI;
-
-	if (lexText == "+" || lexText == "-" ||
-		lexText == "or")
-		return ADD;
-
-	if (lexText == "<" || lexText == "<=" ||
-		lexText == "<>" || lexText == ">=" || lexText == ">" ||
-		lexText == "=")
-		return RELAT;
 
 	if (lexText == "(")
 		return OPEN_SEP;
@@ -30,33 +17,22 @@ kindExpr Parser::detKindToken(Token *tok)
 
 Node* Parser::parsPrim()
 {
-	kindExpr k = detKindToken(t);
-	if (isPrimer(t))
-		return createNode();
-	else if (k == OPEN_SEP)
-	{
-		nextToken();
-		Node* n = parsRelat();
-		if (detKindToken(t) != CLOSE_SEP)
-			throw SynError(t, " No closing parenthesis");
-		nextToken();
-		return n;
-	}
-	else
-		throw SynError(t, " No primary-expression");
-}
-
-Node* Parser::parsUnary()
-{
 	try
 	{
-		if (isUnary(t))
+		kindExpr k = detKindToken(t);
+		if (isPrimer(t))
+			return createNode();
+		else if (k == OPEN_SEP)
 		{
-			Node *n = createNode();
-			n->addChild(parsUnary());
+			nextToken();
+			Node* n = parsRelat();
+			if (detKindToken(t) != CLOSE_SEP)
+				throw SynError(t, " No closing parenthesis");
+			nextToken();
 			return n;
 		}
-		return parsPrim();
+		else
+			throw SynError(t, " No primary-expression");
 	}
 	catch (SynError e)
 	{
@@ -64,10 +40,21 @@ Node* Parser::parsUnary()
 	}
 }
 
+Node* Parser::parsUnary()
+{
+		if (isUnary(t))
+		{
+			Node *n = createNode();
+			n->addChild(parsUnary());
+			return n;
+		}
+		return parsPrim();
+}
+
 Node* Parser::parsMulti()
 {
 	Node* n = parsUnary();
-	while (t != NULL && detKindToken(t) == MULTI)
+	while (t != NULL && isMulti(t))
 	{
 		n = createNode(n);
 		n->addChild(parsUnary());
@@ -78,7 +65,7 @@ Node* Parser::parsMulti()
 Node* Parser::parsAdd()
 {
 	Node* n = parsMulti();
-	while (t != NULL && detKindToken(t) == ADD)
+	while (t != NULL && isAdd(t))
 	{
 		n = createNode(n);
 		n->addChild(parsMulti());
@@ -89,7 +76,7 @@ Node* Parser::parsAdd()
 Node* Parser::parsRelat()
 {
 	Node* n = parsAdd();
-	while (t != NULL && detKindToken(t) == RELAT)
+	while (t != NULL && isRelat(t))
 	{
 		n = createNode(n);
 		n->addChild(parsAdd());
