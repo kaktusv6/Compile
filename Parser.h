@@ -67,31 +67,19 @@ public:
 	Node* parsRelat();
 };
 
-enum kindError {NO_CLOSE_SEP, NO_PRIMER, NOT_UNARY_EXPR};
-
 class SynError
 {
 private:
-	kindError err;
+	string str;
 public:
-	SynError()
+	SynError(string s) : str(s)
 	{}
-	SynError(kindError e) : err(e)
-	{}
+
 	void printError()
 	{
-		if (err == NO_CLOSE_SEP)
-		{
-			cout << "No closing parenthesis" << endl;
+			cout << str << endl;
 			system("pause");
 			exit(1);
-		}
-		else if (err == NO_PRIMER)
-		{
-			cout << "No primary-expression" << endl;
-			system("pause");
-			exit(1);
-		}
 	}
 };
 #endif // PARSER_H
