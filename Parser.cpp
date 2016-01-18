@@ -7,12 +7,37 @@ kindExpr Parser::detKindToken(Token *tok)
 
 	string
 		lexText = tok->getLexText();
+	if (lexText == "[")
+		return VAR_OPEN_SEP;
+	
+	if (lexText == "]")
+		return VAR_CLOSE_SEP;
 
 	if (lexText == "(")
 		return OPEN_SEP;
 
 	if (lexText == ")")
 		return CLOSE_SEP;
+}
+
+Node* Parser::parsVaraible()
+{
+	Node* n = createNode();
+	if (t == NULL)
+		return n;
+
+	if (detKindToken(t) == VAR_OPEN_SEP)
+	{
+		nextToken();
+		n->addChild(parsRelat());
+		if (detKindToken(t) != VAR_CLOSE_SEP)
+			throw SynError(t, " No closing parenthesis");
+		nextToken();
+	}
+	else if (t->getLexText() == "^")
+		n = createNode(n);
+
+	return n;
 }
 
 Node* Parser::parsPrim()
@@ -22,6 +47,10 @@ Node* Parser::parsPrim()
 		kindExpr k = detKindToken(t);
 		if (isPrimer(t))
 			return createNode();
+		else if (isVaraile(t))
+		{
+			return parsVaraible();
+		}
 		else if (k == OPEN_SEP)
 		{
 			nextToken();
