@@ -20,12 +20,11 @@ public:
 	Node(Token* t) : token(t), parent(NULL)
 	{ }
 
-	//Token* getTokenNode() { return this->token; } Пока ни где не применяется
-
-	void addChild(Node* n)
+	Node* addChild(Node* n)
 	{
 		n->parent = this;
 		childs.push_back(n);
+		return this;
 	}
 	void printNode(int i)
 	{
