@@ -72,14 +72,16 @@ class SynError
 private:
 	string str;
 public:
-	SynError(string s) : str(s)
-	{}
+	SynError(Token* t, string s)
+	{
+		str = t->getPosition() + s;
+	}
 
 	void printError()
 	{
-			cout << str << endl;
-			system("pause");
-			exit(1);
+		cout << str << endl;
+		system("pause");
+		exit(1);
 	}
 };
 #endif // PARSER_H
