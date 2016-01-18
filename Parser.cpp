@@ -34,6 +34,12 @@ Node* Parser::parsVaraible()
 			throw SynError(t, " No closing parenthesis");
 		nextToken();
 	}
+	if (t->getLexText() == ".")
+	{
+		Node* c = n;
+		n = createNode();
+		n->addChild(parsVaraible())->addChild(c);
+	}
 	else if (t->getLexText() == "^")
 		n = createNode(n);
 

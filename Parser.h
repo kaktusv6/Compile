@@ -5,7 +5,7 @@
 
 enum kindExpr {
 	ADD, MULTI, PRIMER, OPEN_SEP, CLOSE_SEP,
-	RELAT, UNARY, ERR, END_EXPR, VARAIABLE
+	RELAT, UNARY, ERR, END_EXPR, VAR_OPEN_SEP, VAR_CLOSE_SEP
 };
 
 class Parser
@@ -27,8 +27,8 @@ private:
 	{
 		if (t == NULL) return false;
 		string token = tok->getToken();
-		if (token == "integer" || token == "ident" ||
-			token == "string" || token == "real" || token == "char")
+		if (token == "integer"  || token == "string" ||
+			token == "real" || token == "char")
 			return true;
 
 		return false;
@@ -81,8 +81,8 @@ private:
 	Node* createNode(Node* c)
 	{
 		Node* n = new Node(t);
-		n->addChild(c);
 		nextToken();
+		n->addChild(c);
 		return n;
 	}
 	
@@ -90,7 +90,7 @@ private:
 	Node* parsMulti();
 	Node* parsUnary();
 	Node* parsPrim();
-	Node parsVaraible();
+	Node* parsVaraible();
 public:
 	Parser(Lexer *l) : currentNode(NULL), lexer(l), t(NULL)
 	{
