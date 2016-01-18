@@ -23,12 +23,6 @@ private:
 		return t;
 	}
 
-	bool isUnary(Token* tok)
-	{
-		if (t == NULL) return false;
-		string lexText = tok->getLexText();
-		return lexText == "+" || lexText == "-" || lexText == "not";
-	}
 	bool isPrimer(Token* tok)
 	{
 		if (t == NULL) return false;
@@ -38,6 +32,38 @@ private:
 			return true;
 
 		return false;
+	}
+	bool isUnary(Token* tok)
+	{
+		if (t == NULL) return false;
+		string lexText = tok->getLexText();
+		return lexText == "+" || lexText == "-" || lexText == "not";
+	}
+	bool isMulti(Token* tok)
+	{
+		if (t == NULL) return false;
+		string lexText = tok->getLexText();
+
+		return lexText == "*" || lexText == "/" ||
+			lexText == "div" || lexText == "mod" ||
+			lexText == "in" || lexText == "and";
+	}
+	bool isAdd(Token* tok)
+	{
+		if (t == NULL) return false;
+		string lexText = tok->getLexText();
+
+		return lexText == "+" || lexText == "-" ||
+			lexText == "or";
+	}
+	bool isRelat(Token* tok)
+	{
+		if (t == NULL) return false;
+		string lexText = tok->getLexText();
+
+		return lexText == "<" || lexText == "<=" ||
+			lexText == "<>" || lexText == ">=" || lexText == ">" ||
+			lexText == "=";
 	}
 
 	Node* createNode()
