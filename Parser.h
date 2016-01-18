@@ -74,7 +74,9 @@ private:
 public:
 	SynError(Token* t, string s)
 	{
-		str = t->getPosition() + s;
+		if (t != NULL)
+			str = t->getPosition() + s;
+		str = s;
 	}
 
 	void printError()
