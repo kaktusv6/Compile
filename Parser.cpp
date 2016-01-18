@@ -23,6 +23,7 @@ kindExpr Parser::detKindToken(Token *tok)
 
 	if (lexText == "(")
 		return OPEN_SEP;
+
 	if (lexText == ")")
 		return CLOSE_SEP;
 }
@@ -37,14 +38,12 @@ Node* Parser::parsPrim()
 		nextToken();
 		Node* n = parsRelat();
 		if (detKindToken(t) != CLOSE_SEP)
-			throw SynError(NO_CLOSE_SEP);
+			throw SynError(t, " No closing parenthesis");
 		nextToken();
 		return n;
 	}
 	else
-	{
-		throw SynError(NO_PRIMER);
-	}
+		throw SynError(t, " No primary-expression");
 }
 
 Node* Parser::parsUnary()
@@ -54,11 +53,7 @@ Node* Parser::parsUnary()
 		if (isUnary(t))
 		{
 			Node *n = createNode();
-			while (t != NULL && isUnary(t))
-			{
-				n = createNode(n);
-			}
-			n->addChild(parsPrim());
+			n->addChild(parsUnary());
 			return n;
 		}
 		return parsPrim();
