@@ -29,7 +29,11 @@ public:
 
 	string getLexText() 
 	{ return this->lexText; }
-
+	
+	string getPosition()
+	{
+		return to_string(this->lexLine) + " : " + to_string(this->lexCol);
+	}
 	virtual void printToken();
 };
 
