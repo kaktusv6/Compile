@@ -18,52 +18,52 @@ private:
 		return t;
 	}
 
-	bool isPrimer(Token* tok)
+	bool isPrimer()
 	{
 		if (t == NULL) return false;
-		string token = tok->getToken();
+		string token = t->getToken();
 		if (token == "integer"  || token == "string" ||
 			token == "real" || token == "char")
 			return true;
 
 		return false;
 	}
-	bool isUnary(Token* tok)
+	bool isUnary()
 	{
 		if (t == NULL) return false;
-		string lexText = tok->getLexText();
+		string lexText = t->getLexText();
 		return lexText == "+" || lexText == "-" || lexText == "not";
 	}
-	bool isMulti(Token* tok)
+	bool isMulti()
 	{
 		if (t == NULL) return false;
-		string lexText = tok->getLexText();
+		string lexText = t->getLexText();
 
 		return lexText == "*" || lexText == "/" ||
 			lexText == "div" || lexText == "mod" ||
 			lexText == "in" || lexText == "and";
 	}
-	bool isAdd(Token* tok)
+	bool isAdd()
 	{
 		if (t == NULL) return false;
-		string lexText = tok->getLexText();
+		string lexText = t->getLexText();
 
 		return lexText == "+" || lexText == "-" ||
 			lexText == "or";
 	}
-	bool isRelat(Token* tok)
+	bool isRelat()
 	{
 		if (t == NULL) return false;
-		string lexText = tok->getLexText();
+		string lexText = t->getLexText();
 
 		return lexText == "<" || lexText == "<=" ||
 			lexText == "<>" || lexText == ">=" || lexText == ">" ||
 			lexText == "=";
 	}
-	bool isVaraile(Token* tok)
+	bool isVaraile()
 	{
 		if (t == NULL) return false;
-		string token = tok->getToken();
+		string token = t->getToken();
 
 		return token == "ident";
 	}

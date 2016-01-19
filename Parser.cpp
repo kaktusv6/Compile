@@ -37,9 +37,9 @@ Node* Parser::parsPrim()
 		if (t == NULL)
 			throw SynError(t, " No primary-expression");
 
-		if (isPrimer(t))
+		if (isPrimer())
 			return createNode();
-		else if (isVaraile(t))
+		else if (isVaraile())
 		{
 			return parsVaraible();
 		}
@@ -67,7 +67,7 @@ Node* Parser::parsPrim()
 
 Node* Parser::parsUnary()
 {
-		if (isUnary(t))
+		if (isUnary())
 		{
 			Node *n = createNode();
 			n->addChild(parsUnary());
@@ -79,7 +79,7 @@ Node* Parser::parsUnary()
 Node* Parser::parsMulti()
 {
 	Node* n = parsUnary();
-	while (t != NULL && isMulti(t))
+	while (t != NULL && isMulti())
 	{
 		n = createNode(n);
 		n->addChild(parsUnary());
@@ -90,7 +90,7 @@ Node* Parser::parsMulti()
 Node* Parser::parsAdd()
 {
 	Node* n = parsMulti();
-	while (t != NULL && isAdd(t))
+	while (t != NULL && isAdd())
 	{
 		n = createNode(n);
 		n->addChild(parsMulti());
@@ -101,7 +101,7 @@ Node* Parser::parsAdd()
 Node* Parser::parsRelat()
 {
 	Node* n = parsAdd();
-	while (t != NULL && isRelat(t))
+	while (t != NULL && isRelat())
 	{
 		n = createNode(n);
 		n->addChild(parsAdd());
