@@ -3,10 +3,7 @@
 #include "Lexer.h"
 #include "Node.h"
 
-enum kindExpr {
-	ADD, MULTI, PRIMER, OPEN_SEP, CLOSE_SEP,
-	RELAT, UNARY, ERR, END_EXPR, VAR_OPEN_SEP, VAR_CLOSE_SEP
-};
+
 
 class Parser
 {
@@ -14,8 +11,6 @@ private:
 	Node* currentNode;
 	Lexer *lexer;
 	Token* t;
-
-	kindExpr detKindToken(Token*);
 
 	Token* nextToken()
 	{

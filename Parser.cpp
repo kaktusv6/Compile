@@ -1,47 +1,31 @@
 #include "Parser.h"
 
-kindExpr Parser::detKindToken(Token *tok)
-{
-	if (t == NULL)
-		return END_EXPR;
-
-	string
-		lexText = tok->getLexText();
-	if (lexText == "[")
-		return VAR_OPEN_SEP;
-	
-	if (lexText == "]")
-		return VAR_CLOSE_SEP;
-
-	if (lexText == "(")
-		return OPEN_SEP;
-
-	if (lexText == ")")
-		return CLOSE_SEP;
-}
-
 Node* Parser::parsVaraible()
 {
 	Node* n = createNode();
 	if (t == NULL)
 		return n;
 
-	if (detKindToken(t) == VAR_OPEN_SEP)
+	if (t->getLexText() == "[")
 	{
 		nextToken();
 		n->addChild(parsRelat());
-		if (detKindToken(t) != VAR_CLOSE_SEP)
+		if (t != NULL)
+		{
+			if (t->getLexText() == "]")
+				nextToken();
+		}
+		else
 			throw SynError(t, " No closing parenthesis");
-		nextToken();
 	}
+	else if (t->getLexText() == "^")
+		n = createNode(n);
 	if (t->getLexText() == ".")
 	{
 		Node* c = n;
 		n = createNode();
 		n->addChild(parsVaraible())->addChild(c);
 	}
-	else if (t->getLexText() == "^")
-		n = createNode(n);
 
 	return n;
 }
@@ -50,20 +34,26 @@ Node* Parser::parsPrim()
 {
 	try
 	{
-		kindExpr k = detKindToken(t);
+		if (t == NULL)
+			throw SynError(t, " No primary-expression");
+
 		if (isPrimer(t))
 			return createNode();
 		else if (isVaraile(t))
 		{
 			return parsVaraible();
 		}
-		else if (k == OPEN_SEP)
+		else if (t->getLexText() == "(")
 		{
 			nextToken();
 			Node* n = parsRelat();
-			if (detKindToken(t) != CLOSE_SEP)
+			if (t != NULL)
+			{
+				if (t->getLexText() == "]")
+					nextToken();
+			}
+			else
 				throw SynError(t, " No closing parenthesis");
-			nextToken();
 			return n;
 		}
 		else
