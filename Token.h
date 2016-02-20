@@ -40,7 +40,7 @@ public:
 template<class Value>
 class TokenValue : public Token
 {
-protected:
+private:
 	Value valueToken;
 
 public:
@@ -54,7 +54,7 @@ public:
 template<>
 class TokenValue<double> : public Token
 {
-protected:
+private:
 	double valueToken;
 
 public:

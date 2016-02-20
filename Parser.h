@@ -3,8 +3,6 @@
 #include "Lexer.h"
 #include "Node.h"
 
-
-
 class Parser
 {
 private:
