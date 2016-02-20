@@ -11,8 +11,5 @@
 /Компилятор.rc
 mainCode.cpp
 lib.cpp
-<<<<<<< HEAD
 /tests
-=======
 /tests/
->>>>>>> origin/master
